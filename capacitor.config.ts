@@ -3,7 +3,7 @@ import { KeyboardResize } from '@capacitor/keyboard';
 
 const config: CapacitorConfig = {
     appId: "uk.shop.amigao",
-    appName: "Amigao",
+    appName: "SHOP",
     webDir: "www",
     bundledWebRuntime: false,
     plugins: {
@@ -18,11 +18,11 @@ const config: CapacitorConfig = {
           Keyboard: {
             resize: KeyboardResize.Body
           },
-        PushNotifications: {
-            presentationOptions: [
-                "alert"
-            ]
-        }
+        // PushNotifications: {
+        //     presentationOptions: [
+        //         "alert"
+        //     ]
+        // }
     }
 };
 

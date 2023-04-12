@@ -23,6 +23,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="ion-shop-online.web.app" />
+            </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="ion-shop-online.web.app" />
+                <data android:scheme="app" android:host="uk.shop.amigao" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/custom_url_scheme" />
+            </intent-filter>
+
         </activity>
 
         <provider
@@ -35,6 +57,10 @@
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
     </application>
+
+    <queries>
+        <package android:name="uk.shop.amigao" />
+    </queries>
 
     <!-- Permissions -->
 
