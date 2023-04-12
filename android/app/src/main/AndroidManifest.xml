@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="uk.shop.amigao">
+    package="uk.shop.mobile">
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,7 @@
 
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
-            android:name="uk.shop.amigao.MainActivity"
+            android:name="uk.shop.mobile.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBarLaunch"
             android:launchMode="singleTask"
@@ -35,7 +35,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" android:host="ion-shop-online.web.app" />
-                <data android:scheme="app" android:host="uk.shop.amigao" />
+                <data android:scheme="app" android:host="uk.shop.mobile" />
             </intent-filter>
 
             <intent-filter>
@@ -59,7 +59,7 @@
     </application>
 
     <queries>
-        <package android:name="uk.shop.amigao" />
+        <package android:name="uk.shop.mobile" />
     </queries>
 
     <!-- Permissions -->

@@ -10,6 +10,7 @@ export const environment = {
     measurementId: "G-CHDXVMWZFR"
   },
   production: false,
+  MEDUSA_API_BASE_PATH: 'http://localhost:9000',
   // API_BASE_PATH: 'http://localhost:1337/api',
   API_BASE_PATH: 'https://strapi-h93z.onrender.com/api',
   // BASE_PATH: 'http://localhost:1337',

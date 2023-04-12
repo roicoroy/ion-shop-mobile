@@ -13,8 +13,11 @@ import { Message } from '../services/data.service';
   imports: [CommonModule, IonicModule, RouterLink],
 })
 export class MessageComponent {
+
   private platform = inject(Platform);
+
   @Input() message?: Message;
+
   isIos() {
     return this.platform.is('ios')
   }
