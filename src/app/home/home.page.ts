@@ -9,6 +9,9 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { NavigationService } from '../shared/services/navigation/navigation.service';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { HomePageFacade } from './home-facade';
 
 @Component({
   selector: 'app-home',
@@ -27,10 +30,19 @@ import { NavigationService } from '../shared/services/navigation/navigation.serv
 })
 export class HomePage {
   private data = inject(DataService);
+  private activatedRoute = inject(ActivatedRoute);
+
+  viewState$: Observable<any>;
 
   constructor(
     private navigation: NavigationService,
-  ) { }
+    private facade: HomePageFacade,
+  ) {
+    this.viewState$ = this.facade.viewState$;
+    this.viewState$.subscribe((vs) => {
+      console.log(vs);
+    })
+  }
 
   refresh(ev: any) {
     setTimeout(() => {

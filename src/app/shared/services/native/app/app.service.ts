@@ -8,8 +8,8 @@ export const packageUrl = 'app://uk.shop.mobile';
 const iosOrAndroid = isPlatform('hybrid');
 
 export const callbackUri = iosOrAndroid
-  ? `packagepackage`
-  : 'http://localhost:4200';
+    ? `packagepackage`
+    : 'http://localhost:4200';
 
 
 @Injectable({
@@ -22,9 +22,10 @@ export class AppService {
     ) { }
 
     async initAppListeners() {
-        console.log('appUrlOpen listener init')
+        console.log('appUrlOpen listener init AppService')
         await App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
-            console.log('appUrlOpen listener init');
+            console.log('appUrlOpen listener init AppService',);
+            console.log(event);
             this.zone.run(() => {
                 console.log('appUrlOpen zone run');
                 const slug = event.url.split(".app").pop();

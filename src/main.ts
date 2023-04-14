@@ -19,6 +19,9 @@ import { NgxsModule } from '@ngxs/store';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import localeEn from '@angular/common/locales/en';
+import { AuthInterceptor, StrapiAuthConfig, StrapiAuthModule } from 'projects/strapi-auth/src/public-api';
+import { AuthState } from './app/store/auth/auth.state';
+import { Auth0State } from './app/store/auth/auth0/auth0.state';
 
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localePt, 'pt');
@@ -28,6 +31,14 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }
 
+// StrapiAuthConfig
+const strapiAuthConfig: StrapiAuthConfig = {
+  strapi_base_url: 'http://localhost:1337/api',
+  routes: {
+    logoutRedirect: '/home'
+  }
+};
+
 if (environment.production) {
   enableProdMode();
 }
@@ -36,9 +47,15 @@ bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: LOCALE_ID, useValue: 'en' },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
     importProvidersFrom(
       IonicModule.forRoot({}),
       HttpClientModule,
+      StrapiAuthModule.forRoot(strapiAuthConfig),
       NgxStripeModule.forRoot(environment.STRIPE_KEY),
       TranslateModule.forRoot({
         loader: {
@@ -49,15 +66,15 @@ bootstrapApplication(AppComponent, {
         defaultLanguage: 'en'
       }),
       NgxsModule.forRoot([
+        AuthState,
+        Auth0State
       ]),
       NgxsFormPluginModule.forRoot(),
       NgxsReduxDevtoolsPluginModule.forRoot({ disabled: true }),
       NgxsLoggerPluginModule.forRoot({ disabled: true }),
       NgxsStoragePluginModule.forRoot({
         key: [
-          'customer',
-          'theme',
-          'language'
+          'auth0'
         ]
       }),
     ),

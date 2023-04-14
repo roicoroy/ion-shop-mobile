@@ -11,8 +11,8 @@ export const environment = {
   },
   production: true,
   MEDUSA_API_BASE_PATH: 'http://localhost:9000',
-  API_BASE_PATH: 'https://strapi-passwordless.onrender.com/api',
-  BASE_PATH: 'https://strapi-passwordless.onrender.com',
+  API_BASE_PATH: 'https://strapi-h93z.onrender.com/api',
+  BASE_PATH: 'https://strapi-h93z.onrender.com',
   STRIPE_KEY: 'pk_test_2qqvb6DTqKondL46mnEjZ68e',
   populate: '?populate=*'
 };
