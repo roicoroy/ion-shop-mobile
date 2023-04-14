@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button [text]="getBackButtonText()" defaultHref="/auth-home"></ion-back-button>
     </ion-buttons>
-    <ion-title>auth0-callback</ion-title>
+    <ion-title>{{ 'Suth0 Callback' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -17,7 +17,7 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12">
-        {{ user | json }}
+        <ion-spinner *ngIf="showLoading" name="lines-small"></ion-spinner>
       </ion-col>
     </ion-row>
   </ion-grid>

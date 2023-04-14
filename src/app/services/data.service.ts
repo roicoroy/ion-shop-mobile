@@ -73,7 +73,7 @@ export class DataService {
 
   constructor() { }
 
-  public getMessages(): Message[] {
+  public getProducts(): Message[] {
     return this.messages;
   }
 

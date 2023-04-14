@@ -9,8 +9,8 @@ export namespace AuthStateActions {
         static readonly type = '[AuthActions] Set Logged In';
         constructor(public isLoggedIn: boolean) { }
     }
-    export class SetUser {
-        static readonly type = '[AuthActions] Set User';
-        constructor(public user: IUser) { }
+    export class SetUserId {
+        static readonly type = '[AuthActions] Set User Id';
+        constructor(public userId: string) { }
     }
 }

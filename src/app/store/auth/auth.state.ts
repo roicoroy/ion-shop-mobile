@@ -2,13 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Auth0State } from './auth0/auth0.state';
 import { AuthStateActions } from './auth.actions';
-import { Auth0Actions } from './auth0/auth0.actions';
-
-export class IAuthStateModel {
-    isLoggedIn: boolean;
-    userId: string;
-    medusaId: string
-}
+import { IAuthStateModel } from './auth.interface';
 
 export const AuthStates = [
     Auth0State
@@ -32,21 +26,22 @@ export class AuthState {
     }
 
     @Action(AuthStateActions.SetLoggedIn)
-    async authProviderCallback(ctx: StateContext<IAuthStateModel>, { isLoggedIn }: AuthStateActions.SetLoggedIn) {
+    authProviderCallback(ctx: StateContext<IAuthStateModel>, { isLoggedIn }: AuthStateActions.SetLoggedIn) {
         const state = ctx.getState();
-        return ctx.patchState({
+        ctx.patchState({
             ...state,
             isLoggedIn
         });
+        // console.log(state);
     }
-    @Action(AuthStateActions.SetUser)
-    async setUser(ctx: StateContext<IAuthStateModel>, { user }: AuthStateActions.SetUser) {
+    @Action(AuthStateActions.SetUserId)
+    setUser(ctx: StateContext<IAuthStateModel>, { userId }: AuthStateActions.SetUserId) {
         const state = ctx.getState();
-        console.log(user);
-        return ctx.patchState({
+        ctx.patchState({
             ...state,
-            userId: user.id,
+            userId,
             isLoggedIn: true
         });
+        console.log(state);
     }
 }

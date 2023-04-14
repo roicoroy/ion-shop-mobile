@@ -1,25 +1,12 @@
 import { Injectable } from '@angular/core';
-import { State, Selector, Action, StateContext, Store } from '@ngxs/store';
+import { State, Action, StateContext, Store } from '@ngxs/store';
 import { Auth0Service } from './auth0.service';
 import { Auth0Actions } from './auth0.actions';
 import { AuthStateActions } from '../auth.actions';
 
-export class IAuth0StateModel {
-    // user: any;
-    // isLoggedIn: boolean;
-    // token: string;
-    // userId: string;
-    // medusaId: string
-}
+export class IAuth0StateModel { }
 @State<IAuth0StateModel>({
     name: 'auth0',
-    // defaults: {
-    //     // user: null,
-    //     // isLoggedIn: null,
-    //     // token: null,
-    //     // userId: null,
-    //     // medusaId: null
-    // }
 })
 @Injectable()
 export class Auth0State {
@@ -36,8 +23,8 @@ export class Auth0State {
             .subscribe((user: any) => {
                 console.log(user);
                 if (user) {
-                    this.store.dispatch(new AuthStateActions.SetLoggedIn(true))
-                    this.store.dispatch(new AuthStateActions.SetUser(user?.user))
+                    this.store.dispatch(new AuthStateActions.SetLoggedIn(true));
+                    this.store.dispatch(new AuthStateActions.SetUserId(user?.user.id));
                 }
             });
     }

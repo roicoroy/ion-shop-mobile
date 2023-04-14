@@ -50,8 +50,8 @@ export class HomePage {
     }, 3000);
   }
 
-  getMessages(): Message[] {
-    return this.data.getMessages();
+  getProducts(): Message[] {
+    return this.data.getProducts();
   }
   loginPages() {
     this.navigation.navControllerDefault('auth-home');

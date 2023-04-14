@@ -70,11 +70,12 @@ bootstrapApplication(AppComponent, {
         Auth0State
       ]),
       NgxsFormPluginModule.forRoot(),
-      NgxsReduxDevtoolsPluginModule.forRoot({ disabled: true }),
-      NgxsLoggerPluginModule.forRoot({ disabled: true }),
+      NgxsReduxDevtoolsPluginModule.forRoot({ disabled: false }),
+      NgxsLoggerPluginModule.forRoot({ disabled: false }),
       NgxsStoragePluginModule.forRoot({
         key: [
-          'auth0'
+          'auth0',
+          'auth',
         ]
       }),
     ),

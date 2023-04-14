@@ -20,10 +20,6 @@ export const routes: Routes = [
     loadComponent: () => import('./auth/auth-home/auth-home.page').then(m => m.HomePage)
   },
   {
-    path: 'passwordless',
-    loadComponent: () => import('./auth/passwordless/passwordless.page').then(m => m.PasswordlessPage)
-  },
-  {
     path: 'auth0-callback',
     loadComponent: () => import('./auth/auth0-callback/auth0-callback.page').then( m => m.Auth0CallbackPage)
   },

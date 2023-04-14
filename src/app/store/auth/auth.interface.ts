@@ -1,9 +1,5 @@
-export class IStrapiStateModel {
-    user: any;
+export class IAuthStateModel {
     isLoggedIn: boolean;
-    strapiProfileForm: {
-        model?: any;
-    };
-    token: string;
-    userId: string
+    userId: string;
+    medusaId: string
 }
