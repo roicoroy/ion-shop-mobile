@@ -1,0 +1,14 @@
+ion-label {
+    display: block;
+}
+
+ion-row.buttons-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 12px;
+
+    ion-button {
+        width: 100%;
+    }
+}

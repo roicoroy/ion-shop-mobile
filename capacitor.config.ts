@@ -11,9 +11,9 @@ const config: CapacitorConfig = {
             androidScaleType: "CENTER_CROP",
             splashFullScreen: false,
             splashImmersive: false,
-            launchShowDuration: 2000,
+            launchShowDuration: 5000,
             launchAutoHide: true,
-            backgroundColor: "#FF5722"
+            backgroundColor: "#ffc409"
           },
           Keyboard: {
             resize: KeyboardResize.Body

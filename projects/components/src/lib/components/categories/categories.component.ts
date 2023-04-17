@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
-import { NavigationService } from 'projects/services/src/lib/services/navigation.service';
+import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
+
 export interface ICategoriesList {
   id?: string,
   url?: string,

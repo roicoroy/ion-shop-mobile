@@ -1,17 +1,18 @@
-import { Component, forwardRef, ChangeDetectionStrategy, OnInit, OnDestroy, Input } from "@angular/core";
+import { Component, forwardRef, ChangeDetectionStrategy, OnInit, OnDestroy } from "@angular/core";
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS, ControlValueAccessor, FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
 import { Store } from "@ngxs/store";
-import { fade } from "projects/services/src/lib/animations/animations";
 import { Subscription, Observable, Subject } from "rxjs";
-// import { AddressesActions } from "src/app/store/addresses/addresses.actions";
 import { CountryPhone } from "../address-form/country-phone.model";
 import { AddressDetailsFormFacade } from "./address-details-form.facade";
+import { fade } from "src/app/shared/services/animations/animations";
 
 @Component({
   selector: 'app-address-details-form',
   templateUrl: './address-details-form.component.html',
   styleUrls: ['./address-details-form.component.scss'],
-  animations: [fade()],
+  animations: [
+    fade()
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

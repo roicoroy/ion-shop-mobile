@@ -3,13 +3,15 @@ import { NG_VALUE_ACCESSOR, NG_VALIDATORS, ControlValueAccessor, FormGroup, Form
 import { Store } from "@ngxs/store";
 import { Subscription } from "rxjs";
 import { CountryPhone } from './country-phone.model';
-import { fade } from "projects/services/src/lib/animations/animations";
+import { fade } from "src/app/shared/services/animations/animations";
 
 @Component({
   selector: 'app-address-form',
   templateUrl: './address-form.component.html',
   styleUrls: ['./address-form.component.scss'],
-  animations: [fade()],
+  animations: [
+    fade()
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

@@ -26,6 +26,8 @@ import { Auth0State } from './app/store/auth/auth0/auth0.state';
 import { CustomerState } from './app/store/customer/customer.state';
 import { UserState } from './app/store/user/user.state';
 import { EmailPasswordState } from './app/store/auth/email-password/email-password.state';
+import { ErrorLoggingState } from './app/store/error-logging/error-logging.state';
+import { KeyboardState } from './app/store/keyboard/keyboard.state';
 
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localePt, 'pt');
@@ -51,11 +53,11 @@ bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: LOCALE_ID, useValue: 'en' },
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: AuthInterceptor,
-    //   multi: true
-    // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
     importProvidersFrom(
       IonicModule.forRoot({}),
       HttpClientModule,
@@ -72,9 +74,11 @@ bootstrapApplication(AppComponent, {
       }),
       NgxsModule.forRoot([
         Auth0State,
+        ErrorLoggingState,
         EmailPasswordState,
         AuthState,
         CustomerState,
+        KeyboardState,
         UserState
       ]),
       NgxsFormPluginModule.forRoot(),

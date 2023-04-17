@@ -6,6 +6,7 @@ import { AuthStateActions } from '../auth.actions';
 import { IAuth0StateModel } from '../auth0/auth0.state';
 import { EmailPasswordService } from './email-password.service';
 import { UtilityService } from 'src/app/shared/services/utility/utility.service';
+import { ErrorLoggingActions } from '../../error-logging/error-logging.actions';
 
 export class IEmailPasswordStateModel { }
 
@@ -21,12 +22,12 @@ export class EmailPasswordState {
 
     @Action(EmailPasswordActions.LoginEmailPassword)
     async loginEmailPassword(ctx: StateContext<IAuth0StateModel>, { email, password }: EmailPasswordActions.LoginEmailPassword) {
-        console.log(email, password);
         this.utility.presentLoading('...');
         this.emailPasswordService.loginEmailPassword(email, password)
             .pipe(
                 catchError(err => {
                     this.utility.dismissLoading();
+                    this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
                     return throwError(() => new Error(JSON.stringify(err)));
                 })
             )

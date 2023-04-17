@@ -14,13 +14,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { CartMenuComponent } from './components/app-menu/cart-menu.component';
 import { MedusaCartComponent } from './components/medusa-cart/medusa-cart.component';
-import { CategoriesComponent } from './components/categories/categories.component';
 import { ContactCardPage } from './components/contact-card/contact-card.page';
 import { SettingsComponent } from './components/settings/settings.component';
-import { HeaderComponent } from './components/header/header.component';
 import { AddressCardComponent } from './components/address-card/address-card.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
 import { ItemsComponent } from './components/items/items.component';
+import { CategoriesComponent } from './components/categories/categories.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   imports: [

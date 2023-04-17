@@ -3,12 +3,13 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'shop/tabs/home',
     pathMatch: 'full',
   },
+
   {
-    path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+    path: 'shop',
+    loadChildren: () => import('./shop/shop.routes').then((m) => m.routes),
   },
   // {
   //   path: 'message/:id',
@@ -17,7 +18,7 @@ export const routes: Routes = [
   // },
   {
     path: 'auth-home',
-    loadComponent: () => import('./auth/auth-home/auth-home.page').then(m => m.HomePage)
+    loadComponent: () => import('./auth/auth-home.page').then(m => m.AuthHomePage)
   },
   {
     path: 'strapi-auth0',
@@ -26,5 +27,9 @@ export const routes: Routes = [
   {
     path: 'email-password',
     loadComponent: () => import('./auth/email-password/email-password.page').then( m => m.EmailPasswordPage)
+  },
+  {
+    path: 'user',
+    loadComponent: () => import('./shop/profile/user/user.page').then(m => m.UserPage)
   },
 ];

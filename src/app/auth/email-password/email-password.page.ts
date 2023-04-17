@@ -1,12 +1,14 @@
 import { CommonModule } from "@angular/common";
-import { Component, ChangeDetectionStrategy, ViewChild } from "@angular/core";
+import { Component, ChangeDetectionStrategy, ViewChild, inject } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { IonicModule } from "@ionic/angular";
+import { IonicModule, Platform } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
 import { NgxsModule, Store } from "@ngxs/store";
 import { LoginFormComponent } from "projects/form-components/src/lib/components/login-form/login-form.component";
 import { FormComponentsModule } from "projects/form-components/src/public-api";
 import { IStrapiLoginData, ICustomerLoginData } from "projects/types/types.interfaces";
+import { scaleHeight } from "src/app/shared/services/animations/animations";
+import { KeypadModule } from "src/app/shared/services/native/keyboard/keypad.module";
 import { NavigationService } from "src/app/shared/services/navigation/navigation.service";
 import { UtilityService } from "src/app/shared/services/utility/utility.service";
 import { EmailPasswordActions } from "src/app/store/auth/email-password/email-password.actions";
@@ -18,6 +20,9 @@ import { EmailPasswordActions } from "src/app/store/auth/email-password/email-pa
   styleUrls: ['./email-password.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  animations: [
+    scaleHeight()
+  ],
   imports: [
     IonicModule,
     CommonModule,
@@ -25,20 +30,20 @@ import { EmailPasswordActions } from "src/app/store/auth/email-password/email-pa
     TranslateModule,
     NgxsModule,
     ReactiveFormsModule,
-    FormComponentsModule
+    FormComponentsModule,
+    KeypadModule
   ]
 })
 export class EmailPasswordPage {
-
   @ViewChild('form') form: LoginFormComponent;
 
   loginReq: IStrapiLoginData;
 
-  constructor(
-    private store: Store,
-    private navigation: NavigationService,
-    private utility: UtilityService,
-  ) { }
+  private platform = inject(Platform);
+  private store = inject(Store);
+  private navigation = inject(NavigationService);
+  private utility = inject(UtilityService);
+
 
   ionViewDidEnter() {
     this.form?.loginForm.get('email').setValue("test@test.com");
@@ -52,19 +57,16 @@ export class EmailPasswordPage {
     };
 
     this.store.dispatch(new EmailPasswordActions.LoginEmailPassword(this.form?.loginForm.get('email').value, this.form?.loginForm.get('password').value,))
-
     // const errorEntry = this.store.selectSnapshot<any>((state) => state.errorsLogging.errorEntry);
-
-    // setTimeout(() => {
-    //   if (errorEntry === null) {
-    //     this.navigation.navigateFlip('/home');
-    //   }
-    // }, 50);
   }
   back(): void {
-    this.navigation.navControllerDefault('/home');
+    this.navigation.navControllerDefault('/auth-home');
   }
   register(): void {
     // this.navigation.navControllerDefault(AuthRoutePath.registerUser);
+  }
+  getBackButtonText() {
+    const isIos = this.platform.is('ios')
+    return isIos ? 'Inbox' : '';
   }
 }

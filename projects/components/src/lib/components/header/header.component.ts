@@ -1,9 +1,7 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
-import { Store } from '@ngxs/store';
-import { AppAuthService } from 'projects/services/src/lib/services/auth.service';
-import { NavigationService } from 'projects/services/src/lib/services/navigation.service';
-// import { AuthRoutePath } from 'src/app/auth/route-path.enum';
+import { AuthService } from 'projects/strapi-auth/src/lib/services/auth/auth.service';
+import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
 
 export interface IHeaderData {
   avatar: string,
@@ -29,7 +27,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   constructor(
     private navigation: NavigationService,
-    private auth: AppAuthService,
+    private auth: AuthService,
     public menu: MenuController,
   ) { }
 
@@ -53,7 +51,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   logout() {
-    this.auth.logoutUser();
+
   }
 
 }

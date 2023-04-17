@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="logout()">
+        <ion-icon color="danger" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="loginPages()">
+        Login
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      Inbox
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="cart-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">
+        Inbox
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- <ion-list *ngIf="viewState$ | async as vs">
+    {{ vs | json }}
+  </ion-list> -->
+</ion-content>

@@ -23,6 +23,7 @@ import { Role } from './Role';
 export interface IUser {
   id: string;
   username: string;
+  avatar: string;
   email: string;
   provider?: string;
   confirmed?: boolean;
@@ -41,6 +42,7 @@ export class User extends BaseModel implements IUser {
 
   public id: string;
   public username: string;
+  public avatar: string;
   public email: string;
   public provider?: string;
   public confirmed?: boolean;
@@ -82,6 +84,8 @@ export class User extends BaseModel implements IUser {
 
       this.username = this.castTo('string', rawValues.username);
 
+      this.avatar = this.castTo('string', rawValues.avatar);
+
       this.email = this.castTo('string', rawValues.email);
 
       this.provider = this.castTo('string', rawValues.provider);
@@ -112,6 +116,7 @@ export class User extends BaseModel implements IUser {
       this._formGroup = new UntypedFormGroup({
         id: new UntypedFormControl(this.id, [Validators.required]),
         username: new UntypedFormControl(this.username, [Validators.required]),
+        avatar: new UntypedFormControl(this.avatar, [Validators.required]),
         email: new UntypedFormControl(this.email, [Validators.required]),
         provider: new UntypedFormControl(this.provider, []),
         confirmed: new UntypedFormControl(this.confirmed, []),
@@ -130,6 +135,7 @@ export class User extends BaseModel implements IUser {
   public setFormGroupValues(): void {
     this.$formGroup.controls['id'].setValue(this.id);
     this.$formGroup.controls['username'].setValue(this.username);
+    this.$formGroup.controls['avatar'].setValue(this.avatar);
     this.$formGroup.controls['email'].setValue(this.email);
     this.$formGroup.controls['provider'].setValue(this.provider);
     this.$formGroup.controls['confirmed'].setValue(this.confirmed);
@@ -150,6 +156,8 @@ export class User extends BaseModel implements IUser {
       case 'id':
         return true;
       case 'username':
+        return true;
+      case 'avatar':
         return true;
       case 'email':
         return true;
