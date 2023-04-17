@@ -3,7 +3,7 @@ import { NG_VALUE_ACCESSOR, NG_VALIDATORS, ControlValueAccessor, FormGroup, Form
 import { Store } from "@ngxs/store";
 import { fade } from "projects/services/src/lib/animations/animations";
 import { Subscription, Observable, Subject } from "rxjs";
-import { AddressesActions } from "src/app/store/addresses/addresses.actions";
+// import { AddressesActions } from "src/app/store/addresses/addresses.actions";
 import { CountryPhone } from "../address-form/country-phone.model";
 import { AddressDetailsFormFacade } from "./address-details-form.facade";
 
@@ -113,10 +113,10 @@ export class AddressDetailsFormComponent implements OnInit, ControlValueAccessor
     );
   }
   ngOnInit() {
-    this.store.dispatch(new AddressesActions.GetRegionList());
+    // this.store.dispatch(new AddressesActions.GetRegionList());
   }
   async onRegionCodeChange(regionId?: string) {
-    this.store.dispatch(new AddressesActions.GetCountries(regionId));
+    // this.store.dispatch(new AddressesActions.GetCountries(regionId));
   }
   onCountryChange(country: any) {
     this.phoneNumberPlaceholder = this.buildPhoneNumberPlaceholder(country);

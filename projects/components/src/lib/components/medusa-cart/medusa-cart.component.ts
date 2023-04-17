@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { CartActions } from 'src/app/store/cart/cart.actions';
 import { MedusaCartFacade } from './medusa-cart.facade';
 
 export interface ICartProductItem {
@@ -55,15 +54,15 @@ export class MedusaCartComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
   }
   incrementSelectItem(item: any) {
-    this.store.dispatch(new CartActions.AddProductMedusaToCart(item.cart_id, 1, item.variant.id,));
+    // this.store.dispatch(new CartActions.AddProductMedusaToCart(item.cart_id, 1, item.variant.id,));
   }
   decrementSelectItem(item: any) {
-    return item?.quantity == 1 ?
-      this.delete(item) :
-      this.store.dispatch(new CartActions.AddProductMedusaToCart(item.cart_id, -1, item.variant.id));
+    // return item?.quantity == 1 ?
+    //   this.delete(item) :
+      // this.store.dispatch(new CartActions.AddProductMedusaToCart(item.cart_id, -1, item.variant.id));
   }
   delete(item: any) {
-    this.store.dispatch(new CartActions.DeleteProductMedusaFromCart(item.cart_id, item.id));
+    // this.store.dispatch(new CartActions.DeleteProductMedusaFromCart(item.cart_id, item.id));
   }
   goToCheckout() {
     this.navCtrl.navigateForward('checkout/flow/start');

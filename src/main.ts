@@ -2,6 +2,7 @@ import { LOCALE_ID, enableProdMode, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
@@ -22,6 +23,9 @@ import localeEn from '@angular/common/locales/en';
 import { AuthInterceptor, StrapiAuthConfig, StrapiAuthModule } from 'projects/strapi-auth/src/public-api';
 import { AuthState } from './app/store/auth/auth.state';
 import { Auth0State } from './app/store/auth/auth0/auth0.state';
+import { CustomerState } from './app/store/customer/customer.state';
+import { UserState } from './app/store/user/user.state';
+import { EmailPasswordState } from './app/store/auth/email-password/email-password.state';
 
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localePt, 'pt');
@@ -47,16 +51,17 @@ bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: LOCALE_ID, useValue: 'en' },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: AuthInterceptor,
+    //   multi: true
+    // },
     importProvidersFrom(
       IonicModule.forRoot({}),
       HttpClientModule,
       StrapiAuthModule.forRoot(strapiAuthConfig),
       NgxStripeModule.forRoot(environment.STRIPE_KEY),
+      BrowserAnimationsModule,
       TranslateModule.forRoot({
         loader: {
           provide: TranslateLoader,
@@ -66,16 +71,20 @@ bootstrapApplication(AppComponent, {
         defaultLanguage: 'en'
       }),
       NgxsModule.forRoot([
+        Auth0State,
+        EmailPasswordState,
         AuthState,
-        Auth0State
+        CustomerState,
+        UserState
       ]),
       NgxsFormPluginModule.forRoot(),
       NgxsReduxDevtoolsPluginModule.forRoot({ disabled: false }),
       NgxsLoggerPluginModule.forRoot({ disabled: false }),
       NgxsStoragePluginModule.forRoot({
         key: [
-          'auth0',
-          'auth',
+          'authState',
+          // 'user',
+          // 'customer'
         ]
       }),
     ),

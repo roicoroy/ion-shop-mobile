@@ -5,7 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
-import { NgxsModule } from '@ngxs/store';
+import { NgxsModule, Store } from '@ngxs/store';
+import { TokenService } from 'projects/strapi-auth/src/public-api';
+import { AuthStateActions } from './store/auth/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -22,20 +24,29 @@ import { NgxsModule } from '@ngxs/store';
 })
 export class AppComponent implements OnInit {
 
-  constructor(
-    private native: AppService,
-    private platform: Platform,
-  ) { }
+  private native = inject(AppService);
+  private platform = inject(Platform);
+  private tokenService = inject(TokenService);
+  private store = inject(Store);
 
   ngOnInit(): void {
+    this.initApp();
   }
 
   async initApp() {
     this.platform.ready().then(async () => {
+      // get medusa products
+      // set theme
+      // tutorial
       const device = await this.native.getDeviceInfo();
+      const token = this.tokenService.getToken();
+      if (token) {
+        this.store.dispatch(new AuthStateActions.SetLoggedIn(true));
+      }
       if (device.platform == 'web') {
       }
       if (device.platform === 'android' || device.platform === 'ios') {
+        // set fcm listeners
       }
     }).catch(e => {
       throw e;

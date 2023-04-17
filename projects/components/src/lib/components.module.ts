@@ -41,13 +41,13 @@ import { ItemsComponent } from './components/items/items.component';
     RatingInputComponent,
     CartMenuComponent,
     MedusaCartComponent,
-    CategoriesComponent,
     ContactCardPage,
     SettingsComponent,
-    HeaderComponent,
     AddressCardComponent,
     OrderDetailsComponent,
-    ItemsComponent
+    ItemsComponent,
+    HeaderComponent,
+    CategoriesComponent
   ],
   exports: [
     ShellModule,
@@ -58,13 +58,13 @@ import { ItemsComponent } from './components/items/items.component';
     RatingInputComponent,
     CartMenuComponent,
     MedusaCartComponent,
-    CategoriesComponent,
     ContactCardPage,
     SettingsComponent,
-    HeaderComponent,
     AddressCardComponent,
     OrderDetailsComponent,
-    ItemsComponent
+    ItemsComponent,
+    HeaderComponent,
+    CategoriesComponent
   ]
 })
 export class CustomComponentsModule { }

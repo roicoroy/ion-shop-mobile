@@ -1,10 +1,9 @@
 import { Component, forwardRef, ChangeDetectionStrategy, OnInit, OnDestroy, Input } from "@angular/core";
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS, ControlValueAccessor, FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
 import { Store } from "@ngxs/store";
-import { fade } from "projects/services/src/lib/animations/animations";
 import { Subscription } from "rxjs";
-import { AddressesActions } from "src/app/store/addresses/addresses.actions";
 import { CountryPhone } from './country-phone.model';
+import { fade } from "projects/services/src/lib/animations/animations";
 
 @Component({
   selector: 'app-address-form',
@@ -102,10 +101,10 @@ export class AddressFormComponent implements OnInit, ControlValueAccessor, OnDes
     );
   }
   ngOnInit() {
-    this.store.dispatch(new AddressesActions.GetRegionList());
+    // this.store.dispatch(new AddressesActions.GetRegionList());
   }
   async onRegionCodeChange(regionId?: string) {
-    this.store.dispatch(new AddressesActions.GetCountries(regionId));
+    // this.store.dispatch(new AddressesActions.GetCountries(regionId));
     this.phoneNumberPlaceholder = '....';
   }
 

@@ -37,17 +37,15 @@ export class HomePage implements OnInit {
     private native: AppService,
     private auth0Service: Auth0Service,
   ) { }
-
   async ngOnInit() {
     // this.native.initAppListeners();
   }
   navigateAuth0Callback() {
-    this.navigation.navControllerDefault('auth0-callback')
-      .then(async () => {
-        return await this.auth0Service.loginStrapiAuth0();
-      });
+    this.navigation.navControllerDefault('strapi-auth0')
+      // .then(async () => {
+      //   return await this.auth0Service.loginStrapiAuth0();
+      // });
   }
-
   loginPasswordless() {
     this.navigation.navControllerDefault('passwordless');
   }
@@ -55,6 +53,6 @@ export class HomePage implements OnInit {
     this.navigation.navControllerDefault('home');
   }
   loginEmailPassword() {
-
+    this.navigation.navControllerDefault('email-password');
   }
 }

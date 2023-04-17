@@ -1,5 +1,7 @@
 export class IAuthStateModel {
     isLoggedIn: boolean;
     userId: string;
-    medusaId: string
+    userEmail: string;
+    medusaId: string;
+    hasSession: boolean;
 }
