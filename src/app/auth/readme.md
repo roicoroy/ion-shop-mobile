@@ -1,8 +1,0 @@
-- home
-    - auth0 - biometric
-        - login-email
-            - login
-            - register
-            - forgot
-            -reset
-        - passwordless login

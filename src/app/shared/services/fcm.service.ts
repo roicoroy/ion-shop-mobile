@@ -14,22 +14,23 @@ import { Device } from '@capacitor/device';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
-import { NavigationService } from './navigation/navigation.service';
-import { UtilityService } from './utility/utility.service';
+import { IonStorageService } from './ionstorage.service';
+import { NavigationService } from './navigation.service';
+import { UtilityService } from './utility.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FcmService {
 
-    user: { device_token: any; id: string; };
-    deviceInfo: any;
+    user;
+    deviceInfo;
     headers_json = new HttpHeaders().set('Content-Type', 'application/json');
 
     constructor(
         private http: HttpClient,
         private utility: UtilityService,
-
+        private ionStorage: IonStorageService,
         private navigation: NavigationService,
         private router: Router,
         private store: Store,
@@ -120,7 +121,7 @@ export class FcmService {
 
     }
 
-    postFcmTokenToStrapi(fcmToken: Token) {
+    postFcmTokenToStrapi(fcmToken) {
         console.log('fcmToken :>> ', fcmToken);
         if (this.user.device_token == null || this.user.device_token !== fcmToken) {
             console.log('user :>> ', this.user);

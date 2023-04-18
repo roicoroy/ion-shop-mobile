@@ -1,7 +1,3 @@
 {
-    "cSpell.words": [
-        "libphonenumber",
-        "Passwordless",
-        "strapi"
-    ]
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

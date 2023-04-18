@@ -1,55 +1,58 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { IonicModule, Platform } from '@ionic/angular';
-import { AppService } from './shared/services/native/app/app.service';
-import { ActivatedRoute } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
-import { NgxsModule, Store } from '@ngxs/store';
-import { TokenService } from 'projects/strapi-auth/src/public-api';
-import { AuthStateActions } from './store/auth/auth.actions';
+import { Component } from '@angular/core';
+import { MenuController } from '@ionic/angular';
+import { Observable } from 'rxjs';
+import { AppFacade } from './app-facade';
+import { AppAuthService } from './shared/services/auth.service';
+import { IonLanguageService } from './shared/services/language/language.service';
+import { NavigationService } from './shared/services/navigation.service';
+import { Platform } from '@ionic/angular';
+import { ThemeService } from './shared/services/theme-settings.service';
+import { Store } from '@ngxs/store';
+import { FcmActions } from './store/fcm/fcm.actions';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
-  standalone: true,
-  imports: [
-    IonicModule,
-    TranslateModule,
-    NgxsModule,
-    NgxsFormPluginModule,
-    NgxsStoragePluginModule
-  ],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
+  viewState$: Observable<any>;
 
-  private native = inject(AppService);
-  private platform = inject(Platform);
-  private tokenService = inject(TokenService);
-  private store = inject(Store);
+  public appPages = [
+    { title: 'Home', url: '/home', icon: 'home' },
+  ];
 
-  ngOnInit(): void {
+  constructor(
+    private authService: AppAuthService,
+    private ionLanguageService: IonLanguageService,
+    public menu: MenuController,
+    private navigation: NavigationService,
+    private facade: AppFacade,
+    private platform: Platform,
+    private theme: ThemeService,
+    private store: Store,
+  ) {
     this.initApp();
   }
-
   async initApp() {
-    this.platform.ready().then(async () => {
-      // get medusa products
-      // set theme
-      // tutorial
-      const device = await this.native.getDeviceInfo();
-      const token = this.tokenService.getToken();
-      if (token) {
-        this.store.dispatch(new AuthStateActions.SetLoggedIn(true));
-      }
-      if (device.platform == 'web') {
-      }
-      if (device.platform === 'android' || device.platform === 'ios') {
-        // set fcm listeners
-      }
-    }).catch(e => {
-      throw e;
+    this.platform.ready().then(() => {
+      this.theme.initTheme();
+      this.ionLanguageService.initTranslate();
+      this.viewState$ = this.facade.viewState$;
+      this.store.dispatch(new FcmActions.GetFcmToken());
+      // .subscribe((vs) => {
+      //   console.log(vs);
+      // })
     });
+  }
+  logout(): void {
+    this.authService.logout();
+  }
+  profilePage() {
+    this.navigation.navigateFlip('/auth/profile/strapi');
+  }
+  loginPage() {
+    this.navigation.navigateFlip('/auth/login');
+    // this.router.navigateByUrl('/auth/login');
   }
 }

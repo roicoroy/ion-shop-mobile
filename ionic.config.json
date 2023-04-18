@@ -1,5 +1,6 @@
 {
-  "name": "ion7-amigao-mobile",
+  "name": "ion-mobile-strapi-news",
+  "appId": "ion.strapi.news",
   "integrations": {
     "capacitor": {}
   },

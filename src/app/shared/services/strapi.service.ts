@@ -1,9 +1,16 @@
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { IUser } from '../types/models/User';
+import { IReqAuthRegister } from '../types/requests/ReqAuthRegister';
+import { IReqPasswordReset } from '../types/requests/ReqPasswordReset';
+import { IReqUserUpdate } from '../types/requests/ReqUserUpdate';
+import { IResAuthLogin } from '../types/responses/ResAuthLogin';
 import { lastValueFrom, Observable, Subject, tap } from 'rxjs';
+import { IResAuthRegister } from '../types/responses/ResAuthRegister';
 import { AlertController } from '@ionic/angular';
-import { IUser, IReqAuthRegister, IResAuthRegister, IReqUserUpdate, IResRequestPasswordReset, IReqPasswordReset, IResPasswordReset, IResAuthLogin } from 'projects/strapi-auth/src/public-api';
+import { IResPasswordReset } from '../types/responses/ResPasswordReset';
+import { IResRequestPasswordReset } from '../types/responses/ResRequestPasswordReset';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +19,7 @@ export class StrapiService {
     private user: IUser;
     private token: string;
     headers = new HttpHeaders().set('Content-Type', 'application/json');
-    strapiUser: any;
+    strapiUser;
 
     constructor(
         private httpClient: HttpClient,
@@ -34,7 +41,7 @@ export class StrapiService {
         return this.httpClient.post(environment.BASE_PATH + '/api/auth/local', data, { headers: this.headers });
     }
 
-    uploadData(formData: FormData) {
+    uploadData(formData) {
         return this.httpClient.post(environment.API_BASE_PATH + '/upload', formData, {});
     }
 
@@ -49,7 +56,7 @@ export class StrapiService {
         );
     }
 
-    register(registerReq: { first_name: any; last_name: any; username: any; email: any; password: any; }) {
+    register(registerReq) {
         const data = {
             first_name: registerReq.first_name,
             last_name: registerReq.last_name,
@@ -86,12 +93,12 @@ export class StrapiService {
             throw new HttpErrorResponse(error);
         }
     }
-    public updateStrapiUserProfile(userId: string, profileForm: any): Observable<any> {
+    public updateStrapiUserProfile(userId, profileForm): Observable<any> {
         return this.httpClient.put(environment.BASE_PATH + '/api/users/' + userId, profileForm);
     }
-    public refreshUserState(user?: any) {
+    public refreshUserState(user?) {
         if (user) {
-            const myUser: any = {
+            const myUser: IUser = {
                 id: user?.id,
                 avatar: user.avatar,
                 email: user?.email,
@@ -131,7 +138,7 @@ export class StrapiService {
         const res: IResPasswordReset | HttpErrorResponse =
             await this.postResetPassword(passwordResetReq);
     }
-    public loadUser(userId: string) {
+    public loadUser(userId) {
         return this.httpClient.get(environment.BASE_PATH + '/api/users/' + userId + '?populate=*', { headers: this.headers })
     }
     private async updateUser(updateReq: any): Promise<IUser | HttpErrorResponse> {
@@ -189,7 +196,7 @@ export class StrapiService {
     }
     public async callbackProviderLogin(
         params?: string,
-        provider?: string
+        provider?
     ): Promise<void> {
         try {
             const res: IResAuthLogin | void = (await lastValueFrom(
