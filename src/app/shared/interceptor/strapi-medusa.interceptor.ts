@@ -38,7 +38,7 @@ export class StrapiMedusaInterceptor implements HttpInterceptor {
     }
     private addToken(request: HttpRequest<any>, token: any) {
         if (token) {
-            // console.log(token);
+            console.log(token);
             const clone: HttpRequest<any> = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${token}`
@@ -52,6 +52,7 @@ export class StrapiMedusaInterceptor implements HttpInterceptor {
         return request;
     }
     private medusaRequest(request: HttpRequest<any>) {
+        console.log('medusa req');
         return request;
     }
 }

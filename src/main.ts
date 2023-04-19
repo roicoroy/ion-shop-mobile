@@ -20,7 +20,6 @@ import { NgxsModule } from '@ngxs/store';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import localeEn from '@angular/common/locales/en';
-import { StrapiAuthConfig, StrapiAuthModule } from 'projects/strapi-auth/src/public-api';
 import { AuthState } from './app/store/auth/auth.state';
 import { Auth0State } from './app/store/auth/auth0/auth0.state';
 import { CustomerState } from './app/store/customer/customer.state';
@@ -43,12 +42,12 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
 }
 
 // StrapiAuthConfig
-const strapiAuthConfig: StrapiAuthConfig = {
-  strapi_base_url: 'http://localhost:1337/api',
-  routes: {
-    logoutRedirect: '/home'
-  }
-};
+// const strapiAuthConfig: StrapiAuthConfig = {
+//   strapi_base_url: 'http://localhost:1337/api',
+//   routes: {
+//     logoutRedirect: '/home'
+//   }
+// };
 
 if (environment.production) {
   enableProdMode();
@@ -68,7 +67,7 @@ bootstrapApplication(AppComponent, {
     importProvidersFrom(
       IonicModule.forRoot({}),
       HttpClientModule,
-      StrapiAuthModule.forRoot(strapiAuthConfig),
+      // StrapiAuthModule.forRoot(strapiAuthConfig),
       IonicStorageModule.forRoot(),
       NgxStripeModule.forRoot(environment.STRIPE_KEY),
       BrowserAnimationsModule,
@@ -88,20 +87,19 @@ bootstrapApplication(AppComponent, {
         CustomerState,
         KeyboardState,
         AddressesState,
-        CustomerState,
         CustomerRegisterState,
         UserProfileState
       ]),
       NgxsFormPluginModule.forRoot(),
-      NgxsReduxDevtoolsPluginModule.forRoot({ disabled: false }),
-      NgxsLoggerPluginModule.forRoot({ disabled: false }),
+      NgxsReduxDevtoolsPluginModule.forRoot({ disabled: true }),
+      NgxsLoggerPluginModule.forRoot({ disabled: true }),
       NgxsStoragePluginModule.forRoot({
         key: [
           'authState',
           'addresses',
-          'userProfile'
+          'userProfile',
           // 'user',
-          // 'customer'
+          'customer'
         ]
       }),
     ),

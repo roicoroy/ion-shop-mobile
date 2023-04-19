@@ -30,9 +30,6 @@ import { StrapiService } from 'src/app/shared/services/strapi/strapi.service';
     ImagePickerComponent,
     KeypadModule
   ],
-  // schemas: [
-  //   CUSTOM_ELEMENTS_SCHEMA
-  // ]
 })
 export class UserPage implements OnInit, AfterViewInit {
   formData = new FormData();
@@ -63,7 +60,6 @@ export class UserPage implements OnInit, AfterViewInit {
     ],
   };
 
-
   viewState$: Observable<any>;
 
   private readonly ngUnsubscribe = new Subject();
@@ -73,17 +69,11 @@ export class UserPage implements OnInit, AfterViewInit {
   private strapi = inject(StrapiService);
 
   constructor() {
-
     this.viewState$ = this.facade.viewState$;
     this.viewState$.subscribe((vs) => {
-      console.log(vs?.user?.avatar);
+      // console.log(vs?.user?.avatar);
       this.avatar = vs?.user.avatar?.url;
     });
-
-    this.uploadForm = this.formBuilder.group({
-      profile: ['']
-    });
-
     this.userForm = this.formBuilder.group({
       username: new FormControl('', Validators.compose([
         Validators.required
@@ -93,7 +83,9 @@ export class UserPage implements OnInit, AfterViewInit {
       ])),
       first_name: new FormControl('', Validators.required),
       last_name: new FormControl('', Validators.required),
-      accepted_fcm: new FormControl(null),
+      fcm_accepted: new FormControl(null),
+      push_accepted: new FormControl(null),
+      is_dark_mode: new FormControl(null),
     });
   }
   ngOnInit(): void {
@@ -130,12 +122,6 @@ export class UserPage implements OnInit, AfterViewInit {
     // }
   }
   async onImagePicked(file: any) {
-    // // this.upload.onImagePicked(file, this.strapiUser);
-    // const response = await fetch(file);
-    // const blob = await response.blob();
-    // const formData = new FormData();
-    // formData.append('files', blob, file.name);
-    // this.uploadData(formData);
     const response = await fetch(file);
     const blob = await response.blob();
     const blobs = new Blob([blob], { type: "text/xml" });
@@ -143,25 +129,6 @@ export class UserPage implements OnInit, AfterViewInit {
     formData.append('files', blob, file.name);
     this.formData.append('files', blob, file.name);
     return this.formData;
-  }
-
-  async uploadData(formData: FormData) {
-    this.strapi.uploadData(formData).subscribe((response: any) => {
-      if (response) {
-        const fileId = response[0].id;
-        // console.log(response, fileId);
-        // this.strapi.setProfileImage(this.strapiUser?.id, fileId)
-        //   .subscribe((user: any) => {
-        //     console.log(user);
-        //     // this.store.dispatch(new AuthActions.SetUploadedUser(user))
-        //     //   .pipe(
-        //     //     takeUntil(this.ngUnsubscribe),
-        //     //   ).subscribe((state) => {
-        //     //     console.log(state);
-        //     //   });
-        //   });
-      }
-    });
   }
   changePasswordPage() {
     // this.navigation.navigateForward('/home', 'back');

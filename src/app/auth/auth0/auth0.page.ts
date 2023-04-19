@@ -7,10 +7,10 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { Auth0Actions } from 'src/app/store/auth/auth0/auth0.actions';
 import { TranslateModule } from '@ngx-translate/core';
 import { Auth0Service } from 'src/app/store/auth/auth0/auth0.service';
-import { StrapiAuthProviders } from 'projects/strapi-auth/src/public-api';
 import { IAuthStateModel } from 'src/app/store/auth/auth.interface';
 import { UtilityService } from 'src/app/shared/services/utility/utility.service';
 import { AppService } from 'src/app/shared/services/application/application.service';
+import { StrapiAuthProviders } from 'src/app/shared/types/StrapiAuthConfig';
 
 @Component({
   selector: 'app-auth0',

@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { IReqAuthLogin, IReqAuthRegister } from "projects/strapi-auth/src/public-api";
-import { ICustomerLoginData } from "projects/types/types.interfaces";
+import { IReqAuthRegister } from "src/app/shared/types/requests/ReqAuthRegister";
 import { environment } from "src/environments/environment";
 
 @Injectable({

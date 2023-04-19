@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
-import { AuthService } from 'projects/strapi-auth/src/lib/services/auth/auth.service';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
 
 export interface IHeaderData {
@@ -27,7 +26,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   constructor(
     private navigation: NavigationService,
-    private auth: AuthService,
     public menu: MenuController,
   ) { }
 

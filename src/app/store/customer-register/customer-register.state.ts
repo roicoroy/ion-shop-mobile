@@ -22,7 +22,6 @@ export class CustomerRegisterState {
     ) {
         this.medusaClient = new Medusa({ baseUrl: environment.MEDUSA_API_BASE_PATH, maxRetries: 10 });
     }
-
     @Action(CustomerRegisterActions.UpdateCustomerRegisterAddress)
     async updateCustomerRegisterAddress(ctx: StateContext<CustomerRegisterStateModel>, { payload }: CustomerRegisterActions.UpdateCustomerRegisterAddress) {
         try {
@@ -44,7 +43,6 @@ export class CustomerRegisterState {
             }
         }
     }
-
     @Action(CustomerRegisterActions.AddaShippingAddress)
     async addaShippingAddress(ctx: StateContext<CustomerRegisterStateModel>, { payload }: CustomerRegisterActions.AddaShippingAddress) {
         try {

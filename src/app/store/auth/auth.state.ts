@@ -1,14 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { Auth0State } from './auth0/auth0.state';
 import { AuthStateActions } from './auth.actions';
-import { TokenService, IResAuthRegister, IResAuthLogin } from 'projects/strapi-auth/src/public-api';
 import Medusa from "@medusajs/medusa-js";
 import { environment } from 'src/environments/environment';
-import { ICustomerLoginData, ICustomerRegisterData } from 'projects/types/types.interfaces';
-import { AuthStateService } from './auth-state.service';
-import { ErrorLoggingActions } from '../error-logging/error-logging.actions';
+import { TokenService } from 'src/app/shared/services/token/token.service';
 import { StrapiService } from 'src/app/shared/services/strapi/strapi.service';
+import { IResAuthLogin } from 'src/app/shared/types/responses/ResAuthLogin';
+import { IResAuthRegister } from 'src/app/shared/types/responses/ResAuthRegister';
+import { ICustomerLoginData, ICustomerRegisterData } from 'src/app/shared/types/types.interfaces';
+import { ErrorLoggingActions } from '../error-logging/error-logging.actions';
+import { AuthStateService } from './auth-state.service';
 
 export class IAuthStateModel {
     isLoggedIn: boolean;
@@ -84,22 +85,22 @@ export class AuthState {
         const state = getState();
 
     }
-    // @Action(AuthStateActions.SetUploadedUser)
-    // setUploadedUser({ getState, patchState }: StateContext<IAuthStateModel>, { userId }: AuthStateActions.SetUploadedUser) {
-    //     const state = getState();
-    //     console.log("payload", userId);
-    //     if (userId!== null) {
-    //         this.authService.loadUser(userId)
-    //             .subscribe((user: any) => {
-    //                 console.log("result", user);
-    //                 patchState({
-    //                     ...state,
-    //                     user: user,
-    //                     isLoggedIn: true
-    //                 });
-    //             });
-    //     };
-    // }
+    @Action(AuthStateActions.SetUploadedUser)
+    setUploadedUser({ getState, patchState }: StateContext<IAuthStateModel>, { userId }: AuthStateActions.SetUploadedUser) {
+        const state = getState();
+        console.log("payload", userId);
+        if (userId!== null) {
+            this.authService.loadUser(userId)
+                .subscribe((user: any) => {
+                    console.log("result", user);
+                    patchState({
+                        ...state,
+                        user: user,
+                        isLoggedIn: true
+                    });
+                });
+        };
+    }
     @Action(AuthStateActions.GetCustomer)
     async getCustomer(ctx: StateContext<IAuthStateModel>, { }: AuthStateActions.GetCustomer) {
         try {

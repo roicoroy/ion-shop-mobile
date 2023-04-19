@@ -6,11 +6,11 @@ import { TranslateModule } from "@ngx-translate/core";
 import { NgxsModule, Store } from "@ngxs/store";
 import { LoginFormComponent } from "projects/form-components/src/lib/components/login-form/login-form.component";
 import { FormComponentsModule } from "projects/form-components/src/public-api";
-import { IStrapiLoginData, ICustomerLoginData } from "projects/types/types.interfaces";
 import { scaleHeight } from "src/app/shared/animations/animations";
 import { KeypadModule } from "src/app/shared/services/native/keyboard/keypad.module";
 import { NavigationService } from "src/app/shared/services/navigation/navigation.service";
 import { UtilityService } from "src/app/shared/services/utility/utility.service";
+import { IStrapiLoginData, ICustomerLoginData } from "src/app/shared/types/types.interfaces";
 import { EmailPasswordActions } from "src/app/store/auth/email-password/email-password.actions";
 
 

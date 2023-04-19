@@ -1,13 +1,13 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
-import { IRegisterAddress } from 'projects/types/types.interfaces';
-import { Observable, Subject, takeUntil, take } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { CustomerAddressDetailsComponent } from './customer-address-details/customer-address-details.component';
 import { CutomerAddressDetailsFacade } from './customer-addresses.facade';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
 import { CustomerActions } from 'src/app/store/customer/customer.actions';
 import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
+import { IRegisterAddress } from 'src/app/shared/types/types.interfaces';
 
 @Component({
   selector: 'app-customer-addresses',

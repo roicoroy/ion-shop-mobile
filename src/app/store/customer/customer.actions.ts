@@ -1,6 +1,10 @@
-import { ICustomerLoginData, ICustomerRegisterData, IRegisterAddress } from "../../../../projects/types/types.interfaces";
+import { IRegisterAddress } from "src/app/shared/types/types.interfaces";
 
 export namespace CustomerActions {
+    export class GetMedusaCustomer {
+        static readonly type = '[CustomerActions] Get Medusa Customer';
+        constructor(public customerId?: string) { }
+    }
     export class AddAShippingAddress {
         static readonly type = '[CustomerActions] Add a Shipping Address to customer';
         constructor(public payload: IRegisterAddress | any) { }
@@ -13,8 +17,8 @@ export namespace CustomerActions {
         static readonly type = '[CustomerActions] Delete Customer Address';
         constructor(public addressId: string) { }
     }
-    // export class AddCustomerToCart {
-    //     static readonly type = '[CustomerActions] Add Customer To Cart';
-    //     constructor(public customerId: string) { }
-    // }
+    export class AddCustomerToCart {
+        static readonly type = '[CustomerActions] Add Customer To Cart';
+        constructor(public customerId: string) { }
+    }
 }

@@ -1,20 +1,23 @@
-import { Injectable } from '@angular/core';
-import { Select } from '@ngxs/store';
+import { Injectable, inject } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuthStateActions } from 'src/app/store/auth/auth.actions';
 import { AuthState } from 'src/app/store/auth/auth.state';
-import { CustomerState } from 'src/app/store/customer/customer.state';
+import { CustomerActions } from 'src/app/store/customer/customer.actions';
 
 @Injectable({
     providedIn: 'root'
 })
-export class OrdersFacade {
+export class CustomerFacade {
 
     @Select(AuthState.getSession) session$: Observable<any>;
 
     @Select(AuthState.getCustomer) customer$: Observable<any>;
 
     @Select(AuthState.isLoggedIn) isLoggedIn$: Observable<any>;
+
+    private store = inject(Store);
 
     readonly viewState$: Observable<any>;
 
@@ -38,5 +41,8 @@ export class OrdersFacade {
                 isLoggedIn,
             }))
         );
+    }
+    getCustomer() {
+        this.store.dispatch(new AuthStateActions.GetCustomer());
     }
 }

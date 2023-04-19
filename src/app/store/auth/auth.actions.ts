@@ -1,14 +1,15 @@
-import { IResAuthLogin, IResAuthRegister } from "projects/strapi-auth/src/public-api";
+import { IResAuthLogin } from "src/app/shared/types/responses/ResAuthLogin";
+import { IResAuthRegister } from "src/app/shared/types/responses/ResAuthRegister";
 
 export namespace AuthStateActions {
     export class UpdateStrapiUser {
         static readonly type = '[AuthStateActions] Update Strapi User';
         constructor(public userId?: string, public profileForm?: any) { }
     }
-    // export class SetUploadedUser {
-    //     static readonly type = '[AuthStateActions] Set uploaded User';
-    //     constructor(public userId: any) { }
-    // }
+    export class SetUploadedUser {
+        static readonly type = '[AuthStateActions] Set uploaded User';
+        constructor(public userId: any) { }
+    }
     export class GetCustomer {
         static readonly type = '[AuthStateActions] Get Customer';
     }

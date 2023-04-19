@@ -3,9 +3,8 @@ import { ModalController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
 import { OrderDetailsComponent } from 'projects/components/src/lib/components/order-details/order-details.component';
 import { Observable } from 'rxjs';
-import { CustomerActions } from 'src/app/store/customer/customer.actions';
-import { OrdersFacade } from './orders.facade';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
+import { CustomerFacade } from '../customer.facade';
 
 @Component({
   selector: 'app-orders',
@@ -22,12 +21,12 @@ export class OrdersPage implements OnInit {
     private store: Store,
     private modalCtrl: ModalController,
     private navigation: NavigationService,
-    private facade: OrdersFacade
+    private facade: CustomerFacade
   ) {
     this.viewState$ = this.facade.viewState$;
-    this.viewState$.subscribe((state) => {
-      console.log(state);
-    });
+    // this.viewState$.subscribe((state) => {
+    //   console.log(state);
+    // });
   }
   ngOnInit() {
     this.presentingElement = document.querySelector('#main-content');

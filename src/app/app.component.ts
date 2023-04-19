@@ -4,9 +4,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
-import { TokenService } from 'projects/strapi-auth/src/public-api';
 import { AuthStateActions } from './store/auth/auth.actions';
 import { AppService } from './shared/services/application/application.service';
+import { TokenService } from './shared/services/token/token.service';
 
 @Component({
   selector: 'app-root',
@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
       // set theme
       // tutorial
       const device = await this.native.getDeviceInfo();
-      const token = this.tokenService.getToken();
+      const token = await this.tokenService.getToken();
       if (token) {
         this.store.dispatch(new AuthStateActions.SetLoggedIn(true));
       }

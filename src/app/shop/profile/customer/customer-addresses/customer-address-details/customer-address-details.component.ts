@@ -1,14 +1,13 @@
 import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
-import { Observable, Subject } from 'rxjs';
-import { IRegisterAddress } from 'projects/types/types.interfaces';
+import { Observable } from 'rxjs';
 import { AddressDetailsFacade } from './customer-address-details.facade';
 import { AddressDetailsFormComponent } from 'projects/form-components/src/lib/components/address-details-form /address-details-form.component';
-import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
-import { UtilityService } from 'src/app/shared/services/utility/utility.service';
+
 import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
+import { FormGroupDirective } from '@angular/forms';
+import { IRegisterAddress } from 'src/app/shared/types/types.interfaces';
 
 @Component({
   selector: 'app-customer-address-details',

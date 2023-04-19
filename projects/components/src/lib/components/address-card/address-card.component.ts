@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { IRegisterAddress } from 'projects/types/types.interfaces';
+import { IRegisterAddress } from 'src/app/shared/types/types.interfaces';
 
 @Component({
   selector: 'lib-address-card',
