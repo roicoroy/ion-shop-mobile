@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
 import { Store } from '@ngxs/store';
-import { AuthStateActions } from 'src/app/store/auth/auth.actions';
 import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
 @Component({
   selector: 'app-profile',
@@ -15,7 +15,8 @@ import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
   imports: [
     IonicModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    NgxsFormPluginModule
   ]
 })
 export class ProfilePage implements OnInit {
@@ -24,9 +25,6 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new AddressesActions.GetRegionList());
-
-
-    // this.store.dispatch(new AddressesActions.GetCountries());
   }
 
   userPage() {

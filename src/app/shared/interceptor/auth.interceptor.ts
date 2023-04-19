@@ -79,7 +79,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private addAuthenticationToken(request: HttpRequest<any>, token: string): HttpRequest<any> {
-    console.log(token);
+
     // If we do not have a token yet then we should not set the header.
     // Here we could first retrieve the token from where we store it.
     if (!token) {

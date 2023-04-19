@@ -22,7 +22,7 @@ export class ThemeService implements OnDestroy {
 
   themeInit() {
     const isDarkMode = this.store.selectSnapshot<any>((state: any) => state.theme.isDarkMode);
-    console.log(isDarkMode);
+    // console.log(isDarkMode);
     if (isDarkMode) {
       this.document.body.classList.toggle('dark', true);
       this.darkMode.next(true);
@@ -33,8 +33,8 @@ export class ThemeService implements OnDestroy {
       this.darkModeIcon.next('sunny');
     }
   }
-  changeTheme(ev: any) {
-    this.store.dispatch(new ThemeActions.SetDarkMode(ev.detail.checked))
+  changeTheme(isDarkMode: any) {
+    this.store.dispatch(new ThemeActions.SetDarkMode(isDarkMode.detail.checked))
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((state) => {
         console.log(state.theme.isDarkMode);

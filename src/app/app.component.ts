@@ -7,6 +7,7 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { AuthStateActions } from './store/auth/auth.actions';
 import { AppService } from './shared/services/application/application.service';
 import { TokenService } from './shared/services/token/token.service';
+import { ThemeService } from './store/theme/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
   private platform = inject(Platform);
   private tokenService = inject(TokenService);
   private store = inject(Store);
+  private theme = inject(ThemeService);
 
   ngOnInit(): void {
     this.initApp();
@@ -37,6 +39,7 @@ export class AppComponent implements OnInit {
       // get medusa products
       // set theme
       // tutorial
+      this.theme.themeInit();
       const device = await this.native.getDeviceInfo();
       const token = await this.tokenService.getToken();
       if (token) {

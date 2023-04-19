@@ -54,4 +54,10 @@ export class UserProfileFacade {
             //     console.log(authState);
             // });
     }
+    setDarkMode(isDarkMode: boolean) {
+        return this.store.dispatch(new UserProfileActions.UpdateDarkMode(isDarkMode))
+    }
+    setFCMStatus(pushAccepted: boolean) {
+        return this.store.dispatch(new UserProfileActions.UpdateFcmAccepted(pushAccepted))
+    }
 }

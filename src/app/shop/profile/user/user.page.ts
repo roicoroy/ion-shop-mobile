@@ -1,4 +1,4 @@
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, OnInit, inject } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, EnvironmentInjector, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -10,7 +10,9 @@ import { KeypadModule } from 'src/app/shared/services/native/keyboard/keypad.mod
 
 import { UserProfileFacade } from './user-facade';
 import { scaleHeight } from 'src/app/shared/animations/animations';
-import { StrapiService } from 'src/app/shared/services/strapi/strapi.service';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { ThemeComponent } from './theme/theme.component';
 
 @Component({
   selector: 'app-user',
@@ -26,12 +28,17 @@ import { StrapiService } from 'src/app/shared/services/strapi/strapi.service';
     FormsModule,
     TranslateModule,
     NgxsModule,
+    NgxsFormPluginModule,
+    NgxsStoragePluginModule,
     ReactiveFormsModule,
     ImagePickerComponent,
-    KeypadModule
+    KeypadModule,
+    ThemeComponent
   ],
 })
 export class UserPage implements OnInit, AfterViewInit {
+  public environmentInjector = inject(EnvironmentInjector);
+
   formData = new FormData();
   avatar: string;
   pushAccepted = false;
@@ -66,7 +73,6 @@ export class UserPage implements OnInit, AfterViewInit {
 
   private facade = inject(UserProfileFacade);
   private formBuilder = inject(FormBuilder);
-  private strapi = inject(StrapiService);
 
   constructor() {
     this.viewState$ = this.facade.viewState$;
@@ -96,30 +102,15 @@ export class UserPage implements OnInit, AfterViewInit {
   onFCMChange($event: any) {
     this.pushAccepted = $event.detail.checked;
     console.log($event.detail.checked);
-    // this.updateStrapiUser();
-    // lad strai nuser
+    this.facade.setFCMStatus(this.pushAccepted);
   }
 
   onDarkModeChange($event: any) {
     this.isDarkMode = $event.detail.checked;
-    console.log($event.detail.checked);
-    // this.updateStrapiUser();
-    // lad strai nuser
-  }
-  async onFileSelect(file: any) {
-    const response = await fetch(file);
-    const blob = await response.blob();
-    this.uploadForm.get('profile').setValue(file);
+    this.facade.setDarkMode(this.isDarkMode);
   }
   uploadProfilePicture() {
-    // const formData = new FormData();
-    // formData.append('file', this.uploadForm.get('profile').value);
-
-    // console.log(this.uploadForm.get('profile').value);
     this.facade.appUploadProfileImage(this.formData);
-    // if (this.formData) {
-    //   this.facade.appUploadProfileImage(this.formData);
-    // }
   }
   async onImagePicked(file: any) {
     const response = await fetch(file);

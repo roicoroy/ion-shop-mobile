@@ -9,7 +9,9 @@ import { NgForm } from "@angular/forms";
 export class UserProfileModel {
     isDarkMode: boolean;
     fcmAccepted: boolean;
-    userForm: NgForm
+    // userForm: {
+    //     model?: any;
+    // };
 }
 
 @State<UserProfileModel>({
@@ -17,7 +19,7 @@ export class UserProfileModel {
     defaults: {
         isDarkMode: null,
         fcmAccepted: null,
-        userForm: null
+        // userForm: null
     }
 })
 @Injectable()
@@ -28,14 +30,18 @@ export class UserProfileState {
 
     @Action(UserProfileActions.UpdateDarkMode)
     updateDarkMode(ctx: StateContext<UserProfileModel>, action: UserProfileActions.UpdateDarkMode): void {
+        const state = ctx.getState();
         ctx.patchState({
+            ...state,
             isDarkMode: action.isDarkMode,
         });
     }
     @Action(UserProfileActions.UpdateFcmAccepted)
     updateFcmAccepted(ctx: StateContext<UserProfileModel>, action: UserProfileActions.UpdateFcmAccepted): void {
+        const state = ctx.getState();
         ctx.patchState({
-            isDarkMode: action.fcmAccepted,
+            ...state,
+            fcmAccepted: action.fcmAccepted,
         });
     }
     @Action(UserProfileActions.UpdateStrapiUser)

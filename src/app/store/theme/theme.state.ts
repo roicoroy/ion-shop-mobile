@@ -14,18 +14,13 @@ export class ThemeStateModel {
 })
 @Injectable()
 export class ThemeState {
-
-
-    @Selector()
-    static getPointsList(state: ThemeStateModel): boolean {
-        return state.isDarkMode;
-    }
-
     @Action(ThemeActions.SetDarkMode)
-    setTutorialComplete(ctx: StateContext<ThemeStateModel>, { payload }: ThemeActions.SetDarkMode) {
+    setTutorialComplete(ctx: StateContext<ThemeStateModel>, { isDarkMode }: ThemeActions.SetDarkMode) {
         const state = ctx.getState();
+        console.log(isDarkMode);
         return ctx.patchState({
-            isDarkMode: payload
+            ...state,
+            isDarkMode: isDarkMode
         });
     }
 }

@@ -32,6 +32,7 @@ import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { UserProfileState } from './app/store/user-profile/user-profile.state';
 import { StrapiMedusaInterceptor } from './app/shared/interceptor/strapi-medusa.interceptor';
 import { IonicStorageModule } from '@ionic/storage-angular';
+import { ThemeState } from './app/store/theme/theme.state';
 
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localePt, 'pt');
@@ -88,7 +89,8 @@ bootstrapApplication(AppComponent, {
         KeyboardState,
         AddressesState,
         CustomerRegisterState,
-        UserProfileState
+        UserProfileState,
+        ThemeState
       ]),
       NgxsFormPluginModule.forRoot(),
       NgxsReduxDevtoolsPluginModule.forRoot({ disabled: true }),
@@ -98,7 +100,7 @@ bootstrapApplication(AppComponent, {
           'authState',
           'addresses',
           'userProfile',
-          // 'user',
+          'theme',
           'customer'
         ]
       }),
