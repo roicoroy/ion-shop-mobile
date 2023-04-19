@@ -43,6 +43,7 @@
     "@ionic/angular": "^7.0.0",
     "@ionic/pwa-elements": "^3.1.1",
     "@ionic/storage-angular": "^3.0.6",
+    "@medusajs/medusa": "^1.8.2",
     "@medusajs/medusa-js": "^2.0.1",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
