@@ -1,4 +1,4 @@
-import { StrapiAuthProviders } from "src/app/shared/types/StrapiAuthConfig";
+import { StrapiAuthProviders } from "projects/strapi-auth/src/public-api";
 
 export namespace Auth0Actions {
     export class Auth0ProviderCallback {

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import Medusa from "@medusajs/medusa-js";
 import { environment } from 'src/environments/environment';
+import { CustomerActions } from '../customer/customer.actions';
 import { CustomerRegisterActions } from './customer-register.actions';
 import { ErrorLoggingActions } from '../error-logging/error-logging.actions';
 

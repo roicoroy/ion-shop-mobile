@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import Medusa from "@medusajs/medusa-js";
 import { environment } from 'src/environments/environment';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CustomerActions } from './customer.actions';
 import { ErrorLoggingActions } from '../error-logging/error-logging.actions';
 import { AuthStateActions } from '../auth/auth.actions';
@@ -20,17 +20,19 @@ export class CustomerStateModel {
 @Injectable()
 export class CustomerState {
 
-    medusa: any;
+    medusaClient: any;
+
+    headers_json = new HttpHeaders().set('Content-Type', 'application/json');
 
     constructor(
         private store: Store,
     ) {
-        this.medusa = new Medusa({ baseUrl: environment.MEDUSA_API_BASE_PATH, maxRetries: 10 });
+        this.medusaClient = new Medusa({ baseUrl: environment.MEDUSA_API_BASE_PATH, maxRetries: 10 });
     }
     @Action(CustomerActions.AddAShippingAddress)
     async addaShippingAddress(ctx: StateContext<CustomerStateModel>, { payload }: CustomerActions.AddAShippingAddress) {
         try {
-            let customer = await this.medusa.customers.addresses.addAddress({
+            let customer = await this.medusaClient.customers.addresses.addAddress({
                 address: {
                     first_name: payload?.first_name,
                     last_name: payload?.last_name,
@@ -56,7 +58,7 @@ export class CustomerState {
     @Action(CustomerActions.UpdateCustomerAddress)
     async updateCustomerAddress(ctx: StateContext<CustomerStateModel>, { addressId, payload }: CustomerActions.UpdateCustomerAddress) {
         try {
-            let customer = await this.medusa.customers.addresses.updateAddress(addressId, {
+            let customer = await this.medusaClient.customers.addresses.updateAddress(addressId, {
                 first_name: payload?.first_name,
                 last_name: payload?.last_name,
                 address_1: payload?.address_1,
@@ -77,7 +79,7 @@ export class CustomerState {
     @Action(CustomerActions.DeleteCustomerAddress)
     async deleteCustomerAddress(ctx: StateContext<CustomerStateModel>, { addressId }: CustomerActions.DeleteCustomerAddress) {
         try {
-            let customer = await this.medusa.customers.addresses.deleteAddress(addressId);
+            let customer = await this.medusaClient.customers.addresses.deleteAddress(addressId);
             this.store.dispatch(new AuthStateActions.getMedusaSession());
         }
         catch (err: any) {

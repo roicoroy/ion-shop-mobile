@@ -29,8 +29,8 @@ export class UserProfileStateService {
     public loadUser(userId: string) {
         return this.httpClient.get(environment.BASE_PATH + '/api/users/' + userId + '?populate=*', { headers: this.headers })
     }
-    public uploadData(formData: any, userId?: any) {
-        return this.httpClient.post(environment.API_BASE_PATH + '/api/upload', formData)
+    public uploadData(formData: FormData, userId?: string) {
+        return this.httpClient.post(environment.BASE_PATH + '/api/upload', formData)
             .pipe()
             .subscribe((response: any) => {
                 if (response) {

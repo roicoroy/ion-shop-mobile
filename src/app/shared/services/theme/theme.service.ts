@@ -3,6 +3,7 @@ import { Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { Store } from '@ngxs/store';
+import { ThemeActions } from 'src/app/store/theme/theme.action';
 export const DARK_MODE = 'dark_mode';
 
 @Injectable({
@@ -33,24 +34,21 @@ export class ThemeService implements OnDestroy {
     }
   }
   changeTheme(ev: any) {
-    // this.store.dispatch(new ThemeActions.SetDarkMode(ev.detail.checked))
-    //   .pipe(takeUntil(this.ngUnsubscribe))
-    //   .subscribe((state: IStates) => {
-    //     console.log(state.theme.isDarkMode);
-    //     if (state.theme.isDarkMode) {
-    //       this.document.body.classList.toggle('dark', state.theme.isDarkMode);
-    //       this.darkModeIcon.next('moon');
-    //       this.darkMode.next(true);
-    //     }
-    //     if (!state.theme.isDarkMode) {
-    //       this.document.body.classList.toggle('dark', state.theme.isDarkMode);
-    //       this.darkModeIcon.next('sunny');
-    //       this.darkMode.next(false);
-    //     }
-    //   });
-
-    // this.ionStorage.storageSet(DARK_MODE, ev.detail.checked).then(() => {
-    // });
+    this.store.dispatch(new ThemeActions.SetDarkMode(ev.detail.checked))
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((state) => {
+        console.log(state.theme.isDarkMode);
+        if (state.theme.isDarkMode) {
+          this.document.body.classList.toggle('dark', state.theme.isDarkMode);
+          this.darkModeIcon.next('moon');
+          this.darkMode.next(true);
+        }
+        if (!state.theme.isDarkMode) {
+          this.document.body.classList.toggle('dark', state.theme.isDarkMode);
+          this.darkModeIcon.next('sunny');
+          this.darkMode.next(false);
+        }
+      });
   }
 
   ngOnDestroy(): void {

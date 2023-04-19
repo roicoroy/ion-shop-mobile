@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Browser } from '@capacitor/browser';
-import { StrapiAuthProviders } from "src/app/shared/types/StrapiAuthConfig";
+import { StrapiAuthProviders } from "projects/strapi-auth/src/public-api";
 import { environment } from "src/environments/environment";
 
 @Injectable({

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import jwt_decode from 'jwt-decode';
 import { Token } from '../../types/models/Token';
+import { Storage } from '@ionic/storage-angular';
 
 @Injectable({
   providedIn: 'root'
@@ -8,35 +9,39 @@ import { Token } from '../../types/models/Token';
 export class TokenService {
   private token: string;
 
-  constructor() {}
-
+  constructor(
+    private storage: Storage,
+  ) {
+    this.init();
+  }
+  async init() {
+    return await this.storage.create();
+  }
   /**
    * Return token if given
    */
-  public getToken(): string {
+  public async getToken() {
     if (!this.token) {
-      this.token = sessionStorage.getItem('token') || null;
-
+      this.token = await this.storage.get('token');
       return this.token;
     }
-
     return this.token;
   }
 
   /**
    * Set token variable and write token to local storage
    */
-  public setToken(token: string): void {
+  public async setToken(token: string) {
     this.token = token;
-    sessionStorage.setItem('token', token);
+    this.storage.set('token', token);
   }
 
   /**
    * Delete token in local storage
    */
-  public deleteToken(): void {
+  public async deleteToken() {
     this.token = null;
-    sessionStorage.removeItem('token');
+    this.storage.remove('token');
   }
 
   /**

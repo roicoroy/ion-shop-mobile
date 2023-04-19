@@ -1,0 +1,24 @@
+{
+  "name": "ngx-strapi-auth",
+  "version": "0.2.10",
+  "description": "NgxStrapiAuth is a Angular library that implements all standard operations like logging in or registering a user for the headless CMS Strapi",
+  "author": {
+    "name": "jabali2004",
+    "url": "https://github.com/jabali2004"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jabali2004/ngx-strapi-auth.git"
+  },
+  "license": "Apache-2.0 License",
+  "peerDependencies": {
+    "@angular/common": ">11.1.1",
+    "@angular/core": ">11.1.1",
+    "@angular/router": ">11.1.1",
+    "@angular/forms": ">11.1.1",
+    "jwt-decode": "^3.1.2"
+  },
+  "dependencies": {
+    "tslib": "^2.1.0"
+  }
+}

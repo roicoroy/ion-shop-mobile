@@ -2,15 +2,15 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, Platform } from '@ionic/angular';
-import { ActivatedRoute } from '@angular/router';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
-import { TranslateModule } from '@ngx-translate/core';
 import { NgxsModule, Store } from '@ngxs/store';
-import { UtilityService } from 'src/app/shared/services/utility.service';
-import { StrapiAuthProviders } from 'src/app/shared/types/StrapiAuthConfig';
-import { AppService } from 'src/app/shared/services/native/app/app.service';
+import { Auth0Actions } from 'src/app/store/auth/auth0/auth0.actions';
+import { TranslateModule } from '@ngx-translate/core';
 import { Auth0Service } from 'src/app/store/auth/auth0/auth0.service';
-
+import { StrapiAuthProviders } from 'projects/strapi-auth/src/public-api';
+import { IAuthStateModel } from 'src/app/store/auth/auth.interface';
+import { UtilityService } from 'src/app/shared/services/utility/utility.service';
+import { AppService } from 'src/app/shared/services/application/application.service';
 
 @Component({
   selector: 'app-auth0',
@@ -41,26 +41,26 @@ export class Auth0Page implements OnInit {
     const urlArray = location.split("id_token=");
     const token = urlArray[1];
     if (device.platform == 'web' && location) {
-      // this.store.dispatch(new Auth0Actions.Auth0ProviderCallback(token, this.provider))
-      //   .subscribe((state: IAuthStateModel) => {
-      //     console.log(state);
-      //     if (state.isLoggedIn) {
-      //       this.utility.presentAlert('You are logged in...')
-      //       // this.navigation.navControllerDefault('home').then(() => {});
-      //     }
-      //   });
+      this.store.dispatch(new Auth0Actions.Auth0ProviderCallback(token, this.provider))
+        .subscribe((state: IAuthStateModel) => {
+          console.log(state);
+          if (state.isLoggedIn) {
+            this.utility.presentAlert('You are logged in...')
+            // this.navigation.navControllerDefault('home').then(() => {});
+          }
+        });
     }
     if (device.platform === 'android' || device.platform === 'ios') {
       await App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
         const urlArray = event.url.split("id_token=");
-        // this.store.dispatch(new Auth0Actions.Auth0ProviderCallback(urlArray[1], this.provider))
-        //   .subscribe((state: IAuthStateModel) => {
-        //     console.log(state);
-        //     if (state.isLoggedIn) {
-        //       this.utility.presentAlert('You are logged in...')
-        //       // this.navigation.navControllerDefault('home').then(() => {});
-        //     }
-        //   });
+        this.store.dispatch(new Auth0Actions.Auth0ProviderCallback(urlArray[1], this.provider))
+          .subscribe((state: IAuthStateModel) => {
+            console.log(state);
+            if (state.isLoggedIn) {
+              this.utility.presentAlert('You are logged in...')
+              // this.navigation.navControllerDefault('home').then(() => {});
+            }
+          });
       });
     }
   }

@@ -1,6 +1,8 @@
 import { Injectable, inject } from "@angular/core";
 import { State, Action, StateContext, Store } from "@ngxs/store";
 import { UserProfileActions } from "./user-profile.actions";
+import { AuthState } from "../auth/auth.state";
+import { AuthStateActions } from "../auth/auth.actions";
 import { UserProfileStateService } from "./user-profile.service";
 import { NgForm } from "@angular/forms";
 

@@ -1,9 +1,12 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-
+import { BrowserCheckService } from "projects/strapi-auth/src/lib/services/browser-check/browser-check.service";
+import { StrapiAuthConfig, TokenService, StrapiAuthProviders, IResAuthRegister, IResAuthLogin } from "projects/strapi-auth/src/public-api";
+import { Observable, tap } from "rxjs";
 import { Browser } from '@capacitor/browser';
-import { StrapiAuthProviders } from "src/app/shared/types/StrapiAuthConfig";
 import { environment } from "src/environments/environment";
+import { Store } from "@ngxs/store";
+import { AuthStateActions } from "./auth.actions";
 
 @Injectable({
     providedIn: 'root'

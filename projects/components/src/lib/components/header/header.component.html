@@ -1,0 +1,22 @@
+<ion-header [translucent]="true" >
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="closeMenu()">
+                <ion-icon name="menu"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-buttons *ngIf="true" slot="end">
+            <ion-button (click)="logout()">
+                Logout
+            </ion-button>
+        </ion-buttons>
+        <ion-buttons *ngIf="true" slot="end">
+            <ion-button (click)="login()" expand="block" fill="clear" shape="round">
+                Login
+            </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <cart-menu></cart-menu>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>

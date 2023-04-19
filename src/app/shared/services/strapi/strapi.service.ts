@@ -20,12 +20,17 @@ export class StrapiService {
     private user: IUser;
     private token: string;
     headers = new HttpHeaders().set('Content-Type', 'application/json');
-    strapiUser;
+    formHeaders = new HttpHeaders();
+
+    strapiUser: any;
 
     constructor(
         private httpClient: HttpClient,
         public alertCtrl: AlertController,
-    ) { }
+    ) {
+        this.formHeaders.append('Content-Type', 'application/json');
+        this.formHeaders.append('Accept', 'application/json, */*');
+    }
 
     getAppInfo(): any {
         return this.httpClient.get(environment.BASE_PATH + '/api/app-info?populate=*', { headers: this.headers });
@@ -51,8 +56,10 @@ export class StrapiService {
         return this.httpClient.post(environment.BASE_PATH + '/api/auth/local', data, { headers: this.headers });
     }
 
-    uploadData(formData) {
-        return this.httpClient.post(environment.API_BASE_PATH + '/upload', formData, {});
+    uploadData(formData: FormData) {
+        // let myheaders = new HttpHeaders({ 'Content-Type': 'multipart/form-data',
+        // 'enctype': 'multipart/form-data'});
+        return this.httpClient.post(environment.BASE_PATH + '/api/upload', formData, { headers: this.formHeaders });
     }
 
     setProfileImage(userId: string, fileId: number): any {
@@ -66,7 +73,7 @@ export class StrapiService {
         );
     }
 
-    register(registerReq) {
+    register(registerReq: { first_name: any; last_name: any; username: any; email: any; password: any; }) {
         const data = {
             first_name: registerReq.first_name,
             last_name: registerReq.last_name,
@@ -103,11 +110,11 @@ export class StrapiService {
             throw new HttpErrorResponse(error);
         }
     }
-    public updateStrapiUserProfile(userId, profileForm): Observable<any> {
+    public updateStrapiUserProfile(userId: string, profileForm: any): Observable<any> {
         return this.httpClient.put(environment.BASE_PATH + '/api/users/' + userId, profileForm);
     }
 
-    public refreshUserState(user?) {
+    public refreshUserState(user?: { id: any; avatar: any; email: any; username: any; address_1: any; address_2: any; city: any; country_code: any; country: any; first_name: any; last_name: any; phone: any; postal_code: any; provider: any; confirmed: any; blocked: any; role: any; created_by: any; updated_by: any; }) {
         if (user) {
             const myUser: IUser = {
                 id: user?.id,
@@ -153,7 +160,7 @@ export class StrapiService {
             await this.postResetPassword(passwordResetReq);
     }
 
-    public loadUser(userId) {
+    public loadUser(userId: any) {
         return this.httpClient.get(environment.BASE_PATH + '/api/users/' + userId + '?populate=*', { headers: this.headers })
     }
 

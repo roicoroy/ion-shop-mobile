@@ -1,0 +1,12 @@
+{
+  "name": "form-components",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^14.1.0",
+    "@angular/core": "^14.1.0"
+  },
+  "dependencies": {
+    "google-libphonenumber": "^3.2.32",
+    "tslib": "^2.3.0"
+  }
+}

@@ -211,7 +211,7 @@ export abstract class BaseModel {
     key: string,
     modelValues: any,
     // eslint-disable-next-line no-undef-init
-    type = undefined
+    type:any
   ): void {
     const formArray = BaseModel.clearFormArray(this.$formGroup, key);
     for (const modelValue of modelValues) {

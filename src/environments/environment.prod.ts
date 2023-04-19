@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export const environment = {
   production: true,
   MEDUSA_API_BASE_PATH: 'https://medusa-cart-checkout.onrender.com',

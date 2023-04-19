@@ -6,7 +6,7 @@ import { AnimationSeries, NamedAnimation } from './animation-series';
  */
 class SlideWithZoomAnimation extends AnimationSeries {
     /** Definition of reusable animations */
-    static readonly animations: NamedAnimation[] = [[
+    static override readonly animations: NamedAnimation[] = [[
         ':enter',
         animation([
             style({ height: 0, opacity: 0, transform: 'scale3d(0.5, 0.5, 1)', transformOrigin: 'top center' }),
@@ -29,7 +29,7 @@ export const slideWithZoom = () => SlideWithZoomAnimation.trigger('slideWithZoom
  */
 class FadeAnimation extends AnimationSeries {
     /** Definition of reusable animations */
-    static readonly animations: NamedAnimation[] = [[
+    static override readonly animations: NamedAnimation[] = [[
         ':enter',
         animation([
             style({ opacity: 0 }),
@@ -52,7 +52,7 @@ export const fade = () => FadeAnimation.trigger('fade');
  */
 class FadeWithZoomAnimation extends AnimationSeries {
     /** Definition of reusable animations */
-    static readonly animations: NamedAnimation[] = [[
+    static override readonly animations: NamedAnimation[] = [[
         ':enter',
         animation([
             style({ opacity: 0, transform: 'scale3d(0.8, 0.8, 1)' }),
@@ -68,7 +68,7 @@ export const fadeWithZoom = () => FadeWithZoomAnimation.trigger('fadeWithZoom');
  */
 class SlideUpAnimation extends AnimationSeries {
     /** Definition of reusable animations */
-    static readonly animations: NamedAnimation[] = [[
+    static override readonly animations: NamedAnimation[] = [[
         ':enter',
         animation([
             style({ opacity: 0, transform: 'translateY(10%)' }),
@@ -91,7 +91,7 @@ export const slideUp = () => SlideUpAnimation.trigger('slideUp');
  */
 class ScaleHeightAnimation extends AnimationSeries {
     /** Definition of reusable animations */
-    static readonly animations: NamedAnimation[] = [[
+    static override readonly animations: NamedAnimation[] = [[
         ':enter',
         animation([
             style({ maxHeight: 0, opacity: 0 }),

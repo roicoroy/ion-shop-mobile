@@ -3,7 +3,7 @@
 import { Injectable } from '@angular/core';
 import { AlertController, LoadingController, PopoverController, ToastController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
-import * as moment from 'moment';
+// import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -124,15 +124,6 @@ export class UtilityService {
     });
 
     alert.present();
-  }
-
-
-  getFormatDate(date: string) {
-    return moment(date).format('DD MMM, YYYY');
-  }
-
-  getFormatTime(date: string) {
-    return moment(date).format('LT');
   }
 
   randomStr(length: number) {
