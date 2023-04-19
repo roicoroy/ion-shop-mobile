@@ -1,33 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
-import { map} from 'rxjs/operators';
-import { AuthActions } from './store/auth.actions';
-import { AuthState } from './store/auth.state';
+import { map } from 'rxjs/operators';
+import { AuthState } from './store/auth/auth.state';
+import { IUser } from './shared/types/models/User';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AppFacade {
 
-    @Select(AuthState.getUserState) userState$: Observable<any>;
+    @Select(AuthState.getUser) user$: Observable<IUser>;
 
     readonly viewState$: Observable<any>;
 
-    constructor(
-
-    ) {
+    constructor() {
         this.viewState$ = combineLatest(
             [
-                this.userState$ 
+                this.user$
             ]
         ).pipe(
             map(([
-                userState
+                user
             ]) => ({
-                userState
+                user
             }))
         );
     }
 }
-

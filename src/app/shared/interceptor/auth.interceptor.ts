@@ -1,0 +1,94 @@
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest
+} from '@angular/common/http';
+import { Inject, Injectable, Injector } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, Observable, throwError } from 'rxjs';
+
+import { TokenService } from '../services/token/token.service';
+import { IErrorRes } from '../types/responses/AuthError';
+import { StrapiAuthConfig } from '../types/StrapiAuthConfig';
+import { AuthStateService } from 'src/app/store/auth/auth-state.service';
+import { AuthStateActions } from 'src/app/store/auth/auth.actions';
+import { Store } from '@ngxs/store';
+import { environment } from 'src/environments/environment';
+
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  constructor(
+    private injector: Injector,
+    private router: Router,
+    // @Inject(ConfigServiceInjector) public strapiAuthConfig: StrapiAuthConfig
+  ) {}
+
+  private AUTH_HEADER = 'Authorization';
+
+  private token: string;
+  private store;
+  private tokenService: TokenService;
+
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    this.store = this.injector.get(AuthStateService);
+    this.tokenService = this.injector.get(TokenService);
+    this.token = this.tokenService.getToken();
+
+    if (!req.headers.has('Content-Type')) {
+      req = req.clone({
+        headers: req.headers.set('Content-Type', 'application/json')
+      });
+    }
+
+    req = this.addAuthenticationToken(req);
+
+    return next.handle(req).pipe(
+      catchError((error: HttpErrorResponse) => {
+        const authError: IErrorRes = error.error;
+
+        switch (error.status) {
+          // Intercept unauthorized request
+          case 401:
+            // Check if error response is caused by invalid token
+            if (authError.error.name === 'UnauthorizedError') {
+              return this.store.dispatch(new AuthStateActions.AuthStateLogout())
+            } else {
+              return throwError(() => error);
+            }
+
+          case 403:
+            return throwError(() => error);
+
+          case 404:
+            return throwError(() => error);
+
+          default:
+            return throwError(() => error);
+        }
+      })
+    ) as Observable<HttpEvent<any>>;
+  }
+
+  private addAuthenticationToken(request: HttpRequest<any>): HttpRequest<any> {
+    // If we do not have a token yet then we should not set the header.
+    // Here we could first retrieve the token from where we store it.
+    if (!this.token) {
+      return request;
+    }
+    // If you are calling an outside domain then do not add the token.
+    if (!request.url.match(environment.BASE_PATH)) {
+      return request;
+    }
+
+    return request.clone({
+      headers: request.headers.set(this.AUTH_HEADER, 'Bearer ' + this.token)
+    });
+  }
+}
+
+// TODO: Add Token refresh and prettify

@@ -20,12 +20,19 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule } from '@ngxs/store';
 import localePt from '@angular/common/locales/pt';
 import localeEn from '@angular/common/locales/en';
-import { AuthState } from './store/auth.state';
-import { StrapiAuthInterceptor } from './shared/strapi.interceptor';
 import { environment } from '../environments/environment';
-
-import { ThemeState } from './store/theme.state';
 import { FcmState } from './store/fcm/fcm.state';
+import { AddressesState } from './store/addresses/addresses.state';
+import { Auth0State } from './store/auth/auth0/auth0.state';
+import { EmailPasswordState } from './store/auth/email-password/email-password.state';
+import { CustomerRegisterState } from './store/customer-register/customer-register.state';
+import { CustomerState } from './store/customer/customer.state';
+import { ErrorLoggingState } from './store/error-logging/error-logging.state';
+import { KeyboardState } from './store/keyboard/keyboard.state';
+import { UserProfileState } from './store/user-profile/user-profile.state';
+import { ThemeState } from './store/theme/theme.state';
+import { AuthState } from './store/auth/auth.state';
+import { AuthInterceptor } from './shared/interceptor/auth.interceptor';
 
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localePt, 'pt');
@@ -57,7 +64,16 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     NgxsModule.forRoot([
       AuthState,
       FcmState,
-      ThemeState
+      ThemeState,
+      Auth0State,
+      ErrorLoggingState,
+      EmailPasswordState,
+      CustomerState,
+      KeyboardState,
+      AddressesState,
+      CustomerState,
+      CustomerRegisterState,
+      UserProfileState
     ]),
     NgxsFormPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: false }),
@@ -73,7 +89,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: StrapiAuthInterceptor,
+      useClass: AuthInterceptor,
       multi: true
     },
     { provide: LOCALE_ID, useValue: 'en' },

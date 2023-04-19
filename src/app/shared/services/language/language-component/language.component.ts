@@ -1,12 +1,11 @@
-/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
-/* eslint-disable @typescript-eslint/no-empty-function */
+
 import { Component, OnInit } from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
-import { IonLanguageService } from '../language.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { IonStorageService } from '../../ionstorage.service';
-import { SAVED_LANGUAGE } from '../language.service';
+import { StorageService } from '../../storage/ionstorage.service';
+import { LanguageService, SAVED_LANGUAGE } from '../language.service';
+
 
 @Component({
   selector: 'ng-ion-workspace-language',
@@ -21,9 +20,9 @@ export class LanguageComponent implements OnInit {
   selectedLanguage: any;
   constructor(
     public translate: TranslateService,
-    public languageService: IonLanguageService,
+    public languageService: LanguageService,
     public alertController: AlertController,
-    private storageService: IonStorageService,
+    private storageService: StorageService,
     public popoverController: PopoverController,
   ) {
     // this.getTranslations();

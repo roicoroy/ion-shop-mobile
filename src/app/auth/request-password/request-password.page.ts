@@ -3,7 +3,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { StrapiService } from 'src/app/shared/services/strapi.service';
+import { StrapiService } from 'src/app/shared/services/strapi/strapi.service';
+
 
 @Component({
   selector: 'app-request-password',

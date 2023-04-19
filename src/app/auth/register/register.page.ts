@@ -1,16 +1,13 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { Store } from '@ngxs/store';
-import { IonStorageService } from 'src/app/shared/services/ionstorage.service';
-import { StrapiService } from 'src/app/shared/services/strapi.service';
-import { IReqAuthRegister } from 'src/app/shared/types/requests/ReqAuthRegister';
-import { IErrorRes } from 'src/app/shared/types/responses/AuthError';
-import Validation from 'src/app/shared/utils/validation';
-import { AuthActions } from 'src/app/store/auth.actions';
-
+import { Component, OnInit } from "@angular/core";
+import { UntypedFormGroup, UntypedFormControl, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
+import { Store } from "@ngxs/store";
+import { StrapiService } from "src/app/shared/services/strapi/strapi.service";
+import { IReqAuthRegister } from "src/app/shared/types/requests/ReqAuthRegister";
+import { IErrorRes } from "src/app/shared/types/responses/AuthError";
+import Validation from "src/app/shared/utils/validation";
+import { AuthStateActions } from "src/app/store/auth/auth.actions";
 
 @Component({
   selector: 'app-register',
@@ -56,8 +53,9 @@ export class RegisterPage implements OnInit {
       .subscribe((res: any) => {
         console.log(res);
         this.router.navigateByUrl('/home').then(() => {
-          this.store.dispatch(new AuthActions.SetUser(res.user)).subscribe((state) => {
-          });
+          this.store.dispatch(new AuthStateActions.SetAuthState(res))
+            .subscribe((state) => {
+            });
         });
       })
   }

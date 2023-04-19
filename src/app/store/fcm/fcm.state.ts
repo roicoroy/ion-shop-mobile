@@ -1,8 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { State, Selector, Action, StateContext, Store } from '@ngxs/store';
-import { FcmService } from 'src/app/shared/services/fcm.service';
 import { FcmActions } from './fcm.actions';
+import { FcmService } from 'src/app/shared/services/fcm/fcm.service';
 
 export class FcmStateModel {
     device_token: string;

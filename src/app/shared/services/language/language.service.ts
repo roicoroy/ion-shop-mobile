@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Device, GetLanguageCodeResult } from '@capacitor/device';
+import { Device } from '@capacitor/device';
 import { LanguageModel } from './language.model';
-import { IonStorageService } from '../ionstorage.service';
+import { StorageService } from '../storage/ionstorage.service';
+
 export const SAVED_LANGUAGE = 'saved_language';
+
 @Injectable({
   providedIn: 'root'
 })
-export class IonLanguageService {
+export class LanguageService {
   languages: Array<LanguageModel> = new Array<LanguageModel>();
 
   constructor(
     public translate: TranslateService,
-    private storageService: IonStorageService
+    private storageService: StorageService
   ) { }
 
   getLanguages(): any {

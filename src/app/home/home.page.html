@@ -11,7 +11,12 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="false" color="primary">
+<ion-content [fullscreen]="false">
+
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-header collapse="none">
     <ion-toolbar>
       <ion-card-header>
@@ -22,7 +27,9 @@
       </ion-card-header>
     </ion-toolbar>
   </ion-header>
-  <ion-grid>
+
+
+  <!-- <ion-grid>
     <ion-row class="top-row">
       <ion-slides [options]="slideOpts" mode="ios" pager="ios" scrollbar="ios">
         <ion-slide *ngFor="let item of bannerImages">
@@ -30,7 +37,9 @@
         </ion-slide>
       </ion-slides>
     </ion-row>
-  </ion-grid>
+  </ion-grid> -->
+
+
 </ion-content>
 <ion-footer>
   <ion-toolbar>

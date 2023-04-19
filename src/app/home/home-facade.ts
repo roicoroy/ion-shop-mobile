@@ -1,32 +1,53 @@
-import { Injectable } from '@angular/core';
-import { Select } from '@ngxs/store';
+import { Injectable, inject } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
-import { map} from 'rxjs/operators';
-import { AuthActions } from '../store/auth.actions';
+import { map } from 'rxjs/operators';
+import { AuthStateActions } from '../store/auth/auth.actions';
+import { AuthState } from '../store/auth/auth.state';
 
 @Injectable({
     providedIn: 'root'
 })
 export class HomePageFacade {
 
-    @Select(AuthActions.GetUser) getUser$: Observable<any>;
+    @Select(AuthState.isLoggedIn) isLoggedIn$: Observable<boolean>;
+    @Select(AuthState.userEmail) userEmail$: Observable<string>;
+    @Select(AuthState.medusaId) medusaId$: Observable<string>;
+    @Select(AuthState.getUser) user$: Observable<string>;
+    @Select(AuthState.hasSession) hasSession$: Observable<string>;
 
     readonly viewState$: Observable<any>;
-
+    private store = inject(Store);
     constructor(
 
     ) {
         this.viewState$ = combineLatest(
             [
-                this.getUser$ 
+                this.isLoggedIn$,
+                this.userEmail$,
+                this.medusaId$,
+                this.user$,
+                this.hasSession$,
             ]
         ).pipe(
             map(([
-                getUser
+                isLoggedIn,
+                userEmail,
+                medusaId,
+                user,
+                hasSession,
             ]) => ({
-                getUser
+                isLoggedIn,
+                userEmail,
+                medusaId,
+                user,
+                hasSession,
             }))
         );
     }
+    appLogout() {
+        this.store.dispatch(new AuthStateActions.AuthStateLogout()).subscribe((authState) => {
+            console.log(authState);
+        });
+    }
 }
-

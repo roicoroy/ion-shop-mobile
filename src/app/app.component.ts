@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { Component, inject } from '@angular/core';
+import { MenuController, Platform } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { AppFacade } from './app-facade';
-import { AppAuthService } from './shared/services/auth.service';
-import { IonLanguageService } from './shared/services/language/language.service';
-import { NavigationService } from './shared/services/navigation.service';
-import { Platform } from '@ionic/angular';
-import { ThemeService } from './shared/services/theme-settings.service';
 import { Store } from '@ngxs/store';
 import { FcmActions } from './store/fcm/fcm.actions';
+import { LanguageService } from './shared/services/language/language.service';
+import { NavigationService } from './shared/services/navigation/navigation.service';
+import { ThemeService } from './shared/services/theme/theme-settings.service';
+import { AuthStateService } from './store/auth/auth-state.service';
+import { AppService } from './shared/services/application/application.service';
+import { TokenService } from './shared/services/token/token.service';
+import { AuthStateActions } from './store/auth/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -22,31 +24,47 @@ export class AppComponent {
     { title: 'Home', url: '/home', icon: 'home' },
   ];
 
+  private native = inject(AppService);
+  private platform = inject(Platform);
+  private tokenService = inject(TokenService);
+  private store = inject(Store);
+
   constructor(
-    private authService: AppAuthService,
-    private ionLanguageService: IonLanguageService,
+    private authService: AuthStateService,
+    private ionLanguageService: LanguageService,
     public menu: MenuController,
     private navigation: NavigationService,
     private facade: AppFacade,
-    private platform: Platform,
     private theme: ThemeService,
-    private store: Store,
+
   ) {
     this.initApp();
   }
   async initApp() {
-    this.platform.ready().then(() => {
-      this.theme.initTheme();
+    this.platform.ready().then(async () => {
+      // get medusa products
+      // set theme
+      // tutorial
+      const device = await this.native.getDeviceInfo();
+      const token = this.tokenService.getToken();
+      this.theme.themeInit();
       this.ionLanguageService.initTranslate();
       this.viewState$ = this.facade.viewState$;
-      this.store.dispatch(new FcmActions.GetFcmToken());
-      // .subscribe((vs) => {
-      //   console.log(vs);
-      // })
+
+      if (token) {
+        this.store.dispatch(new AuthStateActions.SetLoggedIn(true));
+      }
+
+      if (device.platform == 'web') {
+      }
+
+      if (device.platform === 'android' || device.platform === 'ios') {
+        // set fcm listeners
+      }
     });
   }
   logout(): void {
-    this.authService.logout();
+    // this.authService.();
   }
   profilePage() {
     this.navigation.navigateFlip('/auth/profile/strapi');
