@@ -84,7 +84,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.navigation.navigateForward('/auth/login');
   }
   profilePage() {
-    this.navigation.navControllerDefault('/profile/strapi');
+    this.navigation.navigateForward('/auth/profile/strapi');
   }
   logout() {
     this.facade.appLogout();

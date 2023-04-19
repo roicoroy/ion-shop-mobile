@@ -22,6 +22,10 @@ const routes: Routes = [
         loadChildren: () => import('./reset-password/reset-password.module').then(m => m.ResetPasswordPageModule)
       },
       {
+        path: 'profile',
+        loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule)
+      },
+      {
         path: '',
         redirectTo: '/login',
         pathMatch: 'full'
