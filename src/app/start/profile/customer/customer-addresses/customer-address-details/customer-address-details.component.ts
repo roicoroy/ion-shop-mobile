@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { AddressDetailsFacade } from './customer-address-details.facade';
-import { AddressDetailsFormComponent } from 'projects/form-components/src/lib/components/address-details-form /address-details-form.component';
+import { AddressDetailsFormComponent } from 'src/app/form-components/components/address-details-form /address-details-form.component';
 
 import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
 import { FormGroupDirective } from '@angular/forms';

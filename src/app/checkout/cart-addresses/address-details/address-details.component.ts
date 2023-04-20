@@ -4,7 +4,7 @@ import { Store } from '@ngxs/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
 import { AddressDetailsFacade } from './address-details.facade';
-import { AddressDetailsFormComponent } from 'projects/form-components/src/lib/components/address-details-form /address-details-form.component';
+import { AddressDetailsFormComponent } from 'src/app/form-components/components/address-details-form /address-details-form.component';
 import { IRegisterAddress } from 'src/app/shared/types/types.interfaces';
 
 @Component({

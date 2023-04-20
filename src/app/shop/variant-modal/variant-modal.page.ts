@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { VariantFacade } from './variant.facade';
-import { CounterInputComponent } from 'projects/components/src/lib/components/counter-input/counter-input.component';
+import { CounterInputComponent } from 'src/app/components/components/counter-input/counter-input.component';
 import { Observable } from 'rxjs';
 import { CartActions } from 'src/app/store/cart/cart.actions';
 import { Store } from '@ngxs/store';

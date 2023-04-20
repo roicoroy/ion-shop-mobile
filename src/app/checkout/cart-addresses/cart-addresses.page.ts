@@ -163,8 +163,8 @@ export class CartAddressesPage implements OnDestroy {
   detailsPage() {
     this.navigation.navigateFlip('/shop/details');
   }
-  back() {
-    this.navigation.navigateFlip('/checkout/flow/start');
+  cartReview() {
+    this.navigation.navigateFlip('/checkout/flow/cart-review');
   }
   shipping() {
     this.navigation.navigateFlip('/checkout/flow/shipping');

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
-import { OrderDetailsComponent } from 'projects/components/src/lib/components/order-details/order-details.component';
+import { OrderDetailsComponent } from 'src/app/components/components/order-details/order-details.component';
 import { Observable } from 'rxjs';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
 import { CustomerFacade } from '../customer.facade';

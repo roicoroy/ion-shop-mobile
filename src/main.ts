@@ -101,7 +101,7 @@ bootstrapApplication(AppComponent, {
         CartState
       ]),
       NgxsFormPluginModule.forRoot(),
-      NgxsReduxDevtoolsPluginModule.forRoot({ disabled: true }),
+      NgxsReduxDevtoolsPluginModule.forRoot({ disabled: false }),
       NgxsLoggerPluginModule.forRoot({ disabled: true }),
       NgxsStoragePluginModule.forRoot({
         key: [

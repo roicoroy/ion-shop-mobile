@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { IonicModule, Platform } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
 import { NgxsModule, Store } from "@ngxs/store";
-import { LoginFormComponent } from "projects/form-components/src/lib/components/login-form/login-form.component";
+import { LoginFormComponent } from "src/app/form-components/components/login-form/login-form.component";
 import { FormComponentsModule } from "projects/form-components/src/public-api";
 import { Observable, Subject, takeUntil } from "rxjs";
 import { scaleHeight } from "src/app/shared/animations/animations";

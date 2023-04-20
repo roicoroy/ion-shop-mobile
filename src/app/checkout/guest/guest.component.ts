@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
-import { GuestFormComponent } from 'projects/form-components/src/lib/components/guest-form/guest-form.component';
+import { GuestFormComponent } from 'src/app/form-components/components/guest-form/guest-form.component';
 import { Observable } from 'rxjs';
 import { CartActions } from 'src/app/store/cart/cart.actions';
 import { RoutePath } from '../route-path.enum';
