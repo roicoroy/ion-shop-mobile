@@ -47,13 +47,11 @@ export class CartAddressesPage implements OnDestroy {
         }
       });
   }
-
   updateCart(vs: any) {
     if (vs.session != null) {
       this.store.dispatch(new CustomerActions.AddCustomerToCart(vs.session?.id))
     }
   }
-
   async useBillingAddress(address: IRegisterAddress) {
     const cartId = await this.store.selectSnapshot<any>((state: any) => state.cart?.cartId);
     this.store.dispatch(new CartActions.UpdateCartBillingAddress(cartId, address));

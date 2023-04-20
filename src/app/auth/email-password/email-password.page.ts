@@ -5,7 +5,6 @@ import { IonicModule, Platform } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
 import { NgxsModule, Store } from "@ngxs/store";
 import { LoginFormComponent } from "src/app/form-components/components/login-form/login-form.component";
-import { FormComponentsModule } from "projects/form-components/src/public-api";
 import { Observable, Subject, takeUntil } from "rxjs";
 import { scaleHeight } from "src/app/shared/animations/animations";
 import { KeypadModule } from "src/app/shared/services/native/keyboard/keypad.module";
@@ -13,6 +12,7 @@ import { NavigationService } from "src/app/shared/services/navigation/navigation
 import { IStrapiLoginData, ICustomerLoginData } from "src/app/shared/types/types.interfaces";
 import { EmailPasswordActions } from "src/app/store/auth/email-password/email-password.actions";
 import { IEmailPasswordFacadeState } from "./email-password.facade";
+import { FormComponentsModule } from "src/app/form-components/form-components.module";
 
 @Component({
   selector: 'app-email-password',

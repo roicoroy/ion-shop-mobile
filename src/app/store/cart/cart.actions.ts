@@ -20,10 +20,6 @@ export namespace CartActions {
         static readonly type = '[CartActions] Update Shipping Address Cart';
         constructor(public cartId: string | any, public address: IRegisterAddress | any) { }
     }
-    export class UpdateCartEmail {
-        static readonly type = '[CartActions] Update Cart Email';
-        constructor(public cartId: string, public email: string, public isGuest: boolean) { }
-    }
     export class UpdateCart {
         static readonly type = '[CartActions] Update Cart';
         constructor(public cartId: string | any, public customer: any | any) { }

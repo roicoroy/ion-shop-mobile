@@ -6,13 +6,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
-import { CustomComponentsModule } from 'projects/components/src/public-api';
 import { Observable } from 'rxjs';
-import { IAppFacadeState } from 'src/app/app.facade';
 import { IProductsListFacadeState, ProductsListFacade } from './products-list.facade';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
 import { addSelectedVariant, addSelectedProduct, clearSelectedProduct } from 'src/app/store/products/products.actions';
 import { VariantModalPage } from '../variant-modal/variant-modal.page';
+import { CustomComponentsModule } from 'src/app/components/components.module';
 
 @Component({
   selector: 'app-products-list',

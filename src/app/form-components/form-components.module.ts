@@ -7,12 +7,12 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { PasswordFormComponent } from './components/password-form/password-form.component';
 import { ProfileFormComponent } from './components/profile-form/profile-form.component';
 import { UserFormComponent } from './components/user-form/user-form.component';
-import { CustomComponentsModule } from 'projects/components/src/public-api';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { GuestFormComponent } from './components/guest-form/guest-form.component';
 import { AddressDetailsFormComponent } from './components/address-details-form /address-details-form.component';
+import { CustomComponentsModule } from '../components/components.module';
 
 @NgModule({
   imports: [

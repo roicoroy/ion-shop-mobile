@@ -8,7 +8,7 @@ import { NgxsModule } from '@ngxs/store';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
 import { Observable } from 'rxjs';
 import { HomePageFacade } from './home-facade';
-import { CustomComponentsModule } from 'projects/components/src/public-api';
+import { CustomComponentsModule } from 'src/app/components/components.module';
 
 @Component({
   selector: 'app-home',

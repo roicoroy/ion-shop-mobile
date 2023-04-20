@@ -12,10 +12,9 @@ import { NgxStripeModule } from 'ngx-stripe';
 import { StartComponent } from './start/start.component';
 import { PaymentComponent } from './payment/payment.component';
 import { ShippingComponent } from './shipping/shipping.component';
-import { CustomComponentsModule } from 'projects/components/src/public-api';
-import { FormComponentsModule } from 'projects/form-components/src/public-api';
 import { CartReviewComponent } from './cart-review/cart-review.component';
-import { GuestComponent } from './guest/guest.component';
+import { CustomComponentsModule } from '../components/components.module';
+import { FormComponentsModule } from '../form-components/form-components.module';
 
 @NgModule({
   imports: [
@@ -37,7 +36,6 @@ import { GuestComponent } from './guest/guest.component';
     ShippingComponent,
     PaymentComponent,
     CartReviewComponent,
-    GuestComponent
   ],
   exports: [
     StartComponent,
@@ -46,7 +44,6 @@ import { GuestComponent } from './guest/guest.component';
     CustomComponentsModule,
     FormComponentsModule,
     CartReviewComponent,
-    GuestComponent
   ]
 })
 export class CheckoutPageModule { }

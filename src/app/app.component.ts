@@ -10,11 +10,11 @@ import { TokenService } from './shared/services/token/token.service';
 import { ThemeService } from './store/theme/theme.service';
 import { AppFacade, IAppFacadeState } from './app.facade';
 import { Observable } from 'rxjs';
-import { CustomComponentsModule } from 'projects/components/src/public-api';
 import { CartMenuComponent } from 'src/app/components/components/app-menu/cart-menu.component';
 import { MedusaCartComponent } from 'src/app/components/components/medusa-cart/medusa-cart.component';
 import { clearSelectedProduct } from './store/products/products.actions';
 import { CommonModule } from '@angular/common';
+import { CustomComponentsModule } from './components/components.module';
 
 @Component({
   selector: 'app-root',

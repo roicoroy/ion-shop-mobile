@@ -2,10 +2,8 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { ModalController } from "@ionic/angular";
 import { Store } from "@ngxs/store";
 import { Observable } from "rxjs";
-import { GuestComponent } from "../guest/guest.component";
 import { StartFacade } from "./start.facade";
 import { NavigationService } from "src/app/shared/services/navigation/navigation.service";
-import { RoutePath } from "../route-path.enum";
 
 @Component({
   selector: 'app-start',
@@ -38,13 +36,6 @@ export class StartComponent {
   }
   addressesMedusa() {
     this.navigation.navigateForward('/checkout/flow/cart-addresses', 'forward');
-  }
-  async continueAsGuest() {
-    const modal = await this.modalCtrl.create({
-      component: GuestComponent,
-      cssClass: 'guest-modal'
-    });
-    await modal.present();
   }
   checkoutMedusa() {
     this.navigation.navigateForward('/checkout/flow/shipping', 'forward');

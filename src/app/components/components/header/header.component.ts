@@ -30,9 +30,9 @@ export class HeaderComponent {
     public menu: MenuController,
   ) {
     this.viewState$ = this.facade.viewState$;
-    this.viewState$.subscribe((vs) => {
-      console.log(vs);
-    });
+    // this.viewState$.subscribe((vs) => {
+    //   console.log(vs);
+    // });
   }
   toggleMenu(menuId: string = 'start') {
     this.menu.toggle(menuId);

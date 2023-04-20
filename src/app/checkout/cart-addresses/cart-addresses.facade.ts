@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuthStateActions } from 'src/app/store/auth/auth.actions';
 import { AuthState } from 'src/app/store/auth/auth.state';
 import { CartState } from 'src/app/store/cart/cart.state';
 import { CustomerState } from 'src/app/store/customer/customer.state';
@@ -46,5 +47,6 @@ export class AddressesFacade {
                 session
             }))
         );
+        this.store.dispatch(new AuthStateActions.getMedusaSession());
     }
 }

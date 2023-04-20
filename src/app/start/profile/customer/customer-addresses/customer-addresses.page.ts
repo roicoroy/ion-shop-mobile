@@ -17,13 +17,9 @@ import { IRegisterAddress } from 'src/app/shared/types/types.interfaces';
 export class CustomerAddressesPage implements OnDestroy {
 
   @Input() isEdit = false;
-
   presentingElement: any;
-
   viewState$: Observable<any>;
-
   submitted: boolean;
-
   subscription = new Subject();
 
   constructor(

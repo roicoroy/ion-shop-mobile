@@ -179,27 +179,6 @@ export class CartState {
             }
         }
     }
-    @Action(CartActions.UpdateCartEmail)
-    async updateCartEmail(ctx: StateContext<CartStateModel>, { cartId, email, isGuest }: CartActions.UpdateCartEmail) {
-        try {
-            let cartRes = await this.medusaClient.carts.update(cartId, {
-                email: email,
-            });
-            console.log(cartRes);
-            ctx.patchState({
-                cart: cartRes?.cart,
-                cartId: cartRes?.cart.id,
-                isGuest
-            });
-            // this.store.dispatch(new CartActions.GetMedusaCart(cartId));
-            // this.store.dispatch(new CustomerActions.GetSession());
-        }
-        catch (err: any) {
-            if (err) {
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-            }
-        }
-    }
     @Action(CartActions.UpdateCart)
     async updateCart(ctx: StateContext<CartStateModel>, { cartId, customer }: CartActions.UpdateCart) {
         try {

@@ -7,7 +7,7 @@ import { CounterInputComponent } from 'src/app/components/components/counter-inp
 import { Observable } from 'rxjs';
 import { CartActions } from 'src/app/store/cart/cart.actions';
 import { Store } from '@ngxs/store';
-import { CustomComponentsModule } from 'projects/components/src/public-api';
+import { CustomComponentsModule } from 'src/app/components/components.module';
 
 @Component({
   selector: 'app-variant-modal',

@@ -1,19 +1,12 @@
-
 <app-header></app-header>
 
-<!-- <ion-header>
-  <ion-toolbar color="medium">
-    <ion-buttons slot="start">
-      <ion-button (click)="back()">
-        <ion-icon name="arrow-back"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header> -->
-
 <ion-content *ngIf="viewState$ | async as vs">
-
-  <ion-button (click)="updateCart(vs)" expand="block" fill="outline" shape="round">
+  <ion-button
+    (click)="updateCart(vs)"
+    expand="block"
+    fill="outline"
+    shape="round"
+  >
     Update Cart
   </ion-button>
 
@@ -24,27 +17,42 @@
           <ion-label class="ion-margin">Cart Billing Address:</ion-label>
           <ion-row class="buttons-row ion-text-center">
             <ion-col size="4">
-              <ion-button color="primary" (click)="viewBilingAddress(vs.cart?.billing_address)" fill="outline"
-                shape="round">
+              <ion-button
+                color="primary"
+                (click)="viewBilingAddress(vs.cart?.billing_address)"
+                fill="outline"
+                shape="round"
+              >
                 <ion-icon name="search"></ion-icon>
               </ion-button>
               <ion-note>View</ion-note>
             </ion-col>
             <ion-col size="4">
-              <ion-button color="success" (click)="newBillingAddress()" fill="outline" shape="round">
+              <ion-button
+                color="success"
+                (click)="newBillingAddress()"
+                fill="outline"
+                shape="round"
+              >
                 <ion-icon name="add"></ion-icon>
               </ion-button>
               <ion-note>New Billing Address</ion-note>
             </ion-col>
             <ion-col size="4">
-              <ion-button color="warning" (click)="useShippingAddress(vs?.cart?.billing_address)" fill="outline"
-                shape="round">
+              <ion-button
+                color="warning"
+                (click)="useShippingAddress(vs?.cart?.billing_address)"
+                fill="outline"
+                shape="round"
+              >
                 <ion-icon name="save"></ion-icon>
               </ion-button>
               <ion-note>Use as Shipping</ion-note>
             </ion-col>
           </ion-row>
-          <lib-address-card [address]="vs?.cart?.billing_address"></lib-address-card>
+          <lib-address-card
+            [address]="vs?.cart?.billing_address"
+          ></lib-address-card>
         </ion-card>
       </ion-col>
     </ion-row>
@@ -57,27 +65,42 @@
           <ion-label class="ion-margin">Cart Shipping Address:</ion-label>
           <ion-row class="buttons-row ion-text-center">
             <ion-col size="4">
-              <ion-button color="primary" (click)="viewShippingAddress(vs.cart?.shipping_address)" fill="outline"
-                shape="round">
+              <ion-button
+                color="primary"
+                (click)="viewShippingAddress(vs.cart?.shipping_address)"
+                fill="outline"
+                shape="round"
+              >
                 <ion-icon name="search"></ion-icon>
               </ion-button>
               <ion-note>View</ion-note>
             </ion-col>
             <ion-col size="4">
-              <ion-button color="success" (click)="newShippingAddress()" fill="outline" shape="round">
+              <ion-button
+                color="success"
+                (click)="newShippingAddress()"
+                fill="outline"
+                shape="round"
+              >
                 <ion-icon name="add"></ion-icon>
               </ion-button>
               <ion-note>New Shipping Address</ion-note>
             </ion-col>
             <ion-col size="4">
-              <ion-button color="warning" (click)="useBillingAddress(vs?.cart?.shipping_address)" fill="outline"
-                shape="round">
+              <ion-button
+                color="warning"
+                (click)="useBillingAddress(vs?.cart?.shipping_address)"
+                fill="outline"
+                shape="round"
+              >
                 <ion-icon name="save"></ion-icon>
               </ion-button>
               <ion-note>Use as Billing Address</ion-note>
             </ion-col>
           </ion-row>
-          <lib-address-card [address]="vs?.cart?.shipping_address"></lib-address-card>
+          <lib-address-card
+            [address]="vs?.cart?.shipping_address"
+          ></lib-address-card>
         </ion-card>
       </ion-col>
     </ion-row>
@@ -91,7 +114,12 @@
         </ion-toolbar>
         <ion-row class="buttons-row ion-text-center">
           <ion-col size="12">
-            <ion-button color="success" (click)="newCustomerShippingAddress()" fill="outline" shape="round">
+            <ion-button
+              color="success"
+              (click)="newCustomerShippingAddress()"
+              fill="outline"
+              shape="round"
+            >
               <ion-icon name="add"></ion-icon>
             </ion-button>
             <ion-note>New address</ion-note>
@@ -100,50 +128,80 @@
         <ion-card *ngFor="let address of vs.session?.shipping_addresses">
           <ion-row class="buttons-row ion-text-center">
             <ion-col size="3">
-              <ion-button color="primary" (click)="viewCustomerShippingAddress(address)"
-                fill="outline" shape="round">
+              <ion-button
+                color="primary"
+                (click)="viewCustomerShippingAddress(address)"
+                fill="outline"
+                shape="round"
+              >
                 <ion-icon name="search"></ion-icon>
               </ion-button>
               <ion-note>View</ion-note>
             </ion-col>
 
             <ion-col size="3">
-              <ion-button color="warning" (click)="useBillingAddress(address)" fill="outline"
-                shape="round">
+              <ion-button
+                color="warning"
+                (click)="useBillingAddress(address)"
+                fill="outline"
+                shape="round"
+              >
                 <ion-icon name="save"></ion-icon>
               </ion-button>
               <ion-note>Use as Billing</ion-note>
             </ion-col>
 
             <ion-col size="3">
-              <ion-button color="warning" (click)="useShippingAddress(address)" fill="outline"
-                shape="round">
+              <ion-button
+                color="warning"
+                (click)="useShippingAddress(address)"
+                fill="outline"
+                shape="round"
+              >
                 <ion-icon name="save"></ion-icon>
               </ion-button>
               <ion-note>Use as shipping</ion-note>
             </ion-col>
           </ion-row>
 
-          <lib-address-card [address]="address"></lib-address-card>
-
+          <ion-card>
+            <ion-card-header *ngIf="address !== null">
+              <ion-card-subtitle> {{ address?.first_name }} </ion-card-subtitle>
+              <ion-card-title> {{ address?.last_name }} </ion-card-title>
+            </ion-card-header>
+            <ion-card-content *ngIf="address !== null">
+              {{ address?.address_1 }} {{ address?.address_2 }} {{
+              address?.country_code }} {{ address?.postal_code }} {{
+              address?.phone }}
+            </ion-card-content>
+          </ion-card>
+          
           <ion-row class="buttons-row ion-text-center">
             <ion-col size="12">
-              <ion-button (click)="deleteCustomerShippingAddress(address?.id)" color="danger" fill="outline"
-                shape="round">
+              <ion-button
+                (click)="deleteCustomerShippingAddress(address?.id)"
+                color="danger"
+                fill="outline"
+                shape="round"
+              >
                 <ion-icon name="close"></ion-icon>
               </ion-button>
               <ion-note color="danger">Delete</ion-note>
             </ion-col>
           </ion-row>
         </ion-card>
-
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
 <ion-footer>
   <ion-toolbar>
-    <ion-button (click)="cartReview()" expand="block" fill="solid" shape="round">
+    <ion-button
+      (click)="cartReview()"
+      expand="block"
+      fill="solid"
+      shape="round"
+    >
       <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
     </ion-button>
     <ion-button (click)="shipping()" expand="block" fill="solid" shape="round">

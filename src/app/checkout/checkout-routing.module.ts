@@ -5,7 +5,6 @@ import { StartComponent } from './start/start.component';
 import { RoutePath } from './route-path.enum';
 import { ShippingComponent } from './shipping/shipping.component';
 import { CartReviewComponent } from './cart-review/cart-review.component';
-import { GuestComponent } from './guest/guest.component';
 import { AddressDetailsComponent } from './cart-addresses/address-details/address-details.component';
 
 const routes: Routes = [
@@ -36,10 +35,6 @@ const routes: Routes = [
       {
         path: RoutePath.cartReview,
         component: CartReviewComponent,
-      },
-      {
-        path: 'guest',
-        component: GuestComponent,
       },
       {
         path: 'address-details',

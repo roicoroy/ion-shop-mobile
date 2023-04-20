@@ -11,9 +11,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule } from '@ngxs/store';
-import { CustomComponentsModule } from 'projects/components/src/public-api';
-import { FormComponentsModule } from 'projects/form-components/src/public-api';
 import { CustomerAddressDetailsComponent } from './customer-address-details/customer-address-details.component';
+import { CustomComponentsModule } from 'src/app/components/components.module';
+import { FormComponentsModule } from 'src/app/form-components/form-components.module';
 
 @NgModule({
   imports: [
