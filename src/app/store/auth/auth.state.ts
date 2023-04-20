@@ -83,19 +83,52 @@ export class AuthState {
     @Action(AuthStateActions.UpdateStrapiUser)
     updateStrapiUser({ getState, patchState }: StateContext<IAuthStateModel>, { userId, profileForm }: AuthStateActions.UpdateStrapiUser) {
         const state = getState();
+    }
+    @Action(AuthStateActions.SetAuthState)
+    async setAuthState(ctx: StateContext<IAuthStateModel>, { user }: AuthStateActions.SetAuthState) {
+        const state = ctx.getState();
+        try {
+            if (user.jwt && user.user) {
+                this.setTokenResponse(user);
+                const medusaCustomerID = await this.medusaCartInit(user.user.email);
+                if (medusaCustomerID) {
+                    this.authService.loadUser(user.user.id)
+                        .subscribe((user: any) => {
+                            ctx.patchState({
+                                ...state,
+                                isLoggedIn: true,
+                                userEmail: user.email,
+                                userId: user?.id,
+                                user: user,
+                                medusaId: medusaCustomerID,
+                                hasSession: true,
+                            });
+                        });
 
+                }
+            }
+        } catch (err: any) {
+            if (err) {
+                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
+                const state = ctx.getState();
+                ctx.patchState({
+                    ...state,
+                    hasSession: false,
+                });
+            }
+        }
     }
     @Action(AuthStateActions.SetUploadedUser)
     setUploadedUser({ getState, patchState }: StateContext<IAuthStateModel>, { userId }: AuthStateActions.SetUploadedUser) {
         const state = getState();
         console.log("payload", userId);
-        if (userId!== null) {
+        if (userId !== null) {
             this.authService.loadUser(userId)
                 .subscribe((user: any) => {
                     console.log("result", user);
                     patchState({
                         ...state,
-                        user: user,
+                        user: user.user,
                         isLoggedIn: true
                     });
                 });
@@ -126,40 +159,7 @@ export class AuthState {
             }
         }
     }
-    @Action(AuthStateActions.SetAuthState)
-    async setAuthState(ctx: StateContext<IAuthStateModel>, { user }: AuthStateActions.SetAuthState) {
-        const state = ctx.getState();
-        try {
-            if (user.jwt && user.user) {
-                this.setTokenResponse(user);
-                const medusaCustomerID = await this.medusaCartInit(user.user.email);
-                if (medusaCustomerID) {
-                    this.authService.loadUser(user.user.id)
-                    .subscribe((user: any) => {
-                        ctx.patchState({
-                            ...state,
-                            isLoggedIn: true,
-                            userEmail: user.email,
-                            userId: user?.id,
-                            user: user,
-                            medusaId: medusaCustomerID,
-                            hasSession: true,
-                        });
-                    });
 
-                }
-            }
-        } catch (err: any) {
-            if (err) {
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-                const state = ctx.getState();
-                ctx.patchState({
-                    ...state,
-                    hasSession: false,
-                });
-            }
-        }
-    }
     @Action(AuthStateActions.getMedusaSession)
     async getSession(ctx: StateContext<IAuthStateModel>) {
         const userEmail = await this.store.selectSnapshot<any>((state: any) => state.authState?.userEmail);
@@ -195,12 +195,19 @@ export class AuthState {
         }
     }
     @Action(AuthStateActions.SetLoggedIn)
-    authProviderCallback(ctx: StateContext<IAuthStateModel>, { isLoggedIn }: AuthStateActions.SetLoggedIn) {
+    async authProviderCallback(ctx: StateContext<IAuthStateModel>, { isLoggedIn }: AuthStateActions.SetLoggedIn) {
         const state = ctx.getState();
-        ctx.patchState({
-            ...state,
-            isLoggedIn,
-        });
+        const userId = await this.store.selectSnapshot<any>((state: any) => state.authState?.userId);
+        if (userId !== null) {
+            this.authService.loadUser(userId)
+                .subscribe((user: any) => {
+                    ctx.patchState({
+                        ...state,
+                        user: user,
+                        isLoggedIn: true
+                    });
+                });
+        };
     }
 
     @Action(AuthStateActions.AuthStateLogout)

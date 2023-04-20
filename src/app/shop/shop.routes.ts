@@ -7,35 +7,19 @@ export const routes: Routes = [
     component: ShopPage,
     children: [
       {
-        path: 'home',
-        loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+        path: 'products-list',
+        loadComponent: () => import('./products-list/products-list.page').then( m => m.ProductsListPage)
       },
-      {
-        path: 'profile',
-        loadComponent: () => import('./profile/profile.page').then( m => m.ProfilePage)
-      },
-      // {
-      //   path: 'customer',
-      //   loadComponent: () => import('./profile/customer/customer.page').then(m => m.CustomerPage)
-      // },
-      // {
-      //   path: 'orders',
-      //   loadChildren: () => import('./profile/customer/orders/orders.module').then(m => m.OrdersPageModule)
-      // },
-      // {
-      //   path: 'customer-addresses',
-      //   loadChildren: () => import('./profile/customer/customer-addresses/customer-addresses.module').then( m => m.CustomerAddressesPageModule)
-      // },
       {
         path: '',
-        redirectTo: '/tabs/home',
+        redirectTo: '/tabs/product-list',
         pathMatch: 'full',
       },
     ],
   },
   {
     path: '',
-    redirectTo: '/tabs/home',
+    redirectTo: '/tabs/product-list',
     pathMatch: 'full',
   },
 ];

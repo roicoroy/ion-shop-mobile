@@ -39,6 +39,7 @@ export class UserProfileState {
     @Action(UserProfileActions.UpdateFcmAccepted)
     updateFcmAccepted(ctx: StateContext<UserProfileModel>, action: UserProfileActions.UpdateFcmAccepted): void {
         const state = ctx.getState();
+        console.log(state);
         ctx.patchState({
             ...state,
             fcmAccepted: action.fcmAccepted,

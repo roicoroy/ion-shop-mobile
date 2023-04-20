@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, EnvironmentInjector, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -27,16 +27,18 @@ export class AuthHomePage {
 
   private navigation = inject(NavigationService);
 
+  // public environmentInjector = inject(EnvironmentInjector);
+
   navigateAuth0Callback() {
-    this.navigation.navControllerDefault('strapi-auth0');
+    this.navigation.navControllerDefault('auth/strapi-auth0');
+  }
+  loginEmailPassword() {
+    this.navigation.navControllerDefault('auth/pages/email-password');
   }
   loginPasswordless() {
-    this.navigation.navControllerDefault('passwordless');
+    this.navigation.navControllerDefault('auth/passwordless');
   }
   home() {
     this.navigation.navControllerDefault('shop/tabs/home');
-  }
-  loginEmailPassword() {
-    this.navigation.navControllerDefault('email-password');
   }
 }

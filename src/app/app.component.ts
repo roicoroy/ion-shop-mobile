@@ -37,8 +37,6 @@ export class AppComponent implements OnInit {
   async initApp() {
     this.platform.ready().then(async () => {
       // get medusa products
-      // set theme
-      // tutorial
       this.theme.themeInit();
       const device = await this.native.getDeviceInfo();
       const token = await this.tokenService.getToken();

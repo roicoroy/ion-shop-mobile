@@ -78,7 +78,9 @@ export class UserPage implements OnInit, AfterViewInit {
     this.viewState$ = this.facade.viewState$;
     this.viewState$.subscribe((vs) => {
       // console.log(vs?.user?.avatar);
-      this.avatar = vs?.user.avatar?.url;
+      if (vs?.user) {
+        this.avatar = vs?.user.avatar?.url;
+      }
     });
     this.userForm = this.formBuilder.group({
       username: new FormControl('', Validators.compose([
@@ -101,7 +103,6 @@ export class UserPage implements OnInit, AfterViewInit {
 
   onFCMChange($event: any) {
     this.pushAccepted = $event.detail.checked;
-    console.log($event.detail.checked);
     this.facade.setFCMStatus(this.pushAccepted);
   }
 

@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<!-- <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="home()">
@@ -25,12 +25,12 @@
           Navigate to Strapi Auth0
         </ion-button>
       </ion-col>
-      <!-- <ion-col size="12">
+      <ion-col size="12">
         <ion-button (click)="loginPasswordless()" class="auth0" expand="block" fill="solid" shape="round">
           Strapi Passwordless
         </ion-button>
       </ion-col>
- -->
+
       <ion-col size="12">
         <ion-button (click)="loginEmailPassword()" class="auth0" expand="block" fill="solid" shape="round">
           Login with email and password
@@ -38,4 +38,22 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-</ion-content>
+</ion-content> -->
+
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="home">
+      <ion-icon aria-hidden="true" name="triangle"></ion-icon>
+      <ion-label>Home</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="profile">
+      <ion-icon aria-hidden="true" name="ellipse"></ion-icon>
+      <ion-label>Profile</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button>
+      <ion-icon aria-hidden="true" name="menu"></ion-icon>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
