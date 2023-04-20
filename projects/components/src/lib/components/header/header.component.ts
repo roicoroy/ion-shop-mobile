@@ -1,55 +1,48 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, inject } from '@angular/core';
 import { MenuController } from '@ionic/angular';
+import { Observable } from 'rxjs';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
+import { HeaderFacade, IHeaderFacadeState } from './header.facade';
 
 export interface IHeaderData {
   avatar: string,
 }
 @Component({
-  selector: 'lib-header',
+  selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit, AfterViewInit {
+export class HeaderComponent {
 
-  @Input() set headerData(value: any) {
-    console.log(value);
-    // this._isLoggedIn = value.isCustomerLoggedIn != null ? value?.isCustomerLoggedIn : false;
-  };
-  get isLoggedIn(): any {
-    if (this._isLoggedIn) {
-      console.log(this._isLoggedIn);
-      return this._isLoggedIn;
-    };
-  }
-  private _isLoggedIn: any;
+  // @Input() set avatar(value: string) {
+  //   console.log(value);
+  //   // this._isLoggedIn = value.isCustomerLoggedIn != null ? value?.isCustomerLoggedIn : false;
+  // };
+  private facade = inject(HeaderFacade);
+
+  @Input() avatar: string;
+  @Input() menuId: string;
+
+  viewState$: Observable<IHeaderFacadeState>;
 
   constructor(
     private navigation: NavigationService,
     public menu: MenuController,
-  ) { }
-
-  ngOnInit() { }
-
-  ngAfterViewInit(): void {
-    // console.log(this.headerData);
-    // console.log(this.headerAvatar);
+  ) {
+    this.viewState$ = this.facade.viewState$;
+    this.viewState$.subscribe((vs) => {
+      console.log(vs);
+    });
   }
-
-  closeMenu(menuId: string = 'start') {
+  toggleMenu(menuId: string = 'start') {
     this.menu.toggle(menuId);
   }
-
   home() {
     this.navigation.navigateForward('/home', 'forward');
   }
-
   login() {
-    // this.navigation.navControllerDefault(AuthRoutePath.login);
+    this.navigation.navControllerDefault('/auth/pages/auth-home');
   }
-
   logout() {
-
   }
-
 }

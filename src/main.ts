@@ -33,6 +33,10 @@ import { UserProfileState } from './app/store/user-profile/user-profile.state';
 import { StrapiMedusaInterceptor } from './app/shared/interceptor/strapi-medusa.interceptor';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { ThemeState } from './app/store/theme/theme.state';
+import { CartState } from './app/store/cart/cart.state';
+import { ShippingState } from './app/store/shipping/shipping.state';
+import { ProductState } from './app/store/products/products.state';
+import { LanguageState } from './app/store/language/language.state';
 
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localePt, 'pt');
@@ -90,7 +94,11 @@ bootstrapApplication(AppComponent, {
         AddressesState,
         CustomerRegisterState,
         UserProfileState,
-        ThemeState
+        ThemeState,
+        ShippingState,
+        ProductState,
+        LanguageState,
+        CartState
       ]),
       NgxsFormPluginModule.forRoot(),
       NgxsReduxDevtoolsPluginModule.forRoot({ disabled: true }),
@@ -101,7 +109,9 @@ bootstrapApplication(AppComponent, {
           'addresses',
           'userProfile',
           'theme',
-          'customer'
+          'language',
+          'customer',
+          "cart"
         ]
       }),
     ),

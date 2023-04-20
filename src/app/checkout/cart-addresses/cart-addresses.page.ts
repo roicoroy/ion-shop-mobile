@@ -4,11 +4,12 @@ import { Store } from '@ngxs/store';
 import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
 import { CartActions } from 'src/app/store/cart/cart.actions';
-import { IRegisterAddress } from 'projects/types/types.interfaces';
 import { AddressDetailsComponent } from './address-details/address-details.component';
 import { AddressesFacade } from './cart-addresses.facade';
-import { NavigationService } from 'projects/services/src/lib/services/navigation.service';
 import { CustomerActions } from 'src/app/store/customer/customer.actions';
+import { AuthStateActions } from 'src/app/store/auth/auth.actions';
+import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
+import { IRegisterAddress } from 'src/app/shared/types/types.interfaces';
 
 @Component({
   selector: 'app-addresses',
@@ -42,7 +43,7 @@ export class CartAddressesPage implements OnDestroy {
       )
       .subscribe((state) => {
         if (!state.isGuest && state?.isCustomerLoggedIn && state?.isUserLoggedIn) {
-          this.store.dispatch(new CustomerActions.GetSession());
+          this.store.dispatch(new AuthStateActions.getMedusaSession());
         }
       });
   }

@@ -3,6 +3,7 @@ import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { OrderReviewFacade } from './order-review.facade';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
+import { RoutePath } from '../route-path.enum';
 
 @Component({
   selector: 'app-order-review',
@@ -26,12 +27,12 @@ export class OrderReviewPage implements OnInit {
   ngOnInit() {
   }
 
-  // home() {
-  //   this.navigation.navigateForward(AuthRoutePath.home, 'forward');
-  // }
+  home() {
+    this.navigation.navigateForward('start/tabs/home', 'forward');
+  }
 
-  // back() {
-  //   this.navigation.navigateForward(AuthRoutePath.payment, 'back');
-  // }
+  back() {
+    this.navigation.navigateForward('checkout/flow/payment', 'back');
+  }
 
 }

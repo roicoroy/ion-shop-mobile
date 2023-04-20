@@ -26,9 +26,9 @@ export class StartComponent {
     private modalCtrl: ModalController,
   ) {
     this.viewState$ = this.facade.viewState$;
-    // this.viewState$.subscribe((state) => {
-    //   console.log(state);
-    // });
+    this.viewState$.subscribe((state) => {
+      console.log(state);
+    });
   }
   navigateBack() {
     this.navigation.navigateForward('/home', 'back');
@@ -39,12 +39,6 @@ export class StartComponent {
   addressesMedusa() {
     this.navigation.navigateForward('/checkout/flow/cart-addresses', 'forward');
   }
-  // loginMedusa() {
-  //   this.navigation.navigateForward(RoutePath.login, 'forward');
-  // }
-  // registerMedusa() {
-  //   this.navigation.navigateForward(RoutePath.registerUser, 'forward');
-  // }
   async continueAsGuest() {
     const modal = await this.modalCtrl.create({
       component: GuestComponent,

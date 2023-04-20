@@ -6,9 +6,9 @@ import { ShippingActions } from './shipping.actions';
 import { ErrorLoggingActions } from '../error-logging/error-logging.actions';
 
 export interface ShippingStateModel {
-    shipping_options: any | null;
-    payment_sessions: any | any;
-    provider_id: any | any;
+    shipping_options: string;
+    payment_sessions: string;
+    provider_id: string;
 }
 export const initStateModel: ShippingStateModel = {
     shipping_options: null,

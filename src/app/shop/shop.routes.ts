@@ -22,4 +22,12 @@ export const routes: Routes = [
     redirectTo: '/tabs/product-list',
     pathMatch: 'full',
   },
+  {
+    path: 'product-details',
+    loadComponent: () => import('./product-details/product-details.page').then( m => m.ProductDetailsPage)
+  },
+  {
+    path: 'variant-modal',
+    loadComponent: () => import('./variant-modal/variant-modal.page').then( m => m.VariantModalPage)
+  },
 ];

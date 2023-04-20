@@ -30,15 +30,16 @@ export class AuthHomePage {
   // public environmentInjector = inject(EnvironmentInjector);
 
   navigateAuth0Callback() {
-    this.navigation.navControllerDefault('auth/strapi-auth0');
+    this.navigation.navControllerDefault('auth/pages/strapi-auth0');
   }
   loginEmailPassword() {
     this.navigation.navControllerDefault('auth/pages/email-password');
   }
-  loginPasswordless() {
-    this.navigation.navControllerDefault('auth/passwordless');
-  }
-  home() {
-    this.navigation.navControllerDefault('shop/tabs/home');
-  }
+
+  // loginPasswordless() {
+  //   this.navigation.navControllerDefault('auth/passwordless');
+  // }
+  // home() {
+  //   this.navigation.navControllerDefault('shop/tabs/home');
+  // }
 }

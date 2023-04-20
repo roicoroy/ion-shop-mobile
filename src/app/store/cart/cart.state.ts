@@ -8,12 +8,12 @@ import { IRegisterAddress } from "src/app/shared/types/types.interfaces";
 import { ErrorLoggingActions } from "../error-logging/error-logging.actions";
 
 export interface CartStateModel {
-    cartId: string | any;
-    cart: any | any;
-    recentCompletedOrder: any | any;
-    selectedRegion: string | any;
-    selectedCountry: string | any;
-    isGuest: boolean | any;
+    cartId: string;
+    cart: any;
+    recentCompletedOrder: any;
+    selectedRegion: string;
+    selectedCountry: string;
+    isGuest: boolean;
 }
 
 export const initStateModel: CartStateModel = {
@@ -64,7 +64,7 @@ export class CartState {
         }
         catch (err: any) {
             if (err) {
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));                console.log(err);
+                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err)); console.log(err);
             }
         }
     }
@@ -317,7 +317,8 @@ export class CartState {
         }
         catch (err: any) {
             if (err.response) {
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));            }
+                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
+            }
         }
     }
     @Action(CartActions.UpdateSelectedRegion)

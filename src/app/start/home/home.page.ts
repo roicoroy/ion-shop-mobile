@@ -44,7 +44,10 @@ export class HomePage {
     }, 3000);
   }
   loginPages() {
-    this.navigation.navControllerDefault('/auth');
+    this.navigation.navControllerDefault('/auth/pages/auth-home');
+  }
+  shop() {
+    this.navigation.navControllerDefault('/shop/tabs/products-list');
   }
   logout(){
     this.facade.appLogout();

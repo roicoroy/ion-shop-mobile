@@ -33,6 +33,7 @@ export class EmailPasswordState {
             )
             .subscribe((user: any) => {
                 if (user) {
+                    console.log(user)
                     this.store.dispatch(new AuthStateActions.SetAuthState(user));
                     // this.store.dispatch(new AuthStateActions.SetUploadedUser(user.user.id));
                     this.utility.dismissLoading();

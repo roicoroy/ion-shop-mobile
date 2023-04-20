@@ -89,6 +89,8 @@ export class AuthState {
         const state = ctx.getState();
         try {
             if (user.jwt && user.user) {
+                console.log('zzzz',user)
+
                 this.setTokenResponse(user);
                 const medusaCustomerID = await this.medusaCartInit(user.user.email);
                 if (medusaCustomerID) {

@@ -1,20 +1,71 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { NgxsModule, Store } from '@ngxs/store';
+import { CustomComponentsModule } from 'projects/components/src/public-api';
+import { Observable } from 'rxjs';
+import { IAppFacadeState } from 'src/app/app.facade';
+import { IProductsListFacadeState, ProductsListFacade } from './products-list.facade';
+import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
+import { addSelectedVariant, addSelectedProduct, clearSelectedProduct } from 'src/app/store/products/products.actions';
+import { VariantModalPage } from '../variant-modal/variant-modal.page';
 
 @Component({
   selector: 'app-products-list',
   templateUrl: './products-list.page.html',
   styleUrls: ['./products-list.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    TranslateModule,
+    NgxsModule,
+    NgxsFormPluginModule,
+    NgxsStoragePluginModule,
+    CustomComponentsModule,
+    VariantModalPage
+  ]
 })
 export class ProductsListPage implements OnInit {
 
-  constructor() { }
+  private facade = inject(ProductsListFacade);
+  private navigation = inject(NavigationService);
+  private modalCtrl = inject(ModalController);
+  private store = inject(Store);
+
+  viewState$: Observable<IProductsListFacadeState>;
+
+  constructor() {
+    this.viewState$ = this.facade.viewState$
+    this.viewState$.subscribe((vs) => {
+      console.log(vs);
+    });
+  }
 
   ngOnInit() {
   }
-
+  async selectVariant(variant: any) {
+    this.store.dispatch(new addSelectedVariant(variant));
+    const modal = await this.modalCtrl.create({
+      component: VariantModalPage,
+      componentProps: {
+        variant: variant
+      },
+      cssClass: 'dialog-modal'
+    });
+    await modal.present();
+  }
+  navigateDetails(product: any) {
+    this.navigation.navigateFlip('product-details');
+    this.store.dispatch(new addSelectedProduct(product));
+  }
+  navigateHome() {
+    this.store.dispatch(new clearSelectedProduct());
+    this.navigation.navigateFlip('/home');
+  }
 }

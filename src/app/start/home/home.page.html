@@ -1,4 +1,7 @@
-<ion-header [translucent]="true">
+
+<app-header></app-header>
+
+<!-- <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="logout()">
@@ -19,7 +22,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content [fullscreen]="true">
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
@@ -35,6 +38,10 @@
   </ion-header>
 
   <ion-list *ngIf="viewState$ | async as vs">
-    auth vs: {{ vs | json }}
   </ion-list>
+
+  <ion-button (click)="shop()" expand="block"  shape="round">
+    Enter Shop
+  </ion-button>
+
 </ion-content>

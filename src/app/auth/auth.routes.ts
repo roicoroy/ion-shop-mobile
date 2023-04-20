@@ -1,15 +1,12 @@
 import { Routes } from '@angular/router';
-import { AuthHomePage } from './auth-home.page';
-
 
 export const routes: Routes = [
   {
     path: 'pages',
-    component: AuthHomePage,
     children: [
       {
         path: 'auth-home',
-        loadComponent: () => import('./auth-home.page').then(m => m.AuthHomePage)
+        loadComponent: () => import('./auth-home/auth-home.page').then(m => m.AuthHomePage)
       },
       {
         path: 'strapi-auth0',

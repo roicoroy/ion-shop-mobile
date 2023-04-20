@@ -19,16 +19,20 @@ export const routes: Routes = [
     loadChildren: () => import('./shop/shop.routes').then((m) => m.routes),
   },
   {
+    path: 'checkout',
+    loadChildren: () => import('./checkout/checkout.module').then((m) => m.CheckoutPageModule),
+  },
+  {
     path: 'user',
     loadComponent: () => import('./start/profile/user/user.page').then(m => m.UserPage)
   },
   {
     path: 'orders',
-    loadChildren: () => import('./start/profile/customer/orders/orders.module').then(m => m.OrdersPageModule)
+    loadComponent: () => import('./start/profile/customer/orders/orders.module').then(m => m.OrdersPageModule)
   },
   {
     path: 'customer-addresses',
-    loadChildren: () => import('./start/profile/customer/customer-addresses/customer-addresses.module').then(m => m.CustomerAddressesPageModule)
+    loadComponent: () => import('./start/profile/customer/customer-addresses/customer-addresses.module').then(m => m.CustomerAddressesPageModule)
   },
   {
     path: 'customer',

@@ -6,9 +6,9 @@ import { addSelectedProduct, addSelectedVariant, clearSelectedProduct, clearSele
 import { ErrorLoggingActions } from "../error-logging/error-logging.actions";
 
 export interface ProductStateModel {
-    selectedProduct: any | null;
-    selectedVariant: any | null;
-    productsList: any | null;
+    selectedProduct: any;
+    selectedVariant: any;
+    productsList: any;
 }
 
 export const initStateModel: ProductStateModel = {
@@ -53,7 +53,8 @@ export class ProductState {
         }
         catch (err: any) {
             if (err) {
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));            }
+                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
+            }
         }
     }
     @Action(addSelectedProduct)
