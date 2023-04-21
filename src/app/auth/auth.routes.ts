@@ -13,8 +13,8 @@ export const routes: Routes = [
         loadComponent: () => import('./auth0/auth0.page').then(m => m.Auth0Page)
       },
       {
-        path: 'email-password',
-        loadComponent: () => import('./email-password/email-password.page').then(m => m.EmailPasswordPage)
+        path: 'email',
+        loadChildren: () => import('./email-flow/email-password.routes').then(m => m.routes)
       },
       {
         path: '',

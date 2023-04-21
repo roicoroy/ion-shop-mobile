@@ -3,7 +3,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/start/tabs/home"></ion-back-button>
+      <ion-back-button (click)="navigateBack()"></ion-back-button>
     </ion-buttons>
     <ion-title> Start Checkout </ion-title>
     <ion-buttons slot="end">
@@ -21,7 +21,7 @@
 
   <ion-grid>
     <ion-row *ngIf="viewState$ | async as vs">
-      <ion-col size="12" *ngIf="vs?.isCustomerLoggedIn; else loggedOut">
+      <ion-col size="12" *ngIf="vs?.isLoggedIn">
         Strapi and Medusa Logged in, hello:
         <ion-item>
           <ion-label>{{ vs.user?.first_name }}</ion-label>
@@ -29,12 +29,7 @@
         </ion-item>
       </ion-col>
 
-      <ng-template #loggedOut>
-        <ion-col size="12">
-        </ion-col>
-      </ng-template>
-
-      <ion-col size="12" *ngIf="vs?.isLoggedIn&& vs?.cart !== null">
+      <ion-col size="12" *ngIf="vs?.isLoggedIn && vs?.cart !== null">
         <ion-button
           (click)="cartReviewMedusa()"
           expand="block"

@@ -10,6 +10,7 @@ import { IResAuthRegister } from 'src/app/shared/types/responses/ResAuthRegister
 import { ICustomerLoginData, ICustomerRegisterData } from 'src/app/shared/types/types.interfaces';
 import { ErrorLoggingActions } from '../error-logging/error-logging.actions';
 import { AuthStateService } from './auth-state.service';
+import { StateClear } from 'ngxs-reset-plugin';
 
 export class IAuthStateModel {
     isLoggedIn: boolean;
@@ -216,6 +217,8 @@ export class AuthState {
     authStateLogout(ctx: StateContext<IAuthStateModel>, { }: AuthStateActions.AuthStateLogout) {
         this.authService.medusaLogout();
         this.tokenService.deleteToken();
+        this.store.dispatch(new StateClear());
+        
         return ctx.setState({
             isLoggedIn: null,
             userId: null,
@@ -242,7 +245,7 @@ export class AuthState {
             }
         }
     }
-    async medusaCartInit(email: string, password?: string) {
+    async medusaCartInit(email: string) {
         try {
             const medusaEmailExist = await this.medusa.auth.exists(email);
             if (medusaEmailExist.exists) {

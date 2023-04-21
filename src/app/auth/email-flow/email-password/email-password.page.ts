@@ -74,11 +74,11 @@ export class EmailPasswordPage implements OnDestroy {
       });
     // const errorEntry = this.store.selectSnapshot<any>((state) => state.errorsLogging.errorEntry);
   }
-  back(): void {
-    this.navigation.navControllerDefault('/auth-home');
+  forgotPassowordPage(): void {
+    this.navigation.navControllerDefault('auth/pages/email/flow/forgot-password');
   }
-  register(): void {
-    // this.navigation.navControllerDefault(AuthRoutePath.registerUser);
+  registerPage(): void {
+    this.navigation.navControllerDefault('/auth/pages/email/flow/register');
   }
   getBackButtonText() {
     const isIos = this.platform.is('ios')

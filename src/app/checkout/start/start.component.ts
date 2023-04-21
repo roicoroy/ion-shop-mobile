@@ -4,6 +4,7 @@ import { Store } from "@ngxs/store";
 import { Observable } from "rxjs";
 import { StartFacade } from "./start.facade";
 import { NavigationService } from "src/app/shared/services/navigation/navigation.service";
+import { AuthStateActions } from "src/app/store/auth/auth.actions";
 
 @Component({
   selector: 'app-start',
@@ -25,11 +26,14 @@ export class StartComponent {
   ) {
     this.viewState$ = this.facade.viewState$;
     this.viewState$.subscribe((state) => {
-      console.log(state);
+      console.log(state.isLoggedIn);
+      if (!state.isLoggedIn) {
+        this.store.dispatch(new AuthStateActions.getMedusaSession);
+      }
     });
   }
   navigateBack() {
-    this.navigation.navigateForward('/home', 'back');
+    this.navigation.navigateForward('/start/tabs/home', 'back');
   }
   cartReviewMedusa() {
     this.navigation.navigateFlip('/checkout/flow/cart-review');

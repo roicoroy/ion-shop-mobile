@@ -4,6 +4,7 @@ import Medusa from "@medusajs/medusa-js";
 import { environment } from 'src/environments/environment';
 import { ShippingActions } from './shipping.actions';
 import { ErrorLoggingActions } from '../error-logging/error-logging.actions';
+import { MedusaActions } from '../medusa/medusa.actions';
 
 export interface ShippingStateModel {
     shipping_options: string;
@@ -93,7 +94,7 @@ export class ShippingState {
             const cart = await this.medusaClient.carts.setPaymentSession(cartRes.id, {
                 provider_id: provider_id,
             });
-            // this.store.dispatch(new MedusaActions.SecretKey(cart.cart.payment_session.data?.client_secret));
+            this.store.dispatch(new MedusaActions.SecretKey(cart.cart.payment_session.data?.client_secret));
             ctx.patchState({
                 provider_id: cart.cart?.provider_id
             });

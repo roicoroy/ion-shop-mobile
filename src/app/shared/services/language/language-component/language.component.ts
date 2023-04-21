@@ -12,7 +12,7 @@ import { LanguageService, SAVED_LANGUAGE } from '../language.service';
   templateUrl: './language.component.html',
   styleUrls: ['./language.component.scss'],
 })
-export class LanguageComponent implements OnInit {
+export class LanguageComponent {
   profile: any;
   availableLanguages: any = [];
   translations: any;
@@ -25,25 +25,18 @@ export class LanguageComponent implements OnInit {
     private storageService: StorageService,
     public popoverController: PopoverController,
   ) {
-    // this.getTranslations();
-  }
-  ngOnInit(): void {
     this.availableLanguages = this.languageService.getLanguages();
-    // throw new Error('Method not implemented.');
   }
 
   ionViewWillEnter() {
     this.storageService.storageGet(SAVED_LANGUAGE).then((language) => {
-      // console.log(language);
       this.selectedLanguage = language;
     });
-    // console.log(this.availableLanguages);
   }
 
   selectLanguage(item: any) {
-    // console.log(item);
+
     this.selectedLanguage = item?.code;
-    // console.log(this.selectedLanguage);
     this.translate.use(this.selectedLanguage);
     this.storageService.storageSet(SAVED_LANGUAGE, this.selectedLanguage);
     this.popoverController.dismiss();
@@ -51,45 +44,9 @@ export class LanguageComponent implements OnInit {
   }
 
   getTranslations() {
-    // get translations for this page to use in the Language Chooser Alert
     this.translate.getTranslation(this.translate.currentLang)
       .subscribe((translations) => {
         this.translations = translations;
       });
   }
-
-  // async openLanguageChooser() {
-  //   this.availableLanguages = this.languageService.getLanguages()
-  //     .map((item: any) => ({
-  //       name: item.name,
-  //       type: 'radio',
-  //       label: item.name,
-  //       value: item.code,
-  //       checked: item.code === this.translate.currentLang
-  //     }));
-
-  //   const alert = await this.alertController.create({
-  //     header: this.translations.SELECT_LANGUAGE,
-  //     inputs: this.availableLanguages,
-  //     cssClass: 'language-alert',
-  //     buttons: [
-  //       {
-  //         text: this.translations.CANCEL,
-  //         role: 'cancel',
-  //         cssClass: 'translate-alert',
-  //         handler: () => { }
-  //       }, {
-  //         text: this.translations.OK,
-  //         handler: (data) => {
-  //           console.log(data);
-  //           if (data) {
-  //             this.translate.use(data);
-  //             this.storageService.storageSet(SAVED_LANGUAGE, data);
-  //           }
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   await alert.present();
-  // }
 }

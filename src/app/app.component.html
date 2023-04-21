@@ -25,26 +25,10 @@
               <ion-label>{{ 'Home' }}</ion-label>
             </ion-item>
 
-            <ion-item routerDirection="root" routerLink="/products-list" lines="none" detail="false">
-              <ion-icon slot="start" name="cart"></ion-icon>
-              <ion-label>{{ 'Products List' }}</ion-label>
-            </ion-item>
-
-            <ion-item routerDirection="root" routerLink="/checkout/flow/start" lines="none" detail="false">
-              <ion-icon slot="start" name="cart"></ion-icon>
-              <ion-label>{{ 'Checkout' }}</ion-label>
-            </ion-item>
-
-            <ion-item *ngIf="!vs.isLoggedIn" routerDirection="root" routerLink="/auth/login" lines="none"
+            <ion-item *ngIf="!vs.isLoggedIn" routerDirection="root" routerLink="/auth/auth-home" lines="none"
               detail="false">
               <ion-icon slot="start" name="home"></ion-icon>
               <ion-label>{{ 'Login' }}</ion-label>
-            </ion-item>
-
-            <ion-item *ngIf="vs.isLoggedIn" routerDirection="root" routerLink="/profile" lines="none"
-              detail="false">
-              <ion-icon slot="start" name="home"></ion-icon>
-              <ion-label>{{ 'Profile' }}</ion-label>
             </ion-item>
 
             <ion-item *ngIf="vs.isLoggedIn" (click)="logout()" lines="none" detail="false">

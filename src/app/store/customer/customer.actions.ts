@@ -1,10 +1,6 @@
 import { IRegisterAddress } from "src/app/shared/types/types.interfaces";
 
 export namespace CustomerActions {
-    export class GetMedusaCustomer {
-        static readonly type = '[CustomerActions] Get Medusa Customer';
-        constructor(public customerId?: string) { }
-    }
     export class AddAShippingAddress {
         static readonly type = '[CustomerActions] Add a Shipping Address to customer';
         constructor(public payload: IRegisterAddress | any) { }

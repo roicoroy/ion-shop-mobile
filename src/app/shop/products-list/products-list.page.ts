@@ -60,7 +60,7 @@ export class ProductsListPage implements OnInit {
     await modal.present();
   }
   navigateDetails(product: any) {
-    this.navigation.navigateFlip('product-details');
+    this.navigation.navControllerDefault('/product-details');
     this.store.dispatch(new addSelectedProduct(product));
   }
   navigateHome() {

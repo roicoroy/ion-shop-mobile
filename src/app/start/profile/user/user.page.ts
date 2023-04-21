@@ -1,7 +1,7 @@
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, EnvironmentInjector, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, PopoverController } from '@ionic/angular';
 import { NgxsModule } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
 import { ImagePickerComponent } from './image-picker/image-picker.component';
@@ -13,6 +13,8 @@ import { scaleHeight } from 'src/app/shared/animations/animations';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { ThemeComponent } from './theme/theme.component';
+import { LanguageComponent } from 'src/app/shared/services/language/language-component/language.component';
+import { LanguageModule } from 'src/app/shared/services/language/language.module';
 
 @Component({
   selector: 'app-user',
@@ -33,7 +35,8 @@ import { ThemeComponent } from './theme/theme.component';
     ReactiveFormsModule,
     ImagePickerComponent,
     KeypadModule,
-    ThemeComponent
+    ThemeComponent,
+    LanguageModule
   ],
 })
 export class UserPage implements OnInit, AfterViewInit {
@@ -73,6 +76,7 @@ export class UserPage implements OnInit, AfterViewInit {
 
   private facade = inject(UserProfileFacade);
   private formBuilder = inject(FormBuilder);
+  private popoverController = inject(PopoverController);
 
   constructor() {
     this.viewState$ = this.facade.viewState$;
@@ -100,7 +104,18 @@ export class UserPage implements OnInit, AfterViewInit {
   }
   ngAfterViewInit() {
   }
+  async presentPopover(e: Event) {
+    const popover = await this.popoverController.create({
+      component: LanguageComponent,
+      event: e,
+    });
 
+    await popover.present();
+
+    // const { role } = await popover.onDidDismiss();
+    // console.log('onDidDismiss resolved with role', role);
+    // this.roleMsg = `Popover dismissed with role: ${role}`;
+  }
   onFCMChange($event: any) {
     this.pushAccepted = $event.detail.checked;
     this.facade.setFCMStatus(this.pushAccepted);

@@ -29,7 +29,7 @@ export class MedusaState {
     }
     @Action(MedusaActions.SecretKey)
     async secretKey(ctx: StateContext<MedusaStateModel>, { secretKey }: MedusaActions.SecretKey) {
-        // console.log(secretKey);
+        console.log(secretKey);
         try {
             ctx.patchState({
                 secretKey: secretKey,

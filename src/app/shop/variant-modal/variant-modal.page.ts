@@ -37,13 +37,13 @@ export class VariantModalPage implements OnInit {
     this.viewState$ = this.facade.viewState$;
   }
   addToCart() {
-    const cartId = this.store.selectSnapshot<any>((state) => state.cart?.cartId);
+    const cartId = this.store.selectSnapshot<any>((state) => state.cart.cart?.id);
     if (cartId != null && this.variant != null) {
       this.store.dispatch(new CartActions.AddProductMedusaToCart(cartId, this.counterInput.counterValue, this.variant?.id));
       this.dismiss();
     } else {
       this.store.dispatch(new CartActions.CreateMedusaCart()).subscribe((state) => {
-        this.store.dispatch(new CartActions.AddProductMedusaToCart(state.cart?.cartId, this.counterInput.counterValue, this.variant?.id));
+        this.store.dispatch(new CartActions.AddProductMedusaToCart(state.cart?.id, this.counterInput.counterValue, this.variant?.id));
         this.dismiss();
       });
     }

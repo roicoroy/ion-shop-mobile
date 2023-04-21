@@ -6,6 +6,7 @@ import { NavigationService } from 'src/app/shared/services/navigation/navigation
 import { Store } from '@ngxs/store';
 import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { CustomComponentsModule } from 'src/app/components/components.module';
 
 @Component({
   selector: 'app-profile',
@@ -15,8 +16,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
   imports: [
     IonicModule,
     CommonModule,
-    FormsModule,
-    NgxsFormPluginModule
+    CustomComponentsModule
   ]
 })
 export class ProfilePage implements OnInit {

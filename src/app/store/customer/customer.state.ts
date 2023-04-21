@@ -19,41 +19,15 @@ export class CustomerStateModel {
 })
 @Injectable()
 export class CustomerState {
-
     medusa: any;
-
-    headers_json = new HttpHeaders().set('Content-Type', 'application/json');
-
     constructor(
         private store: Store,
     ) {
         this.medusa = new Medusa({ baseUrl: environment.MEDUSA_API_BASE_PATH, maxRetries: 10 });
     }
-    // @Selector()
-    // static getCustomer(state: CustomerStateModel) {
-    //     return state.customer;
-    // }
-    @Action(CustomerActions.GetMedusaCustomer)
-    async getMedusaCustomer(ctx: StateContext<CustomerStateModel>, { customerId }: CustomerActions.GetMedusaCustomer) {
-        try {
-            let sessionRes = await this.medusa.auth?.getSession();
-            let customerRes = await this.medusa.customers.retrieve();
-            if (customerRes) {
-                const state = ctx.getState();
-                ctx.patchState({
-                    ...state,
-                    customer: customerRes.customer,
-                });
-            }
-        }
-        catch (err: any) {
-            if (err) {
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-            }
-        }
-    }
     @Action(CustomerActions.AddAShippingAddress)
     async addaShippingAddress(ctx: StateContext<CustomerStateModel>, { payload }: CustomerActions.AddAShippingAddress) {
+        console.log(payload)
         try {
             let customer = await this.medusa.customers.addresses.addAddress({
                 address: {
@@ -111,20 +85,4 @@ export class CustomerState {
             }
         }
     }
-    // @Action(CustomerActions.AddCustomerToCart)
-    // async updateCart(ctx: StateContext<CustomerStateModel>, { customerId }: CustomerActions.AddCustomerToCart) {
-    //     try {
-    //         const cart = await this.store.selectSnapshot<any>((state: any) => state.cart?.cart);
-    //         let cartRes = await this.medusaClient.carts.update(cart?.id, {
-    //             customer_id: customerId,
-    //         });
-    //         console.log(cartRes);
-    //         ;
-    //     }
-    //     catch (err: any) {
-    //         if (err) {
-    //             this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-    //         }
-    //     }
-    // }
 }

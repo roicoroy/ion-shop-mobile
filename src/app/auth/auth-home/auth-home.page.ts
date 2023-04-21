@@ -33,7 +33,7 @@ export class AuthHomePage {
     this.navigation.navControllerDefault('auth/pages/strapi-auth0');
   }
   loginEmailPassword() {
-    this.navigation.navControllerDefault('auth/pages/email-password');
+    this.navigation.navControllerDefault('auth/pages/email/flow/email-password');
   }
 
   // loginPasswordless() {

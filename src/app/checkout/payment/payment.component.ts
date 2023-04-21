@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { StripeElementsOptions } from '@stripe/stripe-js';
 import { StripePaymentElementComponent, StripeService } from 'ngx-stripe';
@@ -46,7 +46,7 @@ export class PaymentComponent implements OnDestroy {
         this.utility.showToast(result.error?.message, 'middle', 1500);
       }
       if (!result.error) {
-        const cartId = await this.store.selectSnapshot<any>((state: any) => state.cart?.cartId);
+        const cartId = await this.store.selectSnapshot<any>((state: any) => state.cart.cart?.id);
 
         this.store.dispatch(new CartActions.CompleteCart(cartId));
         this.store.dispatch(new MedusaActions.LogOut());

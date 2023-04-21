@@ -5,14 +5,11 @@ import { map } from 'rxjs/operators';
 import { AuthStateActions } from 'src/app/store/auth/auth.actions';
 import { AuthState } from 'src/app/store/auth/auth.state';
 import { CartState } from 'src/app/store/cart/cart.state';
-import { CustomerState } from 'src/app/store/customer/customer.state';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AddressesFacade {
-
-    @Select(CartState.getIsGuest) isGuest$: Observable<any>;
 
     @Select(CartState.getCart) cart$: Observable<any>;
 
