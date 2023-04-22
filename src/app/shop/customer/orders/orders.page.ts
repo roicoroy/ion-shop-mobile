@@ -1,15 +1,29 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { Store } from '@ngxs/store';
+import { Component, OnInit, inject } from '@angular/core';
+import { IonicModule, ModalController } from '@ionic/angular';
+import { NgxsModule, Store } from '@ngxs/store';
 import { OrderDetailsComponent } from 'src/app/components/components/order-details/order-details.component';
 import { Observable } from 'rxjs';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
 import { CustomerFacade } from '../customer.facade';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.page.html',
   styleUrls: ['./orders.page.scss'],
+  standalone: true,
+  imports: [
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxsModule,
+    NgxsFormPluginModule,
+    TranslateModule,
+  ]
 })
 export class OrdersPage implements OnInit {
 
@@ -17,12 +31,12 @@ export class OrdersPage implements OnInit {
 
   presentingElement: any = HTMLElement;
 
-  constructor(
-    private store: Store,
-    private modalCtrl: ModalController,
-    private navigation: NavigationService,
-    private facade: CustomerFacade
-  ) {
+  private store = inject(Store);
+  private modalCtrl = inject(ModalController);
+  private navigation = inject(NavigationService);
+  private facade = inject(CustomerFacade);
+
+  constructor() {
     this.viewState$ = this.facade.viewState$;
     // this.viewState$.subscribe((state) => {
     //   console.log(state);

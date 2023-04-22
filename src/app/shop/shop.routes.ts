@@ -8,16 +8,12 @@ export const routes: Routes = [
     children: [
       {
         path: 'products-list',
-        loadComponent: () => import('./products-list/products-list.page').then( m => m.ProductsListPage)
+        loadComponent: () => import('./products-list/products-list.page').then(m => m.ProductsListPage)
       },
-      // {
-      //   path: 'product-details',
-      //   loadComponent: () => import('./product-details/product-details.page').then( m => m.ProductDetailsPage)
-      // },
-      // {
-      //   path: 'variant-modal',
-      //   loadComponent: () => import('./variant-modal/variant-modal.page').then( m => m.VariantModalPage)
-      // },
+      {
+        path: 'customer',
+        loadComponent: () => import('./customer/customer.page').then(m => m.CustomerPage)
+      },
       {
         path: '',
         redirectTo: '/tabs/product-list',

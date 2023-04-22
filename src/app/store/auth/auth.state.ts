@@ -85,8 +85,8 @@ export class AuthState {
     async loadApp(ctx: StateContext<IAuthStateModel>) {
         const state = ctx.getState();
         // console.log(state.isLoggedIn);
-        // console.log(state.userId);
-        if (state.userId === null && state.isLoggedIn === null) {
+        console.log(state);
+        if (state.userId === null && state.session === null) {
             this.store.dispatch(new AuthStateActions.AuthStateLogout());
         }
         if (state.session === null && state.customer === null) {
@@ -185,25 +185,27 @@ export class AuthState {
 
     @Action(AuthStateActions.getMedusaSession)
     async getSession(ctx: StateContext<IAuthStateModel>) {
-        const userEmail = await this.store.selectSnapshot<any>((state: any) => state.authState?.userEmail);
         try {
-            const id = await this.medusaCartInit(userEmail);
-            if (id) {
-                const sessionRes = await this.medusa.auth?.getSession();
-                const customerRes = await this.medusa.customers.retrieve();
-                if (sessionRes?.customer != null
-                    && sessionRes.response?.status === 200
-                    && customerRes?.customer != null
-                    && customerRes.response?.status === 200
-                ) {
-                    ctx.patchState({
-                        isLoggedIn: true,
-                        userEmail: sessionRes?.customer.email,
-                        medusaId: customerRes?.customer.id,
-                        customer: customerRes.customer,
-                        session: sessionRes.customer,
-                        hasSession: true,
-                    });
+            const userEmail = await this.store.selectSnapshot<any>((state: any) => state.authState?.userEmail);
+            if (userEmail) {
+                const id = await this.medusaCartInit(userEmail);
+                if (id) {
+                    const sessionRes = await this.medusa.auth?.getSession();
+                    const customerRes = await this.medusa.customers.retrieve();
+                    if (sessionRes?.customer != null
+                        && sessionRes.response?.status === 200
+                        && customerRes?.customer != null
+                        && customerRes.response?.status === 200
+                    ) {
+                        ctx.patchState({
+                            isLoggedIn: true,
+                            userEmail: sessionRes?.customer.email,
+                            medusaId: customerRes?.customer.id,
+                            customer: customerRes.customer,
+                            session: sessionRes.customer,
+                            hasSession: true,
+                        });
+                    }
                 }
             }
         } catch (err: any) {

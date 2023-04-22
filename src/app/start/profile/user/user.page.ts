@@ -12,7 +12,7 @@ import { UserProfileFacade } from './user-facade';
 import { scaleHeight } from 'src/app/shared/animations/animations';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
-import { LanguageComponent } from 'src/app/shared/services/language/language-component/language.component';
+import { LanguageComponent } from 'src/app/start/profile/user/language-component/language.component';
 import { LanguageModule } from 'src/app/shared/services/language/language.module';
 import { ChangePasswordModalComponent } from './change-password-modal/change-password-modal.component';
 import { CustomComponentsModule } from 'src/app/components/components.module';
@@ -51,6 +51,8 @@ export class UserPage {
   pushAccepted = false;
   isDarkMode = false;
 
+  isButtonActive: any = null;
+
   userForm: FormGroup;
   uploadForm: FormGroup;
 
@@ -80,17 +82,11 @@ export class UserPage {
 
   private facade = inject(UserProfileFacade);
   private formBuilder = inject(FormBuilder);
-  private popoverController = inject(PopoverController);
+
   private modalCtrl = inject(ModalController);
-  
+
   constructor() {
     this.viewState$ = this.facade.viewState$;
-    // this.viewState$.subscribe((vs) => {
-    //   // console.log(vs?.user?.avatar);
-    //   if (vs?.user) {
-    //     this.avatar = vs?.user.avatar?.url;
-    //   }
-    // });
     this.userForm = this.formBuilder.group({
       username: new FormControl('', Validators.compose([
         Validators.required
@@ -100,10 +96,17 @@ export class UserPage {
       ])),
       first_name: new FormControl('', Validators.required),
       last_name: new FormControl('', Validators.required),
-      fcm_accepted: new FormControl(null),
-      push_accepted: new FormControl(null),
-      is_dark_mode: new FormControl(null),
     });
+    this.viewState$
+      .subscribe((vs) => {
+        console.log(vs.user);
+        if (vs?.user != null) {
+          this.userForm.get('username').setValue(vs.user.username);
+          this.userForm.get('email').setValue(vs.user.email);
+          this.userForm.get('first_name').setValue(vs.user.first_name);
+          this.userForm.get('last_name').setValue(vs.user.last_name);
+        }
+      });
   }
   async changePassrwordModal() {
     const modal = await this.modalCtrl.create({
@@ -115,16 +118,10 @@ export class UserPage {
     await modal.present();
   }
   async presentLanguagePopover(e: Event) {
-    const popover = await this.popoverController.create({
+    const modal = await this.modalCtrl.create({
       component: LanguageComponent,
-      event: e,
     });
-
-    await popover.present();
-
-    // const { role } = await popover.onDidDismiss();
-    // console.log('onDidDismiss resolved with role', role);
-    // this.roleMsg = `Popover dismissed with role: ${role}`;
+    await modal.present();
   }
   onFCMChange($event: any) {
     this.pushAccepted = $event.detail.checked;
@@ -135,8 +132,11 @@ export class UserPage {
     this.isDarkMode = $event.detail.checked;
     this.facade.setDarkMode(this.isDarkMode);
   }
-  uploadProfilePicture() {
-    this.facade.appUploadProfileImage(this.formData);
+  updateUser() {
+    console.log(this.userForm.value);
+  }
+  uploadProfilePicture(formData: FormData) {
+    this.facade.appUploadProfileImage(formData);
   }
   async onImagePicked(file: any) {
     const response = await fetch(file);
@@ -145,6 +145,7 @@ export class UserPage {
     const formData = new FormData();
     formData.append('files', blob, file.name);
     this.formData.append('files', blob, file.name);
+    this.uploadProfilePicture(formData);
     return this.formData;
   }
   changePasswordPage() {
@@ -154,5 +155,4 @@ export class UserPage {
     this.ngUnsubscribe.next(null);
     this.ngUnsubscribe.complete();
   }
-
 }

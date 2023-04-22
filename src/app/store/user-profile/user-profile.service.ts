@@ -23,6 +23,13 @@ export class UserProfileStateService {
             avatar: fileId,
         }, { headers: this.headers });
     }
+    public updateStrapiUserFcm(userId: string, accepted_fcm: boolean, device_token: string): Observable<any> {
+        return this.httpClient.put(environment.BASE_PATH + '/api/users/' + userId, {
+            accepted_fcm: accepted_fcm,
+            device_token: '123',
+        }
+        );
+    }
     public updateStrapiUserProfile(userId: string, profileForm: any): Observable<any> {
         return this.httpClient.put(environment.BASE_PATH + '/api/users/' + userId, profileForm, { headers: this.headers });
     }

@@ -8,8 +8,8 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
-import { addSelectedVariant, addSelectedProduct, clearSelectedProduct } from 'src/app/store/products/products.actions';
-import { VariantModalPage } from '../variant-modal/variant-modal.page';
+import { addSelectedVariant, addSelectedProduct, clearSelectedProduct, GetProductList } from 'src/app/store/products/products.actions';
+import { VariantModalPage } from './variant-modal/variant-modal.page';
 import { CustomComponentsModule } from 'src/app/components/components.module';
 import { IShopFacadeState, ShopFacade } from '../shop.facade';
 
@@ -39,14 +39,12 @@ export class ProductsListPage implements OnInit {
 
   viewState$: Observable<IShopFacadeState>;
 
-  constructor() {
+  ngOnInit() {
     this.viewState$ = this.facade.viewState$
     // this.viewState$.subscribe((vs) => {
     //   console.log(vs);
     // });
-  }
-
-  ngOnInit() {
+    this.store.dispatch(new GetProductList());
   }
   async selectVariant(variant: any) {
     this.store.dispatch(new addSelectedVariant(variant));

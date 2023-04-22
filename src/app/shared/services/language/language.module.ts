@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { LanguageComponent } from "./language-component/language.component";
+import { LanguageComponent } from "../../../start/profile/user/language-component/language.component";
 import { IonicModule } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
 import { NgxsFormPluginModule } from "@ngxs/form-plugin";

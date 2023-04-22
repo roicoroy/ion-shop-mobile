@@ -1,10 +1,10 @@
 
 import { Component, OnInit } from '@angular/core';
-import { AlertController, PopoverController } from '@ionic/angular';
+import { AlertController, ModalController, PopoverController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { StorageService } from '../../storage/ionstorage.service';
-import { LanguageService, SAVED_LANGUAGE } from '../language.service';
+import { StorageService } from '../../../../shared/services/storage/ionstorage.service';
+import { LanguageService, SAVED_LANGUAGE } from '../../../../shared/services/language/language.service';
 
 
 @Component({
@@ -23,6 +23,7 @@ export class LanguageComponent {
     public languageService: LanguageService,
     public alertController: AlertController,
     private storageService: StorageService,
+    private modalCtrl: ModalController,
     public popoverController: PopoverController,
   ) {
     this.availableLanguages = this.languageService.getLanguages();
@@ -33,20 +34,23 @@ export class LanguageComponent {
       this.selectedLanguage = language;
     });
   }
-
   selectLanguage(item: any) {
-
     this.selectedLanguage = item?.code;
     this.translate.use(this.selectedLanguage);
     this.storageService.storageSet(SAVED_LANGUAGE, this.selectedLanguage);
     this.popoverController.dismiss();
     this.getTranslations();
   }
-
   getTranslations() {
     this.translate.getTranslation(this.translate.currentLang)
       .subscribe((translations) => {
         this.translations = translations;
       });
+  }
+  async submitForm() {
+    await this.modalCtrl.dismiss();
+  }
+  async closeModal() {
+    await this.modalCtrl.dismiss();
   }
 }

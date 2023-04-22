@@ -9,11 +9,10 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { CounterInputComponent } from 'src/app/components/components/counter-input/counter-input.component';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
-import { CartActions } from 'src/app/store/cart/cart.actions';
 import { clearSelectedProduct } from 'src/app/store/products/products.actions';
-import { ShopFacade } from '../shop.facade';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { ShopFacade } from '../../shop.facade';
 
 @Component({
   selector: 'app-product-details',

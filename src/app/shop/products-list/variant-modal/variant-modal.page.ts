@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { CartActions } from 'src/app/store/cart/cart.actions';
 import { Store } from '@ngxs/store';
 import { CustomComponentsModule } from 'src/app/components/components.module';
-import { ShopFacade } from '../shop.facade';
+import { ShopFacade } from '../../shop.facade';
 
 @Component({
   selector: 'app-variant-modal',

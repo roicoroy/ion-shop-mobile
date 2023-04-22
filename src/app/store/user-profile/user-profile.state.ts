@@ -1,26 +1,23 @@
 import { Injectable, inject } from "@angular/core";
 import { State, Action, StateContext, Store } from "@ngxs/store";
 import { UserProfileActions } from "./user-profile.actions";
-import { AuthState } from "../auth/auth.state";
-import { AuthStateActions } from "../auth/auth.actions";
 import { UserProfileStateService } from "./user-profile.service";
-import { NgForm } from "@angular/forms";
 
 export class UserProfileModel {
-    isDarkMode: boolean;
-    fcmAccepted: boolean;
+    // isDarkMode: boolean;
+    // fcmAccepted: boolean;
     // userForm: {
     //     model?: any;
     // };
 }
 
-@State<UserProfileModel>({
+@State({
     name: 'userProfile',
-    defaults: {
-        isDarkMode: null,
-        fcmAccepted: null,
-        // userForm: null
-    }
+    // defaults: {
+    //     // isDarkMode: null,
+    //     // fcmAccepted: null,
+    //     // userForm: null
+    // }
 })
 @Injectable()
 export class UserProfileState {
@@ -40,6 +37,13 @@ export class UserProfileState {
     updateFcmAccepted(ctx: StateContext<UserProfileModel>, action: UserProfileActions.UpdateFcmAccepted): void {
         const state = ctx.getState();
         console.log(state);
+        const userId = this.store.selectSnapshot<any>((state: any) => state.authState?.userId);
+        this.service.updateStrapiUserFcm(userId, action.fcmAccepted, '123')
+            .subscribe((user) => {
+                console.log(user);
+            });
+
+
         ctx.patchState({
             ...state,
             fcmAccepted: action.fcmAccepted,
@@ -63,17 +67,7 @@ export class UserProfileState {
     }
     @Action(UserProfileActions.UploadImage)
     uploadImage(ctx: StateContext<UserProfileModel>, action: UserProfileActions.UploadImage): void {
-        console.log(action);
         const userId = this.store.selectSnapshot<any>((state: any) => state.authState?.userId);
         this.service.uploadData(action.imageForm, userId);
-        // this.service.uploadStrapiImageToServer(action.imageForm)
-        //     .subscribe((response: any) => {
-        //         if (response) {
-        //             const fileId = response[0].id;
-        //             this.service.setProfileImage(userId, fileId);
-        //             this.store.dispatch(new AuthStateActions.getMedusaSession());
-        //             this.store.dispatch(new AuthStateActions.GetCustomer());
-        //         }
-        //     });
     }
 }

@@ -7,6 +7,7 @@ import { ProductState } from 'src/app/store/products/products.state';
 import { CartActions } from '../store/cart/cart.actions';
 import { AuthStateActions } from '../store/auth/auth.actions';
 import { GetProductList } from '../store/products/products.actions';
+import { UtilityService } from '../shared/services/utility/utility.service';
 
 
 export interface IShopFacadeState {
@@ -32,6 +33,7 @@ export class ShopFacade {
     @Select(ProductState.getProductList) productList$: Observable<any>;
 
     private store = inject(Store);
+    private utility = inject(UtilityService);
 
     readonly viewState$: Observable<IShopFacadeState>;
 
@@ -63,22 +65,26 @@ export class ShopFacade {
         );
     }
     loadApp() {
-        this.store.dispatch(new GetProductList());
         this.store.dispatch(new AuthStateActions.LoadApp());
     }
     addToMedusaCart(selectedVariantId: string, counterValue: number) {
-        const cartId = this.store.selectSnapshot<any>((state) => state.cart.cart?.id);
-        if (cartId != null && selectedVariantId != null) {
-            this.store.dispatch(new AuthStateActions.getMedusaSession());
-            this.store.dispatch(new CartActions.AddProductMedusaToCart(cartId, counterValue, selectedVariantId));
+        const isLoggedIn = this.store.selectSnapshot<any>((state) => state.authState.isLoggedIn);
+        if (isLoggedIn) {
+            const cartId = this.store.selectSnapshot<any>((state) => state.cart?.cart?.id);
+            if (cartId != null && selectedVariantId != null) {
+                this.store.dispatch(new AuthStateActions.getMedusaSession());
+                this.store.dispatch(new CartActions.AddProductMedusaToCart(cartId, counterValue, selectedVariantId));
+            } else {
+
+                this.store.dispatch(new AuthStateActions.getMedusaSession());
+
+                this.store.dispatch(new CartActions.CreateMedusaCart())
+                    .subscribe((state) => {
+                        this.store.dispatch(new CartActions.AddProductMedusaToCart(state.cart.cart?.id, counterValue, selectedVariantId));
+                    });
+            }
         } else {
-
-            this.store.dispatch(new AuthStateActions.getMedusaSession());
-
-            this.store.dispatch(new CartActions.CreateMedusaCart())
-                .subscribe((state) => {
-                    this.store.dispatch(new CartActions.AddProductMedusaToCart(state.cart.cart?.id, counterValue, selectedVariantId));
-                });
+            this.utility.presentAlert('Need to login first, please...');
         }
     }
 }

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
 import { FormGroup, UntypedFormGroup, UntypedFormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IonicModule, ModalController } from '@ionic/angular';
@@ -64,13 +64,11 @@ export class ChangePasswordModalComponent implements OnInit {
   public error: IErrorRes;
   public passwordError: IErrorRes;
 
-  constructor(
-    private modalCtrl: ModalController,
-    protected cd: ChangeDetectorRef,
-    protected router: Router,
-    protected route: ActivatedRoute,
-    protected translate: TranslateService
-  ) { }
+  private modalCtrl = inject(ModalController);
+  private cd = inject(ChangeDetectorRef);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private translate = inject(TranslateService);
 
   ngOnInit() {
     // this.oldUserObj = this.authService.getUser();

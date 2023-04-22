@@ -40,5 +40,4 @@ export class ThemeComponent implements OnInit {
   onChangeTheme(theme: any) {
     this.theme.changeTheme(theme);
   }
-
 }

@@ -6,10 +6,10 @@
         <ion-list id="inbox-list">
           <div *ngIf="vs.isLoggedIn; else loggedOut">
             <ion-list-header>
-              Hello {{ vs.customer.first_name }} {{ vs.customer.last_name }}
+              Hello {{ vs.user?.first_name }} {{ vs.user?.last_name }}
             </ion-list-header>
             <ion-note>
-              {{ vs.customer.email }}
+              {{ vs.user?.email }}
             </ion-note>
           </div>
           <ng-template #loggedOut>

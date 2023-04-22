@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { IUser } from 'src/app/shared/types/models/User';
 import { AuthStateActions } from 'src/app/store/auth/auth.actions';
 import { AuthState } from 'src/app/store/auth/auth.state';
 import { UserProfileActions } from 'src/app/store/user-profile/user-profile.actions';
@@ -18,12 +19,10 @@ export class UserProfileFacade {
     @Select(AuthState.hasSession) hasSession$: Observable<string>;
 
     readonly viewState$: Observable<any>;
+
     private store = inject(Store);
 
-
-    constructor(
-
-    ) {
+    constructor() {
         this.viewState$ = combineLatest(
             [
                 this.isLoggedIn$,
@@ -49,10 +48,7 @@ export class UserProfileFacade {
         );
     }
     appUploadProfileImage(formData: FormData) {
-        this.store.dispatch(new UserProfileActions.UploadImage(formData))
-            // .subscribe((authState) => {
-            //     console.log(authState);
-            // });
+        return this.store.dispatch(new UserProfileActions.UploadImage(formData))
     }
     setDarkMode(isDarkMode: boolean) {
         return this.store.dispatch(new UserProfileActions.UpdateDarkMode(isDarkMode))

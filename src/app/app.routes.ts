@@ -24,7 +24,7 @@ export const routes: Routes = [
   },
   {
     path: 'product-details',
-    loadComponent: () => import('./shop/product-details/product-details.page').then( m => m.ProductDetailsPage)
+    loadComponent: () => import('./shop/products-list/product-details/product-details.page').then( m => m.ProductDetailsPage)
   },
   {
     path: 'user',
@@ -32,14 +32,14 @@ export const routes: Routes = [
   },
   {
     path: 'orders',
-    loadChildren: () => import('./start/profile/customer/orders/orders.module').then(m => m.OrdersPageModule)
+    loadComponent: () => import('./shop/customer/orders/orders.page').then(m => m.OrdersPage)
   },
   {
     path: 'customer-addresses',
-    loadChildren: () => import('./start/profile/customer/customer-addresses/customer-addresses.module').then(m => m.CustomerAddressesPageModule)
+    loadChildren: () => import('./shop/customer/customer-addresses/customer-addresses.module').then(m => m.CustomerAddressesPageModule)
   },
   {
     path: 'customer',
-    loadComponent: () => import('./start/profile/customer/customer.page').then(m => m.CustomerPage)
+    loadComponent: () => import('./shop/customer/customer.page').then(m => m.CustomerPage)
   },
 ];
