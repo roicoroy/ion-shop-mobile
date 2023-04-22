@@ -1,22 +1,20 @@
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, EnvironmentInjector, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonicModule, ModalController, PopoverController } from '@ionic/angular';
-import { NgxsModule } from '@ngxs/store';
-import { Observable, Subject } from 'rxjs';
-import { ImagePickerComponent } from './image-picker/image-picker.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { KeypadModule } from 'src/app/shared/services/native/keyboard/keypad.module';
-
-import { UserProfileFacade } from './user-facade';
-import { scaleHeight } from 'src/app/shared/animations/animations';
-import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
-import { LanguageComponent } from 'src/app/start/profile/user/language-component/language.component';
-import { LanguageModule } from 'src/app/shared/services/language/language.module';
-import { ChangePasswordModalComponent } from './change-password-modal/change-password-modal.component';
-import { CustomComponentsModule } from 'src/app/components/components.module';
-import { ThemeComponent } from './theme/theme.component';
+import { CommonModule } from "@angular/common";
+import { Component, inject, EnvironmentInjector } from "@angular/core";
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
+import { IonicModule, ModalController } from "@ionic/angular";
+import { TranslateModule } from "@ngx-translate/core";
+import { NgxsFormPluginModule } from "@ngxs/form-plugin";
+import { NgxsStoragePluginModule } from "@ngxs/storage-plugin";
+import { NgxsModule } from "@ngxs/store";
+import { Observable, Subject } from "rxjs";
+import { CustomComponentsModule } from "src/app/components/components.module";
+import { scaleHeight } from "src/app/shared/animations/animations";
+import { KeypadModule } from "src/app/shared/services/native/keyboard/keypad.module";
+import { ChangePasswordModalComponent } from "../change-password-modal/change-password-modal.component";
+import { ImagePickerComponent } from "../image-picker/image-picker.component";
+import { LanguageComponent } from "../language-component/language.component";
+import { ThemeComponent } from "../theme/theme.component";
+import { StartFacade } from "../../start-facade";
 
 @Component({
   selector: 'app-user',
@@ -38,7 +36,6 @@ import { ThemeComponent } from './theme/theme.component';
     ImagePickerComponent,
     KeypadModule,
     ChangePasswordModalComponent,
-    LanguageModule,
     ThemeComponent,
     CustomComponentsModule
   ],
@@ -80,7 +77,7 @@ export class UserPage {
 
   private readonly ngUnsubscribe = new Subject();
 
-  private facade = inject(UserProfileFacade);
+  private facade = inject(StartFacade);
   private formBuilder = inject(FormBuilder);
 
   private modalCtrl = inject(ModalController);

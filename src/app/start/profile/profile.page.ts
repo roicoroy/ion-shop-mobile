@@ -12,7 +12,7 @@ import { CustomComponentsModule } from 'src/app/components/components.module';
   imports: [
     IonicModule,
     CommonModule,
-    CustomComponentsModule
+    CustomComponentsModule,
   ]
 })
 export class ProfilePage {

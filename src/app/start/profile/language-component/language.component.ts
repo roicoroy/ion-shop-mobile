@@ -3,9 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController, PopoverController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { StorageService } from '../../../../shared/services/storage/ionstorage.service';
-import { LanguageService, SAVED_LANGUAGE } from '../../../../shared/services/language/language.service';
-
+import { LanguageService, SAVED_LANGUAGE } from 'src/app/shared/services/language/language.service';
+import { StorageService } from 'src/app/shared/services/storage/ionstorage.service';
 
 @Component({
   selector: 'ng-ion-workspace-language',

@@ -6,8 +6,8 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { HomePageFacade } from './home-facade';
+import { Observable, Subject } from 'rxjs';
+import { StartFacade } from '../start-facade';
 import { CustomComponentsModule } from 'src/app/components/components.module';
 
 @Component({
@@ -28,7 +28,7 @@ import { CustomComponentsModule } from 'src/app/components/components.module';
 export class HomePage implements OnDestroy {
 
   private navigation = inject(NavigationService);
-  private facade = inject(HomePageFacade);
+  private facade = inject(StartFacade);
   private readonly ngUnsubscribe = new Subject();
 
   viewState$: Observable<any>;
@@ -41,11 +41,6 @@ export class HomePage implements OnDestroy {
   }
   refresh(ev: any) {
     this.facade.loadApp();
-    // this.viewState$
-    //   .pipe(takeUntil(this.ngUnsubscribe))
-    //   .subscribe((vs) => {
-    //     console.log(vs);
-    //   });
     setTimeout(() => {
       (ev as RefresherCustomEvent).detail.complete();
     }, 3000);

@@ -2,13 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthState } from '../../store/auth/auth.state';
-import { AuthStateActions } from '../../store/auth/auth.actions';
+import { AuthState } from '../store/auth/auth.state';
+import { AuthStateActions } from '../store/auth/auth.actions';
+import { UserProfileActions } from '../store/user-profile/user-profile.actions';
 
 @Injectable({
     providedIn: 'root'
 })
-export class HomePageFacade {
+export class StartFacade {
 
     @Select(AuthState.isLoggedIn) isLoggedIn$: Observable<boolean>;
     @Select(AuthState.userEmail) userEmail$: Observable<string>;
@@ -52,5 +53,14 @@ export class HomePageFacade {
     }
     loadApp() {
         this.store.dispatch(new AuthStateActions.LoadApp());
+    }
+    appUploadProfileImage(formData: FormData) {
+        return this.store.dispatch(new UserProfileActions.UploadImage(formData))
+    }
+    setDarkMode(isDarkMode: boolean) {
+        return this.store.dispatch(new UserProfileActions.UpdateDarkMode(isDarkMode))
+    }
+    setFCMStatus(pushAccepted: boolean) {
+        return this.store.dispatch(new UserProfileActions.UpdateFcmAccepted(pushAccepted))
     }
 }
