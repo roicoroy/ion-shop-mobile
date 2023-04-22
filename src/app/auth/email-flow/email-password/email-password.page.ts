@@ -11,8 +11,10 @@ import { KeypadModule } from "src/app/shared/services/native/keyboard/keypad.mod
 import { NavigationService } from "src/app/shared/services/navigation/navigation.service";
 import { IStrapiLoginData, ICustomerLoginData } from "src/app/shared/types/types.interfaces";
 import { EmailPasswordActions } from "src/app/store/auth/email-password/email-password.actions";
-import { IEmailPasswordFacadeState } from "./email-password.facade";
+import { EmailPasswordFacade, IEmailPasswordFacadeState } from "./email-password.facade";
 import { FormComponentsModule } from "src/app/form-components/form-components.module";
+import { IAuthStateModel } from "src/app/store/auth/auth.state";
+import { UtilityService } from "src/app/shared/services/utility/utility.service";
 
 @Component({
   selector: 'app-email-password',
@@ -44,14 +46,26 @@ export class EmailPasswordPage implements OnDestroy {
   private platform = inject(Platform);
   private store = inject(Store);
   private navigation = inject(NavigationService);
-  
-  // private utility = inject(UtilityService);
-  // private facade = inject(EmailPasswordFacade);
+
+  private utility = inject(UtilityService);
+  private facade = inject(EmailPasswordFacade);
 
   subscription = new Subject();
+  private readonly ngUnsubscribe = new Subject();
 
   constructor() {
-    // this.viewState$ = this.facade.viewState$;
+    this.viewState$ = this.facade.viewState$;
+    this.viewState$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(async(vs) => {
+        if (vs.isLoggedIn) {
+          await this.utility.presentLoading('...');
+          setTimeout(async () => {
+            this.navigation.navControllerDefault('start/tabs/home');
+            await this.utility.dismissLoading();
+          }, 1000);
+        }
+      });
   }
 
   ionViewDidEnter() {
@@ -60,19 +74,7 @@ export class EmailPasswordPage implements OnDestroy {
   }
 
   async login(): Promise<void> {
-    const medusaRequest: ICustomerLoginData = {
-      email: this.form?.loginForm.get('email').value,
-      password: this.form?.loginForm.get('password').value,
-    };
-    this.store.dispatch(new EmailPasswordActions.LoginEmailPassword(this.form?.loginForm.get('email').value, this.form?.loginForm.get('password').value,))
-      .pipe(takeUntil(this.subscription))
-      .subscribe((vs) => {
-        console.log('mmmmm', vs)
-        if (vs.authState.isLoggedIn) {
-          this.navigation.navControllerDefault('start/tabs/home');
-        }
-      });
-    // const errorEntry = this.store.selectSnapshot<any>((state) => state.errorsLogging.errorEntry);
+    this.store.dispatch(new EmailPasswordActions.LoginEmailPassword(this.form?.loginForm.get('email').value, this.form?.loginForm.get('password').value));
   }
   forgotPassowordPage(): void {
     this.navigation.navControllerDefault('auth/pages/email/flow/forgot-password');
@@ -85,6 +87,8 @@ export class EmailPasswordPage implements OnDestroy {
     return isIos ? 'Inbox' : '';
   }
   ngOnDestroy() {
+    this.ngUnsubscribe.next(null);
+    this.ngUnsubscribe.complete();
     this.subscription.next(null);
     this.subscription.complete();
   }

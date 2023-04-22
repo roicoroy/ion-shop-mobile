@@ -24,14 +24,10 @@ export class CustomerPage {
   viewState$: Observable<any>;
 
   constructor() {
-    this.setupCustomer();
     this.viewState$ = this.facade.viewState$;
     this.viewState$.subscribe((state) => {
       console.log(state);
     });
-  }
-  setupCustomer() {
-    this.facade.getCustomer();
   }
   ordersPage() {
     this.navigation.navigateForward('/orders', 'forward');

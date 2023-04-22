@@ -2,6 +2,9 @@ import { IResAuthLogin } from "src/app/shared/types/responses/ResAuthLogin";
 import { IResAuthRegister } from "src/app/shared/types/responses/ResAuthRegister";
 
 export namespace AuthStateActions {
+    export class LoadApp {
+        static readonly type = '[AuthStateActions] Load App';
+    }
     export class UpdateStrapiUser {
         static readonly type = '[AuthStateActions] Update Strapi User';
         constructor(public userId?: string, public profileForm?: any) { }

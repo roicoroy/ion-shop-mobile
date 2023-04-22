@@ -22,22 +22,28 @@ export class EmailPasswordState {
 
     @Action(EmailPasswordActions.LoginEmailPassword)
     async loginEmailPassword(ctx: StateContext<IAuth0StateModel>, { email, password }: EmailPasswordActions.LoginEmailPassword) {
-        this.utility.presentLoading('...');
         this.emailPasswordService.loginEmailPassword(email, password)
             .pipe(
                 catchError(err => {
-                    this.utility.dismissLoading();
                     this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
                     return throwError(() => new Error(JSON.stringify(err)));
                 })
             )
             .subscribe((user: any) => {
                 if (user) {
-                    console.log(user)
                     this.store.dispatch(new AuthStateActions.SetAuthState(user));
-                    // this.store.dispatch(new AuthStateActions.SetUploadedUser(user.user.id));
-                    this.utility.dismissLoading();
+                    this.store.dispatch(new AuthStateActions.SetUploadedUser(user.user.id));
                 }
             });
+    }
+    @Action(EmailPasswordActions.RegisterUser)
+    async registerUser(ctx: StateContext<IAuth0StateModel>, { registerForm }: EmailPasswordActions.RegisterUser) {
+        // console.log(ctx);
+        console.log(registerForm);
+    }
+    @Action(EmailPasswordActions.ForgotPassword)
+    async forgotPassword(ctx: StateContext<IAuth0StateModel>, { email }: EmailPasswordActions.ForgotPassword) {
+        console.log(email);
+        // console.log(registerForm);
     }
 }

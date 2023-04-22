@@ -27,9 +27,9 @@ export class StartComponent {
     this.viewState$ = this.facade.viewState$;
     this.viewState$.subscribe((state) => {
       console.log(state.isLoggedIn);
-      if (!state.isLoggedIn) {
-        this.store.dispatch(new AuthStateActions.getMedusaSession);
-      }
+      // if (!state.isLoggedIn) {
+      //   this.store.dispatch(new AuthStateActions.getMedusaSession);
+      // }
     });
   }
   navigateBack() {

@@ -1,13 +1,14 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { CustomerAddressDetailsComponent } from './customer-address-details/customer-address-details.component';
 import { CutomerAddressDetailsFacade } from './customer-addresses.facade';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
 import { CustomerActions } from 'src/app/store/customer/customer.actions';
 import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
 import { IRegisterAddress } from 'src/app/shared/types/types.interfaces';
+import { CartActions } from 'src/app/store/cart/cart.actions';
 
 @Component({
   selector: 'app-customer-addresses',
@@ -33,7 +34,7 @@ export class CustomerAddressesPage implements OnDestroy {
     this.viewState$
       .pipe(
         takeUntil(this.subscription),
-        // take(1)
+        take(1)
       )
       .subscribe((state) => {
         console.log(state);
@@ -41,11 +42,11 @@ export class CustomerAddressesPage implements OnDestroy {
   }
   async useBillingAddress(address: IRegisterAddress) {
     const cartId = await this.store.selectSnapshot<any>((state: any) => state.cart?.cartId);
-    // this.store.dispatch(new CartActions.UpdateCartBillingAddress(cartId, address));
+    this.store.dispatch(new CartActions.UpdateCartBillingAddress(cartId, address));
   }
   async useShippingAddress(address: IRegisterAddress) {
     const cartId = await this.store.selectSnapshot<any>((state: any) => state.cart?.cartId);
-    // this.store.dispatch(new CartActions.UpdateCartShippingAddress(cartId, address));
+    this.store.dispatch(new CartActions.UpdateCartShippingAddress(cartId, address));
   }
   async newCustomerShippingAddress() {
     const modal = await this.modalCtrl.create({

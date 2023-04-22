@@ -81,6 +81,31 @@ export class AuthState {
     static getUser(state: IAuthStateModel) {
         return state.user;
     }
+    @Action(AuthStateActions.LoadApp)
+    async loadApp(ctx: StateContext<IAuthStateModel>) {
+        const state = ctx.getState();
+        // console.log(state.isLoggedIn);
+        // console.log(state.userId);
+        if (state.userId === null && state.isLoggedIn === null) {
+            this.store.dispatch(new AuthStateActions.AuthStateLogout());
+        }
+        if (state.session === null && state.customer === null) {
+            this.store.dispatch(new AuthStateActions.getMedusaSession());
+        } else {
+            const userId = await this.store.selectSnapshot<any>((state: any) => state.authState?.userId);
+            const state = ctx.getState();
+            if (userId !== null) {
+                this.authService.loadUser(userId)
+                    .subscribe((user: any) => {
+                        ctx.patchState({
+                            ...state,
+                            user: user.user,
+                            isLoggedIn: true
+                        });
+                    });
+            };
+        }
+    }
     @Action(AuthStateActions.UpdateStrapiUser)
     updateStrapiUser({ getState, patchState }: StateContext<IAuthStateModel>, { userId, profileForm }: AuthStateActions.UpdateStrapiUser) {
         const state = getState();
@@ -90,8 +115,6 @@ export class AuthState {
         const state = ctx.getState();
         try {
             if (user.jwt && user.user) {
-                console.log('zzzz',user)
-
                 this.setTokenResponse(user);
                 const medusaCustomerID = await this.medusaCartInit(user.user.email);
                 if (medusaCustomerID) {
@@ -107,7 +130,6 @@ export class AuthState {
                                 hasSession: true,
                             });
                         });
-
                 }
             }
         } catch (err: any) {
@@ -124,11 +146,9 @@ export class AuthState {
     @Action(AuthStateActions.SetUploadedUser)
     setUploadedUser({ getState, patchState }: StateContext<IAuthStateModel>, { userId }: AuthStateActions.SetUploadedUser) {
         const state = getState();
-        console.log("payload", userId);
         if (userId !== null) {
             this.authService.loadUser(userId)
                 .subscribe((user: any) => {
-                    console.log("result", user);
                     patchState({
                         ...state,
                         user: user.user,
@@ -218,7 +238,7 @@ export class AuthState {
         this.authService.medusaLogout();
         this.tokenService.deleteToken();
         this.store.dispatch(new StateClear());
-        
+
         return ctx.setState({
             isLoggedIn: null,
             userId: null,
@@ -246,9 +266,10 @@ export class AuthState {
         }
     }
     async medusaCartInit(email: string) {
+        if (email === null) { return; }
         try {
             const medusaEmailExist = await this.medusa.auth.exists(email);
-            if (medusaEmailExist.exists) {
+            if (medusaEmailExist.exists && email !== null) {
                 const loginReq: ICustomerLoginData = {
                     email: email,
                     password: email,
@@ -256,7 +277,7 @@ export class AuthState {
                 let loggedInCustomer = await this.medusa.auth?.authenticate(loginReq);
                 return loggedInCustomer.customer.id;
             }
-            else {
+            else if (!medusaEmailExist.exists && email !== null) {
                 const registerRequest: ICustomerRegisterData = {
                     email: email,
                     password: email,

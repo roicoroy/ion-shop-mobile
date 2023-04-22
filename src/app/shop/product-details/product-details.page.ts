@@ -5,13 +5,15 @@ import { AlertController, IonicModule } from '@ionic/angular';
 import { CustomComponentsModule } from 'src/app/components/components.module';
 import { ShellModule } from 'src/app/components/shell/shell.module';
 import { FormComponentsModule } from 'src/app/form-components/form-components.module';
-import { Store } from '@ngxs/store';
+import { NgxsModule, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { CounterInputComponent } from 'src/app/components/components/counter-input/counter-input.component';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
 import { CartActions } from 'src/app/store/cart/cart.actions';
 import { clearSelectedProduct } from 'src/app/store/products/products.actions';
-import { ProductDetailFacade } from './product-details.facade';
+import { ShopFacade } from '../shop.facade';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 
 @Component({
   selector: 'app-product-details',
@@ -22,6 +24,9 @@ import { ProductDetailFacade } from './product-details.facade';
     IonicModule,
     CommonModule,
     FormsModule,
+    NgxsModule,
+    NgxsFormPluginModule,
+    NgxsStoragePluginModule,
     FormComponentsModule,
     CustomComponentsModule,
     ShellModule
@@ -47,10 +52,13 @@ export class ProductDetailsPage implements OnInit {
   constructor(
     private store: Store,
     private navigation: NavigationService,
-    private facade: ProductDetailFacade,
+    private facade: ShopFacade,
     public alertController: AlertController,
   ) {
     this.viewState$ = this.facade.viewState$;
+    this.viewState$.subscribe((vs) => {
+      console.log(vs);
+    });
   }
   ngOnInit() {
   }
@@ -69,14 +77,7 @@ export class ProductDetailsPage implements OnInit {
   }
   addToCart() {
     if (this.selectedVariantId && this.counterInput?.counterValue > 0) {
-      const cartId = this.store.selectSnapshot<any>((state) => state.cart.cart?.id);
-      if (cartId != null && this.selectedVariantId != null) {
-        this.store.dispatch(new CartActions.AddProductMedusaToCart(cartId, this.counterInput?.counterValue, this.selectedVariantId));
-      } else {
-        this.store.dispatch(new CartActions.CreateMedusaCart()).subscribe((state) => {
-          this.store.dispatch(new CartActions.AddProductMedusaToCart(state.cart.cart?.id, this.counterInput?.counterValue, this.selectedVariantId));
-        });
-      }
+      this.facade.addToMedusaCart(this.selectedVariantId, this.counterInput?.counterValue);
     }
   }
   navigateBack() {

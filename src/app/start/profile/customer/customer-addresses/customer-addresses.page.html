@@ -1,12 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <!-- <ion-button (click)="back()">
-          <ion-icon name="arrow-back"></ion-icon>
-      </ion-button> -->
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref="/customer"></ion-back-button>
-      </ion-buttons>
+      <ion-back-button defaultHref="/customer"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -26,7 +21,9 @@
         <ion-button color="success" (click)="newCustomerShippingAddress()" fill="outline" shape="round">
           <ion-icon name="add"></ion-icon>
         </ion-button>
-        <ion-note>New address</ion-note>
+        <ion-note>
+          New address
+        </ion-note>
       </ion-col>
     </ion-row>
     <ion-card *ngFor="let address of vs.session?.shipping_addresses">

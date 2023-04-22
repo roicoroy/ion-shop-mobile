@@ -2,6 +2,7 @@ import { Component, EnvironmentInjector, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { Store } from '@ngxs/store';
 import { GetProductList } from '../store/products/products.actions';
+import { ShopFacade } from './shop.facade';
 
 @Component({
   selector: 'app-shop',
@@ -13,12 +14,13 @@ import { GetProductList } from '../store/products/products.actions';
   ],
 })
 export class ShopPage {
-  
+
   public environmentInjector = inject(EnvironmentInjector);
-  
-  private store = inject(Store);
+
+  private facade = inject(ShopFacade);
 
   constructor() {
-    this.store.dispatch(new GetProductList());
+
+    this.facade.loadApp();
   }
 }

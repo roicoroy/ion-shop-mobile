@@ -1,7 +1,7 @@
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, EnvironmentInjector, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonicModule, PopoverController } from '@ionic/angular';
+import { IonicModule, ModalController, PopoverController } from '@ionic/angular';
 import { NgxsModule } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
 import { ImagePickerComponent } from './image-picker/image-picker.component';
@@ -12,9 +12,11 @@ import { UserProfileFacade } from './user-facade';
 import { scaleHeight } from 'src/app/shared/animations/animations';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
-import { ThemeComponent } from './theme/theme.component';
 import { LanguageComponent } from 'src/app/shared/services/language/language-component/language.component';
 import { LanguageModule } from 'src/app/shared/services/language/language.module';
+import { ChangePasswordModalComponent } from './change-password-modal/change-password-modal.component';
+import { CustomComponentsModule } from 'src/app/components/components.module';
+import { ThemeComponent } from './theme/theme.component';
 
 @Component({
   selector: 'app-user',
@@ -35,11 +37,13 @@ import { LanguageModule } from 'src/app/shared/services/language/language.module
     ReactiveFormsModule,
     ImagePickerComponent,
     KeypadModule,
+    ChangePasswordModalComponent,
+    LanguageModule,
     ThemeComponent,
-    LanguageModule
+    CustomComponentsModule
   ],
 })
-export class UserPage implements OnInit, AfterViewInit {
+export class UserPage {
   public environmentInjector = inject(EnvironmentInjector);
 
   formData = new FormData();
@@ -77,15 +81,16 @@ export class UserPage implements OnInit, AfterViewInit {
   private facade = inject(UserProfileFacade);
   private formBuilder = inject(FormBuilder);
   private popoverController = inject(PopoverController);
-
+  private modalCtrl = inject(ModalController);
+  
   constructor() {
     this.viewState$ = this.facade.viewState$;
-    this.viewState$.subscribe((vs) => {
-      // console.log(vs?.user?.avatar);
-      if (vs?.user) {
-        this.avatar = vs?.user.avatar?.url;
-      }
-    });
+    // this.viewState$.subscribe((vs) => {
+    //   // console.log(vs?.user?.avatar);
+    //   if (vs?.user) {
+    //     this.avatar = vs?.user.avatar?.url;
+    //   }
+    // });
     this.userForm = this.formBuilder.group({
       username: new FormControl('', Validators.compose([
         Validators.required
@@ -100,11 +105,16 @@ export class UserPage implements OnInit, AfterViewInit {
       is_dark_mode: new FormControl(null),
     });
   }
-  ngOnInit(): void {
+  async changePassrwordModal() {
+    const modal = await this.modalCtrl.create({
+      component: ChangePasswordModalComponent,
+      componentProps: {
+        incomingMessage: 'test string'
+      }
+    });
+    await modal.present();
   }
-  ngAfterViewInit() {
-  }
-  async presentPopover(e: Event) {
+  async presentLanguagePopover(e: Event) {
     const popover = await this.popoverController.create({
       component: LanguageComponent,
       event: e,

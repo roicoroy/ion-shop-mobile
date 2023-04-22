@@ -16,8 +16,9 @@ export class AppFacade {
 
     @Select(AuthState.getCustomer) customer$: Observable<any>;
 
-    @Select(AuthState.isLoggedIn) isLoggedIn$: Observable<any>;
+    @Select(AuthState.isLoggedIn) isLoggedIn$: Observable<boolean>;
 
+    
     readonly viewState$: Observable<IAppFacadeState>;
 
     constructor() {

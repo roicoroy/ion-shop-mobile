@@ -2,9 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthStateActions } from 'src/app/store/auth/auth.actions';
 import { AuthState } from 'src/app/store/auth/auth.state';
-import { CustomerActions } from 'src/app/store/customer/customer.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -41,8 +39,5 @@ export class CustomerFacade {
                 isLoggedIn,
             }))
         );
-    }
-    getCustomer() {
-        this.store.dispatch(new AuthStateActions.GetCustomer());
     }
 }

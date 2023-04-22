@@ -50,4 +50,7 @@ export class HomePageFacade {
             console.log(authState);
         });
     }
+    loadApp() {
+        this.store.dispatch(new AuthStateActions.LoadApp());
+    }
 }

@@ -7,11 +7,11 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { IProductsListFacadeState, ProductsListFacade } from './products-list.facade';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
 import { addSelectedVariant, addSelectedProduct, clearSelectedProduct } from 'src/app/store/products/products.actions';
 import { VariantModalPage } from '../variant-modal/variant-modal.page';
 import { CustomComponentsModule } from 'src/app/components/components.module';
+import { IShopFacadeState, ShopFacade } from '../shop.facade';
 
 @Component({
   selector: 'app-products-list',
@@ -32,18 +32,18 @@ import { CustomComponentsModule } from 'src/app/components/components.module';
 })
 export class ProductsListPage implements OnInit {
 
-  private facade = inject(ProductsListFacade);
+  private facade = inject(ShopFacade);
   private navigation = inject(NavigationService);
   private modalCtrl = inject(ModalController);
   private store = inject(Store);
 
-  viewState$: Observable<IProductsListFacadeState>;
+  viewState$: Observable<IShopFacadeState>;
 
   constructor() {
     this.viewState$ = this.facade.viewState$
-    this.viewState$.subscribe((vs) => {
-      console.log(vs);
-    });
+    // this.viewState$.subscribe((vs) => {
+    //   console.log(vs);
+    // });
   }
 
   ngOnInit() {
