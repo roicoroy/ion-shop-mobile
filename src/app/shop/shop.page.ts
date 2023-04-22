@@ -20,7 +20,6 @@ export class ShopPage {
   private facade = inject(ShopFacade);
 
   constructor() {
-
     this.facade.loadApp();
   }
 }

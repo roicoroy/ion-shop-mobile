@@ -84,8 +84,8 @@ export class AuthState {
     @Action(AuthStateActions.LoadApp)
     async loadApp(ctx: StateContext<IAuthStateModel>) {
         const state = ctx.getState();
-        // console.log(state.isLoggedIn);
-        console.log(state);
+        // // console.log(state.isLoggedIn);
+        // console.log(state);
         if (state.userId === null && state.session === null) {
             this.store.dispatch(new AuthStateActions.AuthStateLogout());
         }

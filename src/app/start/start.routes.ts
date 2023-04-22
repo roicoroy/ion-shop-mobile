@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { StartPage } from './start.page';
-import { ProfileResolver } from './profile/profile.resolver';
+import { StartResolver } from './start.resolver';
 
 export const routes: Routes = [
   {
@@ -14,7 +14,6 @@ export const routes: Routes = [
       {
         path: 'profile',
         loadComponent: () => import('./profile/profile.page').then(m => m.ProfilePage),
-        resolve: { ProfileResolver }
       },
       {
         path: '',
@@ -22,6 +21,7 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
     ],
+    resolve: { StartResolver }
   },
   {
     path: '',

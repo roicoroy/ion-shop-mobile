@@ -1,4 +1,3 @@
-
 <app-header></app-header>
 
 <ion-content [fullscreen]="true">
@@ -14,11 +13,20 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list *ngIf="viewState$ | async as vs">
-  </ion-list>
-
-  <ion-button (click)="shop()" expand="block"  shape="round">
-    Enter Shop
-  </ion-button>
-
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-list *ngIf="viewState$ | async as vs">
+          Welcome to our Shop
+          <br/>
+          <a (click)="shop()">
+            Enter Shop
+          </a>
+        </ion-list>
+        <!-- <ion-button (click)="shop()" expand="block" shape="round">
+          Enter Shop
+        </ion-button> -->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
