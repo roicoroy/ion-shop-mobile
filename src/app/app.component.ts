@@ -12,11 +12,11 @@ import { AppFacade, IAppFacadeState } from './app.facade';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { CartMenuComponent } from 'src/app/components/components/app-menu/cart-menu.component';
 import { MedusaCartComponent } from 'src/app/components/components/medusa-cart/medusa-cart.component';
-import { clearSelectedProduct } from './store/products/products.actions';
 import { CommonModule } from '@angular/common';
 import { CustomComponentsModule } from './components/components.module';
 import { KeyboardService } from './shared/services/native/keyboard/keyboard.service';
 import { NavigationService } from './shared/services/navigation/navigation.service';
+import { ProductsActions } from './store/products/products.actions';
 
 @Component({
   selector: 'app-root',
@@ -84,7 +84,7 @@ export class AppComponent implements OnInit, OnDestroy {
   checkout() {
     this.menu.toggle('end').then(() => {
       this.medusaCartComponent.goToCheckout();
-      this.store.dispatch(new clearSelectedProduct());
+      this.store.dispatch(new ProductsActions.clearSelectedProduct());
     });
   }
   logout(): void {

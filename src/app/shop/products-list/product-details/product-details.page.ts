@@ -9,10 +9,10 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { CounterInputComponent } from 'src/app/components/components/counter-input/counter-input.component';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
-import { clearSelectedProduct } from 'src/app/store/products/products.actions';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { ShopFacade } from '../../shop.facade';
+import { ProductsActions } from 'src/app/store/products/products.actions';
 
 @Component({
   selector: 'app-product-details',
@@ -37,11 +37,6 @@ export class ProductDetailsPage implements OnInit {
 
   viewState$: Observable<any>;
 
-  slidesOptions: any = {
-    zoom: {
-      toggle: false // Disable zooming to prevent weird double tap zomming on slide images
-    }
-  };
   productOptions: any = [];
   optionsVariants: any = [];
   productVariants: any = [];
@@ -82,7 +77,7 @@ export class ProductDetailsPage implements OnInit {
   navigateBack() {
     this.optionsVariants = [];
     this.navigation.navigateFlip('products-list');
-    this.store.dispatch(new clearSelectedProduct());
+    this.store.dispatch(new ProductsActions.clearSelectedProduct());
   }
 
 }

@@ -9,10 +9,6 @@ export namespace AuthStateActions {
         static readonly type = '[AuthStateActions] Update Strapi User';
         constructor(public userId?: string, public profileForm?: any) { }
     }
-    export class SetUploadedUser {
-        static readonly type = '[AuthStateActions] Set uploaded User';
-        constructor(public userId: any) { }
-    }
     export class GetCustomer {
         static readonly type = '[AuthStateActions] Get Customer';
     }

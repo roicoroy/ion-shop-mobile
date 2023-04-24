@@ -18,15 +18,23 @@
       <ion-col size="12">
         <ion-list *ngIf="viewState$ | async as vs">
           Welcome to our Shop
-          <br/>
+          <br />
           <a (click)="shop()">
             Enter Shop
           </a>
         </ion-list>
-        <!-- <ion-button (click)="shop()" expand="block" shape="round">
-          Enter Shop
-        </ion-button> -->
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button (click)="shop()" expand="block" fill="solid" shape="round">
+          Enter Shop
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

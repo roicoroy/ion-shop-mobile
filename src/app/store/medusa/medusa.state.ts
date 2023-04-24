@@ -18,9 +18,7 @@ export const initMedusaStateModel: MedusaStateModel = {
 export class MedusaState {
     medusaClient: any;
 
-    constructor(
-        private store: Store,
-    ) {
+    constructor() {
         this.medusaClient = new Medusa({ baseUrl: environment.MEDUSA_API_BASE_PATH, maxRetries: 10 });
     }
     @Selector()
@@ -29,7 +27,7 @@ export class MedusaState {
     }
     @Action(MedusaActions.SecretKey)
     async secretKey(ctx: StateContext<MedusaStateModel>, { secretKey }: MedusaActions.SecretKey) {
-        console.log(secretKey);
+        // console.log(secretKey);
         try {
             ctx.patchState({
                 secretKey: secretKey,
@@ -42,7 +40,6 @@ export class MedusaState {
     }
     @Action(MedusaActions.UnSetSecretKey)
     async unSetSecretKey(ctx: StateContext<MedusaStateModel>): Promise<any> {
-
         try {
             return ctx.patchState({
                 secretKey: null,

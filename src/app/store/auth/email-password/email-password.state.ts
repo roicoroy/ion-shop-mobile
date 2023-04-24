@@ -32,7 +32,6 @@ export class EmailPasswordState {
             .subscribe((user: any) => {
                 if (user) {
                     this.store.dispatch(new AuthStateActions.SetAuthState(user));
-                    this.store.dispatch(new AuthStateActions.SetUploadedUser(user.user.id));
                 }
             });
     }
@@ -44,6 +43,5 @@ export class EmailPasswordState {
     @Action(EmailPasswordActions.ForgotPassword)
     async forgotPassword(ctx: StateContext<IAuth0StateModel>, { email }: EmailPasswordActions.ForgotPassword) {
         console.log(email);
-        // console.log(registerForm);
     }
 }

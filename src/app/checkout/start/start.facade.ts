@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { AuthStateActions } from 'src/app/store/auth/auth.actions';
 import { AuthState } from 'src/app/store/auth/auth.state';
 import { CartState } from 'src/app/store/cart/cart.state';
-import { GetProductList } from 'src/app/store/products/products.actions';
+import { ProductsActions } from 'src/app/store/products/products.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -44,7 +44,7 @@ export class StartFacade {
         );
     }
     loadApp() {
-        this.store.dispatch(new GetProductList());
+        this.store.dispatch(new ProductsActions.GetProductList());
         this.store.dispatch(new AuthStateActions.LoadApp());
     }
 }

@@ -29,9 +29,6 @@ export class CustomerAddressDetailsComponent implements OnDestroy {
     private readonly facade: AddressDetailsFacade,
   ) {
     this.viewState$ = this.facade.viewState$;
-    // this.viewState$.subscribe((vs) => {
-    //   console.log(vs.selectedAddress);
-    // });
   }
   ionViewWillEnter() {
     this.viewState$

@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 import Medusa from "@medusajs/medusa-js";
 import { State, Store, Selector, Action, StateContext } from "@ngxs/store";
 import { environment } from "src/environments/environment";
-import { addSelectedProduct, addSelectedVariant, clearSelectedProduct, clearSelectedVariant, GetProductList, ProductsLogOut } from "./products.actions";
 import { ErrorLoggingActions } from "../error-logging/error-logging.actions";
+import { ProductsActions } from "./products.actions";
 
 export interface ProductStateModel {
     selectedProduct: any;
@@ -41,7 +41,7 @@ export class ProductState {
     static getSelectedVariant(state: ProductStateModel) {
         return state.selectedVariant;
     }
-    @Action(GetProductList)
+    @Action(ProductsActions.GetProductList)
     async getProductList({ patchState }: StateContext<ProductStateModel>) {
         try {
             let response = await this.medusaClient.products.list();
@@ -57,31 +57,31 @@ export class ProductState {
             }
         }
     }
-    @Action(addSelectedProduct)
-    addProductToState(ctx: StateContext<ProductStateModel>, { payload }: addSelectedProduct) {
+    @Action(ProductsActions.addSelectedProduct)
+    addProductToState(ctx: StateContext<ProductStateModel>, { payload }: ProductsActions.addSelectedProduct) {
         ctx.patchState({
             selectedProduct: payload,
         });
     }
-    @Action(clearSelectedProduct)
+    @Action(ProductsActions.clearSelectedProduct)
     clearProductFromState(ctx: StateContext<ProductStateModel>): void {
         ctx.patchState({
             selectedProduct: null,
         });
     }
-    @Action(addSelectedVariant)
-    addVariantToState(ctx: StateContext<ProductStateModel>, { payload }: addSelectedVariant) {
+    @Action(ProductsActions.addSelectedVariant)
+    addVariantToState(ctx: StateContext<ProductStateModel>, { payload }: ProductsActions.addSelectedVariant) {
         ctx.patchState({
             selectedVariant: payload,
         });
     }
-    @Action(clearSelectedVariant)
+    @Action(ProductsActions.clearSelectedVariant)
     clearVariantFromState(ctx: StateContext<ProductStateModel>) {
         ctx.patchState({
             selectedVariant: null,
         });
     }
-    @Action(ProductsLogOut)
+    @Action(ProductsActions.ProductsLogOut)
     productsLogOut(ctx: StateContext<ProductStateModel>) {
         ctx.patchState({
             selectedProduct: null,

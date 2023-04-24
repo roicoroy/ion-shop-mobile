@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { ShopPage } from './shop.page';
+import { ShopResolver } from './shop.resolver';
 
 export const routes: Routes = [
   {
@@ -20,6 +21,7 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
     ],
+    resolve: { ShopResolver }
   },
   {
     path: '',

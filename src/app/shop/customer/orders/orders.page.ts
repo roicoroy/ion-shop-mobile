@@ -31,16 +31,12 @@ export class OrdersPage implements OnInit {
 
   presentingElement: any = HTMLElement;
 
-  private store = inject(Store);
-  private modalCtrl = inject(ModalController);
+  modalCtrl = inject(ModalController);
   private navigation = inject(NavigationService);
   private facade = inject(CustomerFacade);
 
   constructor() {
     this.viewState$ = this.facade.viewState$;
-    // this.viewState$.subscribe((state) => {
-    //   console.log(state);
-    // });
   }
   ngOnInit() {
     this.presentingElement = document.querySelector('#main-content');
@@ -57,5 +53,8 @@ export class OrdersPage implements OnInit {
       }
     });
     modal.present();
+  }
+  async dismiss() {
+    await this.modalCtrl.dismiss();
   }
 }

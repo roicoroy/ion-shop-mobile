@@ -31,21 +31,21 @@ export class CustomerAddressesPage implements OnDestroy {
   ) {
     this.presentingElement = document.querySelector('#main-content');
     this.viewState$ = this.facade.viewState$;
-    this.viewState$
-      .pipe(
-        takeUntil(this.subscription),
-        take(1)
-      )
-      .subscribe((state) => {
-        console.log(state);
-      });
+    // this.viewState$
+    //   .pipe(
+    //     takeUntil(this.subscription),
+    //     take(1)
+    //   )
+    //   .subscribe((state) => {
+    //     console.log(state);
+    //   });
   }
   async useBillingAddress(address: IRegisterAddress) {
-    const cartId = await this.store.selectSnapshot<any>((state: any) => state.cart?.cartId);
+    const cartId = await this.store.selectSnapshot<any>((state: any) => state.cart.cart?.id);
     this.store.dispatch(new CartActions.UpdateCartBillingAddress(cartId, address));
   }
   async useShippingAddress(address: IRegisterAddress) {
-    const cartId = await this.store.selectSnapshot<any>((state: any) => state.cart?.cartId);
+    const cartId = await this.store.selectSnapshot<any>((state: any) => state.cart.cart?.id);
     this.store.dispatch(new CartActions.UpdateCartShippingAddress(cartId, address));
   }
   async newCustomerShippingAddress() {

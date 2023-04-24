@@ -1,14 +1,9 @@
-<!-- <lib-header *ngIf="viewState$ | async as vs" [headerData]="vs"></lib-header> -->
-
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/shop/tabs/product-list"></ion-back-button>
+      <ion-back-button defaultHref="/shop/tabs/products-list"></ion-back-button>
     </ion-buttons>
     <ion-title> Start Checkout </ion-title>
-    <ion-buttons slot="end">
-      <cart-menu></cart-menu>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -30,12 +25,7 @@
       </ion-col>
 
       <ion-col size="12" *ngIf="vs?.isLoggedIn && vs?.cart !== null">
-        <ion-button
-          (click)="cartReviewMedusa()"
-          expand="block"
-          fill="outline"
-          shape="round"
-        >
+        <ion-button (click)="cartReviewMedusa()" expand="block" fill="outline" shape="round">
           Carry on ...
         </ion-button>
       </ion-col>

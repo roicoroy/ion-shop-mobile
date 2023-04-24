@@ -25,14 +25,14 @@ export class CustomerPage {
 
   constructor() {
     this.viewState$ = this.facade.viewState$;
-    this.viewState$.subscribe((state) => {
-      console.log(state);
-    });
+    // this.viewState$.subscribe((state) => {
+    //   console.log(state);
+    // });
   }
   ordersPage() {
-    this.navigation.navigateForward('/orders', 'forward');
+    this.navigation.navControllerDefault('/orders', 'forward');
   }
   addressesPage() {
-    this.navigation.navigateForward('/customer-addresses', 'forward');
+    this.navigation.navControllerDefault('/customer-addresses', 'forward');
   }
 }

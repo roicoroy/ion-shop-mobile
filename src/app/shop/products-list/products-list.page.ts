@@ -8,10 +8,10 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
-import { addSelectedVariant, addSelectedProduct, clearSelectedProduct, GetProductList } from 'src/app/store/products/products.actions';
 import { VariantModalPage } from './variant-modal/variant-modal.page';
 import { CustomComponentsModule } from 'src/app/components/components.module';
 import { IShopFacadeState, ShopFacade } from '../shop.facade';
+import { ProductsActions } from 'src/app/store/products/products.actions';
 
 @Component({
   selector: 'app-products-list',
@@ -44,10 +44,9 @@ export class ProductsListPage implements OnInit {
     // this.viewState$.subscribe((vs) => {
     //   console.log(vs);
     // });
-    this.store.dispatch(new GetProductList());
   }
   async selectVariant(variant: any) {
-    this.store.dispatch(new addSelectedVariant(variant));
+    this.store.dispatch(new ProductsActions.addSelectedVariant(variant));
     const modal = await this.modalCtrl.create({
       component: VariantModalPage,
       componentProps: {
@@ -59,10 +58,10 @@ export class ProductsListPage implements OnInit {
   }
   navigateDetails(product: any) {
     this.navigation.navControllerDefault('/product-details');
-    this.store.dispatch(new addSelectedProduct(product));
+    this.store.dispatch(new ProductsActions.addSelectedProduct(product));
   }
   navigateHome() {
-    this.store.dispatch(new clearSelectedProduct());
+    this.store.dispatch(new ProductsActions.clearSelectedProduct());
     this.navigation.navigateFlip('/home');
   }
 }

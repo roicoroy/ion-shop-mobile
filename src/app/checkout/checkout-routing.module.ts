@@ -6,6 +6,7 @@ import { RoutePath } from './route-path.enum';
 import { ShippingComponent } from './shipping/shipping.component';
 import { CartReviewComponent } from './cart-review/cart-review.component';
 import { AddressDetailsComponent } from './cart-addresses/address-details/address-details.component';
+import { ShopResolver } from '../shop/shop.resolver';
 
 const routes: Routes = [
   {
@@ -44,7 +45,9 @@ const routes: Routes = [
         path: 'order-review',
         loadChildren: () => import('./order-review/order-review.module').then( m => m.OrderReviewPageModule)
       },
-    ]
+      
+    ],
+    resolve: { ShopResolver }
   },
 ];
 

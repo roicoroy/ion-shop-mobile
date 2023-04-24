@@ -104,14 +104,12 @@ export class AddressDetailsFormComponent implements OnInit, ControlValueAccessor
       ])),
     });
     this.viewState$ = this.facade.viewState$;
-    this.viewState$.subscribe((state) => {
-      console.log(state);
-    });
     this.subscriptions.push(
-      this.adressDetailsForm.valueChanges.subscribe((value: any) => {
-        this.onChange(value);
-        this.onTouched();
-      })
+      this.adressDetailsForm.valueChanges
+        .subscribe((value: any) => {
+          this.onChange(value);
+          this.onTouched();
+        })
     );
   }
   ngOnInit() {

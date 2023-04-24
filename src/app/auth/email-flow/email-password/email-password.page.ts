@@ -9,11 +9,10 @@ import { Observable, Subject, takeUntil } from "rxjs";
 import { scaleHeight } from "src/app/shared/animations/animations";
 import { KeypadModule } from "src/app/shared/services/native/keyboard/keypad.module";
 import { NavigationService } from "src/app/shared/services/navigation/navigation.service";
-import { IStrapiLoginData, ICustomerLoginData } from "src/app/shared/types/types.interfaces";
+import { IStrapiLoginData } from "src/app/shared/types/types.interfaces";
 import { EmailPasswordActions } from "src/app/store/auth/email-password/email-password.actions";
 import { EmailPasswordFacade, IEmailPasswordFacadeState } from "./email-password.facade";
 import { FormComponentsModule } from "src/app/form-components/form-components.module";
-import { IAuthStateModel } from "src/app/store/auth/auth.state";
 import { UtilityService } from "src/app/shared/services/utility/utility.service";
 
 @Component({

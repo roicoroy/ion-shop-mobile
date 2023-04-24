@@ -1,7 +1,5 @@
 import { Component, EnvironmentInjector, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { Store } from '@ngxs/store';
-import { GetProductList } from '../store/products/products.actions';
 import { ShopFacade } from './shop.facade';
 
 @Component({

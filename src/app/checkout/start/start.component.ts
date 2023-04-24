@@ -25,12 +25,12 @@ export class StartComponent {
     private modalCtrl: ModalController,
   ) {
     this.viewState$ = this.facade.viewState$;
-    this.viewState$.subscribe((state) => {
-      console.log(state.isLoggedIn);
-      // if (!state.isLoggedIn) {
-      //   this.store.dispatch(new AuthStateActions.getMedusaSession);
-      // }
-    });
+    // this.viewState$.subscribe((state) => {
+    //   console.log(state.isLoggedIn);
+    //   // if (!state.isLoggedIn) {
+    //   //   this.store.dispatch(new AuthStateActions.getMedusaSession);
+    //   // }
+    // });
   }
   navigateBack() {
     this.navigation.navigateForward('/start/tabs/home', 'back');

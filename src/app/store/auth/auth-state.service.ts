@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Browser } from "@capacitor/browser";
+import { Observable } from "rxjs";
 import { StrapiAuthProviders } from "src/app/shared/types/StrapiAuthConfig";
 import { environment } from "src/environments/environment";
 
@@ -27,7 +28,7 @@ export class AuthStateService {
     retrieveMedusaCustomer() {
         return this.httpClient.get(environment.MEDUSA_API_BASE_PATH + '/store/auth/');
     }
-    public loadUser(userId: string) {
+    public loadUser(userId: string): Observable<any> {
         return this.httpClient.get(environment.BASE_PATH + '/api/users/' + userId + '?populate=*', { headers: this.headers })
     }
 }
