@@ -35,17 +35,18 @@ export class CartAddressesPage implements OnDestroy {
     private readonly facade: AddressesFacade,
   ) {
     this.presentingElement = document.querySelector('#main-content');
+    this.store.dispatch(new AuthStateActions.LoadApp());
     this.viewState$ = this.facade.viewState$;
-    this.viewState$
-      .pipe(
-        takeUntil(this.subscription),
-        take(1)
-      )
-      .subscribe((state) => {
-        if (!state.isGuest && state?.isCustomerLoggedIn && state?.isUserLoggedIn) {
-          this.store.dispatch(new AuthStateActions.getMedusaSession());
-        }
-      });
+    // this.viewState$
+    //   .pipe(
+    //     takeUntil(this.subscription),
+    //     take(1)
+    //   )
+    //   .subscribe((state) => {
+    //     if (!state.isGuest && state?.isCustomerLoggedIn && state?.isUserLoggedIn) {
+    //       this.store.dispatch(new AuthStateActions.getMedusaSession());
+    //     }
+    //   });
   }
   updateCart(vs: any) {
     if (vs.session != null) {

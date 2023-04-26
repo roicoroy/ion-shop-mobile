@@ -11,10 +11,10 @@ export const routes: Routes = [
         path: 'products-list',
         loadComponent: () => import('./products-list/products-list.page').then(m => m.ProductsListPage)
       },
-      {
-        path: 'customer',
-        loadComponent: () => import('./customer/customer.page').then(m => m.CustomerPage)
-      },
+      // {
+      //   path: 'customer',
+      //   loadComponent: () => import('../start/profile/customer/customer.page').then(m => m.CustomerPage)
+      // },
       {
         path: '',
         redirectTo: '/tabs/product-list',

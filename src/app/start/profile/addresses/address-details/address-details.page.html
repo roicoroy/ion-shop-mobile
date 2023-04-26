@@ -1,0 +1,21 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/addresses"></ion-back-button>
+    </ion-buttons>
+    <ion-title> Address Details </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large"> Address Details </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  {{ address.address_1 }}
+  {{ address.address_2 }}
+
+</ion-content>

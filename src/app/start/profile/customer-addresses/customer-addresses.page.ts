@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { CustomerAddressDetailsComponent } from './customer-address-details/customer-address-details.component';
 import { CutomerAddressDetailsFacade } from './customer-addresses.facade';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
@@ -29,16 +29,9 @@ export class CustomerAddressesPage implements OnDestroy {
     private navigation: NavigationService,
     private readonly facade: CutomerAddressDetailsFacade,
   ) {
+    // this.store.dispatch(new AddressesActions.GetRegionList());
     this.presentingElement = document.querySelector('#main-content');
     this.viewState$ = this.facade.viewState$;
-    // this.viewState$
-    //   .pipe(
-    //     takeUntil(this.subscription),
-    //     take(1)
-    //   )
-    //   .subscribe((state) => {
-    //     console.log(state);
-    //   });
   }
   async useBillingAddress(address: IRegisterAddress) {
     const cartId = await this.store.selectSnapshot<any>((state: any) => state.cart.cart?.id);
@@ -52,7 +45,7 @@ export class CustomerAddressesPage implements OnDestroy {
     const modal = await this.modalCtrl.create({
       component: CustomerAddressDetailsComponent,
       componentProps: {
-        isNewAddress: true
+        isNewAddress: false
       }
     });
     await modal.present();
@@ -69,9 +62,7 @@ export class CustomerAddressesPage implements OnDestroy {
         isNewAddress: false
       }
     });
-
     this.store.dispatch(new AddressesActions.AddAddressToState(address));
-
     await modal.present();
     const { data, role } = await modal.onWillDismiss();
     if (role === 'dismiss' && data) {
@@ -79,6 +70,7 @@ export class CustomerAddressesPage implements OnDestroy {
     }
   }
   async useCustomerShippingAddress(address: IRegisterAddress) {
+    console.log();
     this.store.dispatch(new CustomerActions.AddAShippingAddress(address));
   }
   async updateCustomerShippingAddress(addressId: string, address: IRegisterAddress) {
@@ -88,7 +80,6 @@ export class CustomerAddressesPage implements OnDestroy {
     this.store.dispatch(new CustomerActions.DeleteCustomerAddress(addressId));
   }
   async navigateBack() {
-    // this.store.dispatch(new CartActions.ClearIsGuest());
     await this.navigation.navigateFlip('/shop/tabs/profile');
   }
   detailsPage() {

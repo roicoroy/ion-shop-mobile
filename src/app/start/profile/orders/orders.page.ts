@@ -4,11 +4,11 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { OrderDetailsComponent } from 'src/app/components/components/order-details/order-details.component';
 import { Observable } from 'rxjs';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
-import { CustomerFacade } from '../customer.facade';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { ProfileFacade } from '../profile.facade';
 
 @Component({
   selector: 'app-orders',
@@ -33,10 +33,13 @@ export class OrdersPage implements OnInit {
 
   modalCtrl = inject(ModalController);
   private navigation = inject(NavigationService);
-  private facade = inject(CustomerFacade);
+  private facade = inject(ProfileFacade);
 
   constructor() {
     this.viewState$ = this.facade.viewState$;
+    this.viewState$.subscribe((vs) => {
+      console.log(vs);
+    })
   }
   ngOnInit() {
     this.presentingElement = document.querySelector('#main-content');

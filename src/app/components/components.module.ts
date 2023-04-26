@@ -21,6 +21,7 @@ import { OrderDetailsComponent } from './components/order-details/order-details.
 import { ItemsComponent } from './components/items/items.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { HeaderComponent } from './components/header/header.component';
+import { LanguageComponent } from './components/language-component/language.component';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { HeaderComponent } from './components/header/header.component';
     OrderDetailsComponent,
     ItemsComponent,
     HeaderComponent,
+    LanguageComponent,
     CategoriesComponent
   ],
   exports: [
@@ -64,6 +66,7 @@ import { HeaderComponent } from './components/header/header.component';
     OrderDetailsComponent,
     ItemsComponent,
     HeaderComponent,
+    LanguageComponent,
     CategoriesComponent
   ]
 })

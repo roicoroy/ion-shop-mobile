@@ -12,7 +12,6 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <ion-grid>
     <ion-row>
       <ion-col *ngIf="viewState$ | async as vs">
@@ -32,9 +31,9 @@
         </ion-radio-group>
       </ion-col>
 
-      <ion-button (click)="initPaymentSession()" expand="block" fill="clear" shape="round">
+      <!-- <ion-button (click)="initPaymentSession()" expand="block" fill="clear" shape="round">
         Init Payment Session
-      </ion-button>
+      </ion-button> -->
 
       <ion-col size="12" *ngIf="viewState$ | async as vs">
         <ion-label>

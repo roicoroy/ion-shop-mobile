@@ -10,11 +10,11 @@ import { Observable, Subject } from "rxjs";
 import { CustomComponentsModule } from "src/app/components/components.module";
 import { scaleHeight } from "src/app/shared/animations/animations";
 import { KeypadModule } from "src/app/shared/services/native/keyboard/keypad.module";
-import { ChangePasswordModalComponent } from "../change-password-modal/change-password-modal.component";
-import { ImagePickerComponent } from "../image-picker/image-picker.component";
-import { LanguageComponent } from "../language-component/language.component";
-import { ThemeComponent } from "../theme/theme.component";
+import { ThemeComponent } from "./theme/theme.component";
 import { StartFacade } from "../../start-facade";
+import { ChangePasswordModalComponent } from "./change-password-modal/change-password-modal.component";
+import { ImagePickerComponent } from "./image-picker/image-picker.component";
+import { LanguageComponent } from "../../../components/components/language-component/language.component";
 
 @Component({
   selector: 'app-user',

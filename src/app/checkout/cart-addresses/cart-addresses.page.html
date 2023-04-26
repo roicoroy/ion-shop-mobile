@@ -85,7 +85,7 @@
             <ion-note>New address</ion-note>
           </ion-col>
         </ion-row>
-        <ion-card *ngFor="let address of vs.session?.shipping_addresses">
+        <ion-card *ngFor="let address of vs.customer?.shipping_addresses">
           <ion-row class="buttons-row ion-text-center">
             <ion-col size="3">
               <ion-button color="primary" (click)="viewCustomerShippingAddress(address)" fill="outline" shape="round">

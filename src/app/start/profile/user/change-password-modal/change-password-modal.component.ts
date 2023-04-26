@@ -1,18 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
-import { FormGroup, UntypedFormGroup, UntypedFormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule } from '@ngxs/store';
+import { CustomComponentsModule } from 'src/app/components/components.module';
 import Validation from 'src/app/form-components/validators/validation';
-import { LanguageModule } from 'src/app/shared/services/language/language.module';
 import { KeypadModule } from 'src/app/shared/services/native/keyboard/keypad.module';
 import { IUser } from 'src/app/shared/types/models/User';
-import { IReqPasswordReset } from 'src/app/shared/types/requests/ReqPasswordReset';
 import { IErrorRes } from 'src/app/shared/types/responses/AuthError';
 
 @Component({
@@ -30,7 +28,7 @@ import { IErrorRes } from 'src/app/shared/types/responses/AuthError';
     NgxsStoragePluginModule,
     ReactiveFormsModule,
     KeypadModule,
-    LanguageModule
+    CustomComponentsModule
   ],
 })
 export class ChangePasswordModalComponent implements OnInit {

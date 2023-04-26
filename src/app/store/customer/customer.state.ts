@@ -29,6 +29,8 @@ export class CustomerState {
     async addaShippingAddress(ctx: StateContext<CustomerStateModel>, { payload }: CustomerActions.AddAShippingAddress) {
         console.log(payload)
         try {
+            const session = await this.medusa.auth?.getSession();
+            console.log(session);
             let customer = await this.medusa.customers.addresses.addAddress({
                 address: {
                     first_name: payload?.first_name,

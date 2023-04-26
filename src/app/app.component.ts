@@ -60,10 +60,9 @@ export class AppComponent implements OnInit, OnDestroy {
   async initApp() {
     this.platform.ready().then(async () => {
       this.viewState$ = this.facade.viewState$;
-      this.viewState$
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((vs) => { });
-      // get medusa products
+      // this.viewState$
+      //   .pipe(takeUntil(this.ngUnsubscribe))
+      //   .subscribe((vs) => { });
       this.theme.themeInit();
       const device = await this.native.getDeviceInfo();
       const token = await this.tokenService.getToken();
@@ -73,7 +72,6 @@ export class AppComponent implements OnInit, OnDestroy {
       if (device.platform == 'web') {
       }
       if (device.platform === 'android' || device.platform === 'ios') {
-        // set fcm listeners
         this.keyboardService.setAccessoryBarVisible(true).catch(() => { });
         this.keyboardService.initKeyboardListeners();
       }
@@ -89,9 +87,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   logout(): void {
     this.store.dispatch(new AuthStateActions.AuthStateLogout());
-    // .subscribe((authState) => {
-    //   console.log(authState);
-    // });
   }
   homePage(): void {
     this.navigation.navControllerDefault('/start/tabs/home')

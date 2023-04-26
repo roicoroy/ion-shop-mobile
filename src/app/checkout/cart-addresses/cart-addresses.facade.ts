@@ -43,7 +43,5 @@ export class AddressesFacade {
                 customer,
                 session
             }))
-        );
-        this.store.dispatch(new AuthStateActions.getMedusaSession());
-    }
+        );    }
 }

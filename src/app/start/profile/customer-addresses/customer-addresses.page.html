@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/customer"></ion-back-button>
+      <ion-back-button defaultHref="/start/tabs/profile"></ion-back-button>
     </ion-buttons>
     <ion-title>Medusa Addresses</ion-title>
   </ion-toolbar>
@@ -16,7 +16,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-grid *ngIf="vs.session; else loggedOut">
+  <ion-grid *ngIf="vs.customer; else loggedOut">
     <ion-row class="buttons-row ion-text-center">
       <ion-col size="12">
         <ion-button color="success" (click)="newCustomerShippingAddress()" fill="outline" shape="round">
@@ -27,7 +27,7 @@
         </ion-note>
       </ion-col>
     </ion-row>
-    <ion-card *ngFor="let address of vs.session?.shipping_addresses">
+    <ion-card *ngFor="let address of vs.customer?.shipping_addresses">
       <ion-row class="buttons-row ion-text-center">
         <ion-col size="3">
           <ion-button color="primary" (click)="viewCustomerShippingAddress(address)" fill="outline" shape="round">

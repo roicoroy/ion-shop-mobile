@@ -12,6 +12,7 @@ import { VariantModalPage } from './variant-modal/variant-modal.page';
 import { CustomComponentsModule } from 'src/app/components/components.module';
 import { IShopFacadeState, ShopFacade } from '../shop.facade';
 import { ProductsActions } from 'src/app/store/products/products.actions';
+import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
 
 @Component({
   selector: 'app-products-list',
@@ -40,6 +41,7 @@ export class ProductsListPage implements OnInit {
   viewState$: Observable<IShopFacadeState>;
 
   ngOnInit() {
+    this.store.dispatch(new ProductsActions.GetProductList());
     this.viewState$ = this.facade.viewState$
     // this.viewState$.subscribe((vs) => {
     //   console.log(vs);
