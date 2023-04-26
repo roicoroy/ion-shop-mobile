@@ -31,22 +31,41 @@
             </ion-card-title>
             <ion-card-subtitle>{{ vs.customer?.last_name }}</ion-card-subtitle>
           </ion-card-header>
-          <ion-card-content *ngFor="let customer of vs?.customer.shipping_addresses">
-            <ion-list>
-              <ion-item button (click)="details()">
-                {{ customer.first_name }}
-                {{ customer.last_name }}
-                <br>
-                {{ customer.address_1 }}
-                {{ customer.address_2 }}
-                <br>
-                {{ customer.city }}
-                {{ customer.postal_code }}
-                {{ customer.phone }}
-                <br>
-              </ion-item>
-            </ion-list>
+
+          <ion-card-content *ngIf="vs?.customer.shipping_addresses.length >= 1; else noAddress">
+            <div *ngFor="let customer of vs?.customer.shipping_addresses">
+              <ion-toolbar>
+                <ion-icon slot="end" name="close" color="danger" (click)="delete(customer.id)"></ion-icon>
+                <ion-text>
+                  {{ customer.first_name }}
+                  {{ customer.last_name }}
+                </ion-text>
+              </ion-toolbar>
+              <a (click)="details(customer)">
+                <ion-text>
+                  <p>{{ customer.address_1 }}</p>
+                  <p>{{ customer.address_2 }}</p>
+                </ion-text>
+                <ion-text>
+                  <p>Region: {{ buildRegionCode(customer?.country_code) }}</p>
+                  <p>Coutry: {{ customer.country_code }}</p>
+                  <p>City: {{ customer.city }}</p>
+                  <p>Post Code: {{ customer.postal_code }}</p>
+                </ion-text>
+                <ion-text>
+                  <ion-icon name="home"></ion-icon> -
+                  <ion-note>{{ customer.phone }}</ion-note>
+                </ion-text>
+              </a>
+            </div>
           </ion-card-content>
+          <ng-template #noAddress>
+            <ion-card-content class="ion-text-center">
+              <ion-col size="12">
+                Add an Address
+              </ion-col>
+            </ion-card-content>
+          </ng-template>
         </ion-card>
       </ion-col>
     </ion-row>

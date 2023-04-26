@@ -2,7 +2,7 @@ import { Component, forwardRef, ChangeDetectionStrategy, OnInit, OnDestroy } fro
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS, ControlValueAccessor, FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
 import { Store } from "@ngxs/store";
 import { Subscription, Observable, Subject } from "rxjs";
-import { CountryPhone } from "../address-form/country-phone.model";
+import { CountryPhone } from "../../../shared/types/models/country-phone.model";
 import { AddressDetailsFormFacade } from "./address-details-form.facade";
 import { AddressesActions } from "src/app/store/addresses/addresses.actions";
 import { fade } from "src/app/shared/animations/animations";

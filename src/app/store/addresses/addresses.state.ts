@@ -6,14 +6,16 @@ import { environment } from 'src/environments/environment';
 import { ErrorLoggingActions } from '../error-logging/error-logging.actions';
 
 export interface AddressesStateModel {
-    selectedAddress: any | null;
-    regionList: any | null;
-    countriesList: any | null;
+    selectedAddress: any;
+    regionList: any;
+    countriesList: any;
+    adressDetailsForm: any;
 }
 export const initAddressStateModel: AddressesStateModel = {
     selectedAddress: null,
     regionList: [],
     countriesList: [],
+    adressDetailsForm: null
 };
 @State({
     name: 'addresses',

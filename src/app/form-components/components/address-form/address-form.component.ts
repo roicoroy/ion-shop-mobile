@@ -2,7 +2,7 @@ import { Component, forwardRef, ChangeDetectionStrategy, OnInit, OnDestroy, Inpu
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS, ControlValueAccessor, FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
 import { Store } from "@ngxs/store";
 import { Subscription } from "rxjs";
-import { CountryPhone } from './country-phone.model';
+import { CountryPhone } from '../../../shared/types/models/country-phone.model';
 import { fade } from "src/app/shared/animations/animations";
 
 @Component({

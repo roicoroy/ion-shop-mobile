@@ -61,7 +61,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.platform.ready().then(async () => {
       this.viewState$ = this.facade.viewState$;
       // this.viewState$
-      //   .pipe(takeUntil(this.ngUnsubscribe))
+        // .pipe(takeUntil(this.ngUnsubscribe))
       //   .subscribe((vs) => { });
       this.theme.themeInit();
       const device = await this.native.getDeviceInfo();

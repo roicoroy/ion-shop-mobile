@@ -47,9 +47,7 @@ export class StartFacade {
         );
     }
     appLogout() {
-        this.store.dispatch(new AuthStateActions.AuthStateLogout()).subscribe((authState) => {
-            console.log(authState);
-        });
+        this.store.dispatch(new AuthStateActions.AuthStateLogout());
     }
     loadApp() {
         this.store.dispatch(new AuthStateActions.LoadApp());

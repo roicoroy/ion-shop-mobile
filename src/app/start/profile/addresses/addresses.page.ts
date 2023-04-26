@@ -1,11 +1,16 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
 import { IProfileFacadeState, ProfileFacade } from '../profile.facade';
 import { Router } from '@angular/router';
+import { IRegisterAddress } from 'src/app/shared/types/types.interfaces';
+import { AddressesFacade, IAddressesFacadeState } from './address.facade';
+import { Store } from '@ngxs/store';
+import { CustomerActions } from 'src/app/store/customer/customer.actions';
+import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
 
 @Component({
   selector: 'app-addresses',
@@ -18,36 +23,54 @@ import { Router } from '@angular/router';
     FormsModule
   ]
 })
-export class AddressesPage implements OnInit {
+export class AddressesPage implements OnInit, OnDestroy {
 
   private modalCtrl = inject(ModalController);
   private router = inject(Router);
-  private facade = inject(ProfileFacade);
+  private facade = inject(AddressesFacade);
+  private store = inject(Store);
 
-  subscription = new Subject();
+  private readonly ngUnsubscribe = new Subject();
 
-  viewState$: Observable<IProfileFacadeState>;
+  viewState$: Observable<IAddressesFacadeState>;
 
   constructor() { }
 
   ngOnInit() {
+    this.store.dispatch(new AddressesActions.GetRegionList());
     this.viewState$ = this.facade.viewState$;
-    this.viewState$.subscribe((vs) => {
-      console.log(vs?.customer);
-      console.log(vs.customer?.shipping_addresses
-      );
-    });
+    // this.viewState$
+    //   .pipe(takeUntil(this.ngUnsubscribe))
+    //   .subscribe((vs) => {
+    //     console.log(vs);
+    //     console.log(vs.customer?.shipping_addresses);
+    //   });
   }
   addAddress() {
     this.router.navigate(['address-details'], { queryParams: { address: null } });
   }
-  details() {
-    const address = {
-      address_1: '23',
-      address_2: 'NewHaven Place',
-      postal_code: 'ED00KL',
-      phone: '123123',
-    };
+  details(address: IRegisterAddress) {
+    console.log(address);
     this.router.navigate(['address-details'], { queryParams: address });
+  }
+
+  async delete(addressId: string) {
+    this.store.dispatch(new CustomerActions.DeleteCustomerAddress(addressId));
+  }
+
+  buildRegionCode(country_code: string) {
+    const regionList = this.store.selectSnapshot<any>((state) => state.addresses.regionList);
+    if (regionList != null) {
+      const countries = regionList.map((region: any, i: any) => region.countries);
+      const result = [].concat(...countries);
+      const filtered = result.filter((region: any) => {
+        return region.iso_2 === country_code;
+      });
+      return filtered[0]?.name;
+    }
+  }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next(null);
+    this.ngUnsubscribe.complete();
   }
 }
