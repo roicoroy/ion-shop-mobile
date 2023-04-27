@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { ProfileFacade } from '../profile.facade';
+import { AuthStateActions } from 'src/app/store/auth/auth.actions';
 
 @Component({
   selector: 'app-orders',
@@ -34,14 +35,17 @@ export class OrdersPage implements OnInit {
   modalCtrl = inject(ModalController);
   private navigation = inject(NavigationService);
   private facade = inject(ProfileFacade);
+  private store = inject(Store);
 
   constructor() {
     this.viewState$ = this.facade.viewState$;
-    this.viewState$.subscribe((vs) => {
-      console.log(vs);
-    })
+    // this.viewState$.subscribe((vs) => {
+    //   console.log(vs);
+    // })
   }
   ngOnInit() {
+    this.store.dispatch(new AuthStateActions.getMedusaSession());
+
     this.presentingElement = document.querySelector('#main-content');
   }
   back() {

@@ -15,7 +15,7 @@ export interface IProfileFacadeState {
 })
 export class ProfileFacade {
 
-    // @Select(AuthState.getSession) session$: Observable<any>;
+    @Select(AuthState.getSession) session$: Observable<any>;
 
     @Select(AuthState.getCustomer) customer$: Observable<any>;
 
@@ -28,19 +28,19 @@ export class ProfileFacade {
     constructor() {
         this.viewState$ = combineLatest(
             [
-                // this.session$,
+                this.session$,
                 this.customer$,
                 this.isLoggedIn$,
             ]
         ).pipe(
             map((
                 [
-                    // session,
+                    session,
                     customer,
                     isLoggedIn,
                 ]
             ) => ({
-                // session,
+                session,
                 customer,
                 isLoggedIn,
             }))

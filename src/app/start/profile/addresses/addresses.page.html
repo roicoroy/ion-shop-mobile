@@ -32,7 +32,7 @@
             <ion-card-subtitle>{{ vs.customer?.last_name }}</ion-card-subtitle>
           </ion-card-header>
 
-          <ion-card-content *ngIf="vs?.customer.shipping_addresses.length >= 1; else noAddress">
+          <ion-card-content *ngIf="vs?.customer?.shipping_addresses?.length >= 1; else noAddress">
             <div *ngFor="let customer of vs?.customer.shipping_addresses">
               <ion-toolbar>
                 <ion-icon slot="end" name="close" color="danger" (click)="delete(customer.id)"></ion-icon>

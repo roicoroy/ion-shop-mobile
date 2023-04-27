@@ -39,6 +39,7 @@ import { ProductState } from './app/store/products/products.state';
 import { LanguageState } from './app/store/language/language.state';
 import { MedusaState } from './app/store/medusa/medusa.state';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
+import { ErrorCatchingInterceptor } from './app/shared/interceptor/error.interceptor';
 
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localePt, 'pt');
@@ -69,6 +70,11 @@ bootstrapApplication(AppComponent, {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: StrapiMedusaInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorCatchingInterceptor,
       multi: true
     },
     importProvidersFrom(

@@ -47,7 +47,7 @@ export class AddressesState {
     @Action(AddressesActions.GetRegionList)
     async getMedusaRegionList(ctx: StateContext<AddressesStateModel>) {
         try {
-            let response = await this.medusaClient?.regions?.list();
+            let response = await this.medusaClient?.regions.list();
             ctx.patchState({
                 regionList: response?.regions,
             });
