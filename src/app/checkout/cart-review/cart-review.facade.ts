@@ -3,6 +3,11 @@ import { Select, Store } from '@ngxs/store';
 import { Observable, combineLatest, map } from 'rxjs';
 import { CartState } from 'src/app/store/cart/cart.state';
 
+export interface ICartReviewFacadeState {
+    cartId: string,
+    cart: any,
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -12,7 +17,7 @@ export class CartReviewFacade {
 
     @Select(CartState.getCart) cart$: Observable<any>;
 
-    readonly viewState$: Observable<any>;
+    readonly viewState$: Observable<ICartReviewFacadeState>;
 
     constructor() {
         this.viewState$ = combineLatest(

@@ -10,12 +10,14 @@ export interface AddressesStateModel {
     regionList: any;
     countriesList: any;
     adressDetailsForm: any;
+    cartAdressDetailsForm: any;
 }
 export const initAddressStateModel: AddressesStateModel = {
     selectedAddress: null,
     regionList: [],
     countriesList: [],
-    adressDetailsForm: null
+    adressDetailsForm: null,
+    cartAdressDetailsForm: null,
 };
 @State({
     name: 'addresses',

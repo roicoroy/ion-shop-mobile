@@ -66,7 +66,7 @@ export class MedusaCartComponent implements OnInit, AfterViewInit {
     this.store.dispatch(new CartActions.DeleteProductMedusaFromCart(item.cart_id, item.id));
   }
   goToCheckout() {
-    this.navCtrl.navigateForward('checkout/flow/start');
+    this.navCtrl.navigateForward('checkout/pages/checkout-home');
     // console.log('goToCheckout');
   }
 }

@@ -19,7 +19,7 @@ export class EmailPasswordService {
             identifier: email,
             password,
         };
-        console.log(strapiRequest);
+        // console.log(strapiRequest);
         return this.httpClient.post(environment.BASE_PATH + '/api/auth/local', strapiRequest, { headers: this.headers });
     }
     registerEmailPassword(email: string, password?: string) {
@@ -28,7 +28,7 @@ export class EmailPasswordService {
             email,
             password,
         };
-        console.log(strapiRequest);
+        // console.log(strapiRequest);
         return this.httpClient.post(environment.BASE_PATH + '/api/auth/local/', strapiRequest, { headers: this.headers });
     }
 }

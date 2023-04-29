@@ -1,57 +1,65 @@
-import { Component, Input, OnDestroy } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IonicModule, ModalController } from '@ionic/angular';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
+import { IRegisterAddress } from 'src/app/shared/types/types.interfaces';
+import { CartAddressesFacade, ICartAddressesFacadeState } from './cart-addresses.facade';
 import { Store } from '@ngxs/store';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { CustomerActions } from 'src/app/store/customer/customer.actions';
 import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
 import { CartActions } from 'src/app/store/cart/cart.actions';
-import { AddressDetailsComponent } from './address-details/address-details.component';
-import { AddressesFacade } from './cart-addresses.facade';
-import { CustomerActions } from 'src/app/store/customer/customer.actions';
-import { AuthStateActions } from 'src/app/store/auth/auth.actions';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
-import { IRegisterAddress } from 'src/app/shared/types/types.interfaces';
 
 @Component({
-  selector: 'app-addresses',
+  selector: 'app-cart-addresses',
   templateUrl: './cart-addresses.page.html',
   styleUrls: ['./cart-addresses.page.scss'],
+  standalone: true,
+  imports: [
+    IonicModule,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule
+  ]
 })
-export class CartAddressesPage implements OnDestroy {
+export class CartAddressesPage implements OnInit, OnDestroy {
 
-  @Input() isEdit = false;
+  private modalCtrl = inject(ModalController);
+  private router = inject(Router);
+  private facade = inject(CartAddressesFacade);
+  private store = inject(Store);
+  private navigation = inject(NavigationService);
 
-  presentingElement: any;
+  private readonly ngUnsubscribe = new Subject();
 
-  viewState$: Observable<any>;
+  viewState$: Observable<ICartAddressesFacadeState>;
 
-  submitted: boolean;
+  constructor() { }
 
-  subscription = new Subject();
-
-  constructor(
-    private modalCtrl: ModalController,
-    private store: Store,
-    private navigation: NavigationService,
-    private readonly facade: AddressesFacade,
-  ) {
-    this.presentingElement = document.querySelector('#main-content');
-    this.store.dispatch(new AuthStateActions.LoadApp());
+  ngOnInit() {
     this.viewState$ = this.facade.viewState$;
-    // this.viewState$
-    //   .pipe(
-    //     takeUntil(this.subscription),
-    //     take(1)
-    //   )
-    //   .subscribe((state) => {
-    //     if (!state.isGuest && state?.isCustomerLoggedIn && state?.isUserLoggedIn) {
-    //       this.store.dispatch(new AuthStateActions.getMedusaSession());
-    //     }
-    //   });
+    this.viewState$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((vs) => {
+        
+        console.log(vs.cart?.billing_address?.id);
+        console.log(vs.cart?.shipping_address?.id);
+        
+        console.log(vs?.session);
+
+        // console.log(vs.customer.shipping_addresses);
+        vs.session?.shipping_addresses.forEach((address: any) => {
+          console.log(address?.id);
+        });
+        vs.customer?.shipping_addresses.forEach((address: any) => {
+          console.log(address?.id);
+        });
+      });
   }
-  updateCart(vs: any) {
-    if (vs.session != null) {
-      this.store.dispatch(new CustomerActions.AddCustomerToCart(vs.session?.id))
-    }
+  addAddress() {
+    this.router.navigate(['checkout/pages/cart-address-details'], { queryParams: { address: null } });
   }
   async useBillingAddress(address: IRegisterAddress) {
     const cartId = await this.store.selectSnapshot<any>((state: any) => state.cart.cart?.id);
@@ -63,113 +71,32 @@ export class CartAddressesPage implements OnDestroy {
     this.store.dispatch(new CartActions.UpdateCartShippingAddress(cartId, address));
     this.store.dispatch(new CustomerActions.AddAShippingAddress(address));
   }
-  async newBillingAddress() {
-    const modal = await this.modalCtrl.create({
-      component: AddressDetailsComponent,
-      componentProps: {
-        isNewAddress: true
-      }
-    });
-    await modal.present();
-    const { data, role } = await modal.onWillDismiss();
-    if (role === 'dismiss' && data) {
-      this.useBillingAddress(data);
-    }
+  details(address: IRegisterAddress) {
+    console.log(address);
+    this.router.navigate(['checkout/pages/cart-address-details'], { queryParams: address });
   }
-  async viewBilingAddress(address: IRegisterAddress) {
-    const modal = await this.modalCtrl.create({
-      component: AddressDetailsComponent,
-      presentingElement: this.presentingElement,
-      componentProps: {
-        isNewAddress: false
-      }
-    });
-    this.store.dispatch(new AddressesActions.AddAddressToState(address));
-    await modal.present();
-    const { data, role } = await modal.onWillDismiss();
-    if (role === 'dismiss' && data) {
-      this.useBillingAddress(data);
-    }
-  }
-  async newShippingAddress() {
-    const modal = await this.modalCtrl.create({
-      component: AddressDetailsComponent,
-      componentProps: {
-        isNewAddress: true
-      }
-    });
-    await modal.present();
-    const { data, role } = await modal.onWillDismiss();
-    if (role === 'dismiss' && data) {
-      this.useShippingAddress(data);
-    }
-  }
-  async viewShippingAddress(address?: IRegisterAddress) {
-    const modal = await this.modalCtrl.create({
-      component: AddressDetailsComponent,
-      presentingElement: this.presentingElement,
-      componentProps: {
-        isNewAddress: false
-      }
-    });
-    this.store.dispatch(new AddressesActions.AddAddressToState(address));
-    await modal.present();
-    const { data, role } = await modal.onWillDismiss();
-    if (role === 'dismiss' && data) {
-      this.useShippingAddress(data);
-    }
-  }
-  async newCustomerShippingAddress() {
-    const modal = await this.modalCtrl.create({
-      component: AddressDetailsComponent,
-      componentProps: {
-        isNewAddress: true
-      }
-    });
-    await modal.present();
-    const { data, role } = await modal.onWillDismiss();
-    if (role === 'dismiss' && data) {
-      this.useCustomerShippingAddress(data);
-    }
-  }
-  async viewCustomerShippingAddress(address?: any) {
-    const modal = await this.modalCtrl.create({
-      component: AddressDetailsComponent,
-      presentingElement: this.presentingElement,
-      componentProps: {
-        isNewAddress: false
-      }
-    });
-
-    this.store.dispatch(new AddressesActions.AddAddressToState(address));
-
-    await modal.present();
-    const { data, role } = await modal.onWillDismiss();
-    // console.log(data, role);
-    if (role === 'dismiss' && data) {
-      this.updateCustomerShippingAddress(address.id, data);
-    }
-  }
-  async useCustomerShippingAddress(address: IRegisterAddress) {
-    this.store.dispatch(new CustomerActions.AddAShippingAddress(address));
-  }
-  async updateCustomerShippingAddress(addressId: string, address: IRegisterAddress) {
-    this.store.dispatch(new CustomerActions.UpdateCustomerAddress(addressId, address));
-  }
-  async deleteCustomerShippingAddress(addressId: string) {
+  async delete(addressId: string) {
     this.store.dispatch(new CustomerActions.DeleteCustomerAddress(addressId));
   }
-  detailsPage() {
-    this.navigation.navigateFlip('/shop/details');
+  next() {
+    this.navigation.navControllerDefault('checkout/pages/checkout-home');
   }
-  cartReview() {
-    this.navigation.navigateFlip('/checkout/flow/cart-review');
+  back() {
+    this.navigation.navControllerDefault('checkout/pages/checkout-home');
   }
-  shipping() {
-    this.navigation.navigateFlip('/checkout/flow/shipping');
+  buildRegionCode(country_code: string) {
+    const regionList = this.store.selectSnapshot<any>((state) => state.addresses.regionList);
+    if (regionList != null) {
+      const countries = regionList.map((region: any, i: any) => region.countries);
+      const result = [].concat(...countries);
+      const filtered = result.filter((region: any) => {
+        return region.iso_2 === country_code;
+      });
+      return filtered[0]?.name;
+    }
   }
-  ngOnDestroy() {
-    this.subscription.next(null);
-    this.subscription.complete();
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next(null);
+    this.ngUnsubscribe.complete();
   }
 }

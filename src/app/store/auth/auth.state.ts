@@ -172,6 +172,7 @@ export class AuthState implements OnDestroy {
                     catchError(err => {
                         console.log('Handling error locally and rethrowing it...', err);
                         this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
+                        this.navigation.navControllerDefault('auth/pages/auth-home');
                         return throwError(() => new Error(err));
                     }),
                     take(1),
@@ -193,7 +194,7 @@ export class AuthState implements OnDestroy {
         }
         else {
             throwError(() => new Error('Email is null'));
-            this.navigation.navControllerDefault('auth/pages/auth-home')
+            this.navigation.navControllerDefault('auth/pages/auth-home');
             console.log('Email is null');
         }
     }

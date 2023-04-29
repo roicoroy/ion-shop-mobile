@@ -1,21 +1,19 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IonicModule, ModalController } from '@ionic/angular';
-import { Observable, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
-import { IRegisterAddress } from 'src/app/shared/types/types.interfaces';
+import { IonicModule } from '@ionic/angular';
 import { Store } from '@ngxs/store';
-import { CustomerActions } from 'src/app/store/customer/customer.actions';
-import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
-import { CartActions } from 'src/app/store/cart/cart.actions';
+import { Subject, Observable, takeUntil } from 'rxjs';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
-import { IOrderReviewFacadeState, OrderReviewFacade } from './order-review.facade';
+import { OrderReviewFacade, IOrderReviewFacadeState } from '../order-review/order-review.facade';
+import { CartReviewFacade, ICartReviewFacadeState } from './cart-review.facade';
+import { CartActions } from 'src/app/store/cart/cart.actions';
 
 @Component({
-  selector: 'app-order-review',
-  templateUrl: './order-review.page.html',
-  styleUrls: ['./order-review.page.scss'],
+  selector: 'app-cart-review',
+  templateUrl: './cart-review.page.html',
+  styleUrls: ['./cart-review.page.scss'],
   standalone: true,
   imports: [
     IonicModule,
@@ -24,16 +22,16 @@ import { IOrderReviewFacadeState, OrderReviewFacade } from './order-review.facad
     FormsModule
   ]
 })
-export class OrderReviewPage implements OnInit, OnDestroy {
+export class CartPage implements OnInit, OnDestroy {
 
   private router = inject(Router);
-  private facade = inject(OrderReviewFacade);
+  private facade = inject(CartReviewFacade);
   private store = inject(Store);
   private navigation = inject(NavigationService);
 
   private readonly ngUnsubscribe = new Subject();
 
-  viewState$: Observable<IOrderReviewFacadeState>;
+  viewState$: Observable<ICartReviewFacadeState>;
 
   constructor() { }
 
@@ -46,6 +44,17 @@ export class OrderReviewPage implements OnInit, OnDestroy {
       });
   }
   details() {
+  }
+  delete(item: any) {
+    this.store.dispatch(new CartActions.DeleteProductMedusaFromCart(item.cart_id, item.id));
+  }
+  incrementSelectItem(item: any) {
+    this.store.dispatch(new CartActions.AddProductMedusaToCart(item.cart_id, 1, item.variant.id,));
+  }
+  decrementSelectItem(item: any) {
+    return item?.quantity == 1 ?
+      this.delete(item) :
+      this.store.dispatch(new CartActions.AddProductMedusaToCart(item.cart_id, -1, item.variant.id));
   }
   next() {
     this.navigation.navControllerDefault('checkout/pages/checkout-home');

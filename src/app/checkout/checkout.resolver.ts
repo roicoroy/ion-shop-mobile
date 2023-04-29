@@ -13,7 +13,9 @@ import { ProductsActions } from '../store/products/products.actions';
 export class CheckoutResolver implements Resolve<Observable<any>> {
     private store = inject(Store);
     resolve(): Observable<any> {
-        console.log('checkouyt resolve')
         return this.store.dispatch(new AuthStateActions.LoadApp());
+        // this.store.dispatch(new CartActions.CreateMedusaCart());
+        // this.store.dispatch(new AddressesActions.GetRegionList());
+        // return this.store.dispatch(new ProductsActions.GetProductList());
     }
 }

@@ -5,7 +5,7 @@ import { ShopResolver } from './shop.resolver';
 export const routes: Routes = [
   {
     path: 'tabs',
-    component: ShopPage,
+    // component: ShopPage,
     children: [
       {
         path: 'products-list',
