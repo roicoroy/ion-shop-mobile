@@ -66,7 +66,8 @@ export class AppComponent implements OnInit, OnDestroy {
       this.theme.themeInit();
       const device = await this.native.getDeviceInfo();
       const token = await this.tokenService.getToken();
-      if (token) {
+      const userEmail = await this.store.selectSnapshot<any>((state: any) => state.authState?.userEmail);
+      if (token && userEmail) {
         this.store.dispatch(new AuthStateActions.SetLoggedIn(true));
       }
       if (device.platform == 'web') {

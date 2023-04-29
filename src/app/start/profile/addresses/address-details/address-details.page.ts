@@ -198,22 +198,22 @@ export class AddressDetailsPage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next(null);
     this.ngUnsubscribe.complete();
-    this.store.dispatch([
-      new UpdateFormValue({
-        path: 'addresses.adressDetailsForm',
-        value: {
-          first_name: null,
-          last_name: null,
-          address_1: null,
-          address_2: null,
-          region_code: null,
-          country: null,
-          city: null,
-          postal_code: null,
-          phone: null,
-        },
-      }),
-    ]);
+    // this.store.dispatch([
+    //   new UpdateFormValue({
+    //     path: 'addresses.adressDetailsForm',
+    //     value: {
+    //       first_name: null,
+    //       last_name: null,
+    //       address_1: null,
+    //       address_2: null,
+    //       region_code: null,
+    //       country: null,
+    //       city: null,
+    //       postal_code: null,
+    //       phone: null,
+    //     },
+    //   }),
+    // ]);
   }
 }
 

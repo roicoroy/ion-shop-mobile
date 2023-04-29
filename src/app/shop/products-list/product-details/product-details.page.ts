@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
@@ -6,13 +6,18 @@ import { CustomComponentsModule } from 'src/app/components/components.module';
 import { ShellModule } from 'src/app/components/shell/shell.module';
 import { FormComponentsModule } from 'src/app/form-components/form-components.module';
 import { NgxsModule, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { CounterInputComponent } from 'src/app/components/components/counter-input/counter-input.component';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { ShopFacade } from '../../shop.facade';
 import { ProductsActions } from 'src/app/store/products/products.actions';
+import { register } from 'swiper/element/bundle';
+import { ActivatedRoute } from '@angular/router';
+import { IRegisterAddress } from 'src/app/shared/types/types.interfaces';
+
+register();
 
 @Component({
   selector: 'app-product-details',
@@ -29,11 +34,21 @@ import { ProductsActions } from 'src/app/store/products/products.actions';
     FormComponentsModule,
     CustomComponentsModule,
     ShellModule
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
-export class ProductDetailsPage implements OnInit {
+export class ProductDetailsPage implements OnInit, OnDestroy {
 
   @ViewChild('counterInput') counterInput: CounterInputComponent;
+
+  @ViewChild('swiper')
+  swiperRef: ElementRef | undefined;
+
+  logActiveIndex() {
+    console.log(this.swiperRef?.nativeElement.swiper.activeIndex);
+  }
 
   viewState$: Observable<any>;
 
@@ -42,7 +57,8 @@ export class ProductDetailsPage implements OnInit {
   productVariants: any = [];
   selectedOptionId: string;
   selectedVariantId: string;
-
+  private route = inject(ActivatedRoute);
+  private readonly ngUnsubscribe = new Subject();
   constructor(
     private store: Store,
     private navigation: NavigationService,
@@ -50,11 +66,26 @@ export class ProductDetailsPage implements OnInit {
     public alertController: AlertController,
   ) {
     this.viewState$ = this.facade.viewState$;
-    this.viewState$.subscribe((vs) => {
+    this.viewState$
+    .pipe(
+      takeUntil(this.ngUnsubscribe),
+      take(1),
+    )
+    .subscribe((vs) => {
       console.log(vs);
     });
   }
   ngOnInit() {
+    this.route.queryParams
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        take(1),
+      )
+      .subscribe(
+        (product: any) => {
+          console.log(product.id);
+        },
+      )
   }
   onSelectChange(option: any) {
     this.selectedOptionId = option.id;
@@ -78,6 +109,11 @@ export class ProductDetailsPage implements OnInit {
     this.optionsVariants = [];
     this.navigation.navigateFlip('products-list');
     this.store.dispatch(new ProductsActions.clearSelectedProduct());
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next(null);
+    this.ngUnsubscribe.complete();
   }
 
 }

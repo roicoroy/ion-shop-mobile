@@ -19,12 +19,16 @@
     </ion-toolbar>
   </ion-header>
 
-  <!-- <ion-row class="slide-inner-row">
-    <app-image-shell animation="spinner" class="showcase-image" [src]="vs?.selectedProduct?.images[0].image.url">
-      <app-aspect-ratio [ratio]="{w:64, h:50}">
-      </app-aspect-ratio>
-    </app-image-shell>
-  </ion-row> -->
+  <ion-row class="slide-inner-row">
+    <swiper-container #swiper class="details-slides">
+      <swiper-slide *ngFor="let image of vs?.selectedProduct?.images">
+        <app-image-shell animation="spinner" class="showcase-image" [src]="image.url">
+          <app-aspect-ratio [ratio]="{w:24, h:25}">
+          </app-aspect-ratio>
+        </app-image-shell>
+      </swiper-slide>
+    </swiper-container>
+  </ion-row>
 
   <div class="ion-padding">
     <h3 class="details-name">

@@ -11,7 +11,7 @@ import { ErrorLoggingActions } from '../error-logging/error-logging.actions';
 import { AuthStateService } from './auth-state.service';
 import { StateClear } from 'ngxs-reset-plugin';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
-import { Observable, Subject, catchError, take, takeUntil, tap, throwError } from 'rxjs';
+import { Observable, Subject, catchError, from, take, takeUntil, tap, throwError } from 'rxjs';
 import { IUser } from 'src/app/shared/types/models/User';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -98,17 +98,12 @@ export class AuthState implements OnDestroy {
         }
         if (!state.session && !state.customer) {
             this.store.dispatch(new AuthStateActions.getMedusaSession());
-            // console.log('B');
+            console.log('get session');
         }
         if (!state.userId && !state.user && !state.session && !state.customer) {
             this.store.dispatch(new AuthStateActions.AuthStateLogout());
-            // console.log('A');
-            this.navigation.navControllerDefault('auth/pages/auth-home')
+            console.log('auth logout');
         }
-    }
-    @Action(AuthStateActions.UpdateStrapiUser)
-    updateStrapiUser({ getState, patchState }: StateContext<IAuthStateModel>, { userId, profileForm }: AuthStateActions.UpdateStrapiUser) {
-        const state = getState();
     }
     @Action(AuthStateActions.SetAuthState)
     async setAuthState(ctx: StateContext<IAuthStateModel>, { user }: AuthStateActions.SetAuthState) {
@@ -116,14 +111,23 @@ export class AuthState implements OnDestroy {
         try {
             if (user.jwt && user.user) {
                 this.setTokenResponse(user);
-                // const medusaCustomer = await this.medusaCustomerInit(user.user.email);
-                this.medusaCustomerInit(user.user.email)
-                    .then((medusaCustomer: Observable<ICustomer>) => {
+                const customer$ = from(this.medusaCustomerInit(user.user.email));
+                customer$
+                    .pipe(
+                        takeUntil(this.subscription),
+                        catchError(err => {
+                            console.log('Handling error locally and rethrowing it...', err);
+                            this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
+                            return throwError(() => new Error(err));
+                        })
+                    )
+                    .subscribe(async (medusaCustomer) => {
+                        console.log(medusaCustomer);
                         if (medusaCustomer) {
                             this.authService.loadUser(user.user.id)
                                 .pipe(
+                                    take(1),
                                     takeUntil(this.subscription),
-                                    take(1)
                                 )
                                 .subscribe(async (user: IUser) => {
                                     console.log(user);
@@ -140,10 +144,8 @@ export class AuthState implements OnDestroy {
                                 });
                         }
                     });
-                // console.log('medusaCustomer!!!!:::', medusaCustomer)
             }
-        }
-        catch (err: any) {
+        } catch (err: any) {
             if (err) {
                 this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
                 const state = ctx.getState();
@@ -157,76 +159,42 @@ export class AuthState implements OnDestroy {
     @Action(AuthStateActions.getMedusaSession)
     async getSession(ctx: StateContext<IAuthStateModel>) {
         const state = ctx.getState();
-        try {
-            const userEmail = await this.store.selectSnapshot<any>((state: any) => state.authState?.userEmail);
-            if (userEmail) {
-                this.medusaCustomerInit(userEmail)
-                    .then(async (medusaCustomer: Observable<ICustomer>) => {
-                        if (medusaCustomer) {
-                            const userId = await this.store.selectSnapshot<any>((state: any) => state.authState?.userId);
-                            const sessionRes = await this.medusa.auth?.getSession();
-                            const customerRes = await this.medusa.customers.retrieve();
-                            if (sessionRes?.customer != null
-                                && sessionRes.response?.status === 200
-                                && customerRes?.customer != null
-                                && customerRes.response?.status === 200
-                            ) {
-                                this.authService.loadUser(userId)
-                                    .pipe(
-                                        takeUntil(this.subscription),
-                                    )
-                                    .subscribe((user: IUser) => {
-                                        ctx.patchState({
-                                            ...state,
-                                            isLoggedIn: true,
-                                            userEmail: user.email,
-                                            userId: user?.id,
-                                            user: user,
-                                            medusaId: customerRes.customer.id,
-                                            customer: customerRes.customer,
-                                            session: sessionRes.customer,
-                                            hasSession: true,
-                                        });
-                                    });
-                            }
-                        }
+        const userId = this.store.selectSnapshot<any>((state: any) => state.authState?.userId);
+        const sessionRes = await this.medusa.auth?.getSession();
+        const customerRes = await this.medusa.customers.retrieve();
+        if (sessionRes?.customer != null
+            && sessionRes.response?.status === 200
+            && customerRes?.customer != null
+            && customerRes.response?.status === 200
+        ) {
+            this.authService.loadUser(userId)
+                .pipe(
+                    catchError(err => {
+                        console.log('Handling error locally and rethrowing it...', err);
+                        this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
+                        return throwError(() => new Error(err));
+                    }),
+                    take(1),
+                    takeUntil(this.subscription),
+                )
+                .subscribe((user: IUser) => {
+                    ctx.patchState({
+                        ...state,
+                        isLoggedIn: true,
+                        userEmail: user.email,
+                        userId: user?.id,
+                        user: user,
+                        medusaId: customerRes.customer.id,
+                        customer: customerRes.customer,
+                        session: sessionRes.customer,
+                        hasSession: true,
                     });
-                // const userId = await this.store.selectSnapshot<any>((state: any) => state.authState?.userId);
-                // const sessionRes = await this.medusa.auth?.getSession();
-                // const customerRes = await this.medusa.customers.retrieve();
-                // if (sessionRes?.customer != null
-                //     && sessionRes.response?.status === 200
-                //     && customerRes?.customer != null
-                //     && customerRes.response?.status === 200
-                // ) {
-                //     this.authService.loadUser(userId)
-                //         .pipe(
-                //             takeUntil(this.subscription),
-                //         )
-                //         .subscribe((user: IUser) => {
-                //             ctx.patchState({
-                //                 ...state,
-                //                 isLoggedIn: true,
-                //                 userEmail: user.email,
-                //                 userId: user?.id,
-                //                 user: user,
-                //                 medusaId: customerRes.customer.id,
-                //                 customer: customerRes.customer,
-                //                 session: sessionRes.customer,
-                //                 hasSession: true,
-                //             });
-                //         });
-                // }
-            }
-        } catch (err: any) {
-            if (err) {
-                const state = ctx.getState();
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-                ctx.patchState({
-                    ...state,
-                    hasSession: false,
                 });
-            }
+        }
+        else {
+            throwError(() => new Error('Email is null'));
+            this.navigation.navControllerDefault('auth/pages/auth-home')
+            console.log('Email is null');
         }
     }
     @Action(AuthStateActions.GetCustomer)
@@ -309,32 +277,51 @@ export class AuthState implements OnDestroy {
                 takeUntil(this.subscription),
                 catchError(err => {
                     console.log('Handling error locally and rethrowing it...', err);
+                    this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
+                    return throwError(() => new Error(err))
+                })
+            );
+    }
+    authenticateMedusaCustomer(email: string) {
+        const loginReq: ICustomerLoginData = {
+            email: email,
+            password: email,
+        };
+        return this.http.post(environment.MEDUSA_API_BASE_PATH + '/store/auth/', loginReq, { headers: this.headers })
+            .pipe(
+                takeUntil(this.subscription),
+                catchError(err => {
+                    console.log('Handling error locally and rethrowing it...', err);
+                    this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
                     return throwError((err: any) => { });
                 })
             );
     }
-    async medusaCustomerInit(email: string): Promise<Observable<ICustomer>> {
-        return this.checkIfMedusaUserExists(email)
-            .pipe(
-                tap(async (medusaEmailExist: any) => {
-                    if (medusaEmailExist.exists && email !== null) {
-                        const loginReq: ICustomerLoginData = {
-                            email: email,
-                            password: email,
-                        };
-                        let loggedInCustomer = await this.medusa.auth?.authenticate(loginReq);
-                        return loggedInCustomer.customer;
-                    }
-                    else if (!medusaEmailExist.exists && email !== null) {
-                        const registerRequest: ICustomerRegisterData = {
-                            email: email,
-                            password: email,
-                        };
-                        let registeredCustomer = await this.medusa.customers?.create(registerRequest);
-                        return registeredCustomer.customer;
-                    }
-                })
-            );
+    async medusaCustomerInit(email: string) {
+        try {
+            const medusaEmailExist = await this.medusa.auth.exists(email);
+            if (medusaEmailExist.exists && email !== null) {
+                const loginReq: ICustomerLoginData = {
+                    email: email,
+                    password: email,
+                };
+                let loggedInCustomer = await this.medusa.auth?.authenticate(loginReq);
+                return loggedInCustomer.customer;
+            }
+            else if (!medusaEmailExist.exists && email !== null) {
+                const registerRequest: ICustomerRegisterData = {
+                    email: email,
+                    password: email,
+                };
+                let registeredCustomer = await this.medusa.customers?.create(registerRequest);
+                return registeredCustomer.customer;
+            }
+            // return lCustomer;
+        } catch (err: any) {
+            if (err) {
+                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
+            }
+        }
     }
     async getMedusaSession(): Promise<any> {
         try {
@@ -346,7 +333,6 @@ export class AuthState implements OnDestroy {
                 this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
             }
         }
-
     }
     async buildCustomerObj(email: string) {
         try {

@@ -13,6 +13,7 @@ import { CustomComponentsModule } from 'src/app/components/components.module';
 import { IShopFacadeState, ShopFacade } from '../shop.facade';
 import { ProductsActions } from 'src/app/store/products/products.actions';
 import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products-list',
@@ -38,6 +39,8 @@ export class ProductsListPage implements OnInit {
   private modalCtrl = inject(ModalController);
   private store = inject(Store);
 
+  private router = inject(Router);
+
   viewState$: Observable<IShopFacadeState>;
 
   ngOnInit() {
@@ -59,8 +62,13 @@ export class ProductsListPage implements OnInit {
     await modal.present();
   }
   navigateDetails(product: any) {
-    this.navigation.navControllerDefault('/product-details');
+    // this.navigation.navControllerDefault('/product-details');
+    this.router.navigate(['product-details'], { queryParams: product });
     this.store.dispatch(new ProductsActions.addSelectedProduct(product));
+  }
+  productDetails(product: any) {
+    console.log(product);
+    this.router.navigate(['product-details'], { queryParams: product });
   }
   navigateHome() {
     this.store.dispatch(new ProductsActions.clearSelectedProduct());

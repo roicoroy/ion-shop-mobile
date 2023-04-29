@@ -5,10 +5,6 @@ export namespace AuthStateActions {
     export class LoadApp {
         static readonly type = '[AuthStateActions] Load App';
     }
-    export class UpdateStrapiUser {
-        static readonly type = '[AuthStateActions] Update Strapi User';
-        constructor(public userId?: string, public profileForm?: any) { }
-    }
     export class GetCustomer {
         static readonly type = '[AuthStateActions] Get Customer';
     }

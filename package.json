@@ -10,7 +10,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "ios-run":"ionic capacitor run ios -l --external"
+    "ios-run": "ionic capacitor run ios -l --external"
   },
   "private": true,
   "dependencies": {
@@ -37,7 +37,7 @@
     "@capacitor/splash-screen": "^4.0.0",
     "@capacitor/status-bar": "^4.0.0",
     "@compodoc/compodoc": "^1.1.19",
-    "@ionic/angular": "^7.0.0",
+    "@ionic/angular": "^7.0.4",
     "@ionic/pwa-elements": "^3.1.1",
     "@ionic/storage-angular": "^3.0.6",
     "@medusajs/medusa-js": "^2.0.1",
@@ -61,6 +61,7 @@
     "ngx-stripe": "^15.6.0",
     "ngxs-reset-plugin": "^3.0.0",
     "rxjs": "~7.5.0",
+    "swiper": "^9.2.4",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

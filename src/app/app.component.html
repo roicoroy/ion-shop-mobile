@@ -3,7 +3,7 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content *ngIf="viewState$ | async as vs">
 
-        <ion-list id="inbox-list">
+        <ion-list id="inbox-list" class="ion-margin-top">
           <div *ngIf="vs.isLoggedIn; else loggedOut">
             <ion-list-header>
               Hello {{ vs.user?.first_name }} {{ vs.user?.last_name }}

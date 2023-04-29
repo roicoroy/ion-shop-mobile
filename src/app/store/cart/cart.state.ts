@@ -111,6 +111,9 @@ export class CartState {
                     password: email,
                 };
                 let loggedInCustomer = await this.medusa.auth?.authenticate(loginReq);
+                
+                console.log(loggedInCustomer);
+
                 return loggedInCustomer.customer.id;
             }
             else if (!medusaEmailExist.exists && email) {
