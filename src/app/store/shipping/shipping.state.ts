@@ -94,6 +94,9 @@ export class ShippingState {
             const cart = await this.medusaClient.carts.setPaymentSession(cartRes.id, {
                 provider_id: provider_id,
             });
+            
+            console.log(cart.cart.payment_session.data?.client_secret);
+
             this.store.dispatch(new MedusaActions.SecretKey(cart.cart.payment_session.data?.client_secret));
             ctx.patchState({
                 provider_id: cart.cart?.provider_id

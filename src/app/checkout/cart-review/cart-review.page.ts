@@ -4,11 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { Store } from '@ngxs/store';
-import { Subject, Observable, takeUntil } from 'rxjs';
 import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
-import { OrderReviewFacade, IOrderReviewFacadeState } from '../order-review/order-review.facade';
 import { CartReviewFacade, ICartReviewFacadeState } from './cart-review.facade';
 import { CartActions } from 'src/app/store/cart/cart.actions';
+import { Subject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-cart-review',
@@ -37,11 +36,11 @@ export class CartPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.viewState$ = this.facade.viewState$;
-    this.viewState$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((vs) => {
-        console.log(vs);
-      });
+    // this.viewState$
+    //   .pipe(takeUntil(this.ngUnsubscribe))
+    //   .subscribe((vs) => {
+    //     console.log(vs);
+    //   });
   }
   details() {
   }

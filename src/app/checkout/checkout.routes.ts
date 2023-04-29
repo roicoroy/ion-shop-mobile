@@ -23,6 +23,14 @@ export const routes: Routes = [
         loadComponent: () => import('./order-review/order-review.page').then(m => m.OrderReviewPage)
       },
       {
+        path: 'shipping',
+        loadComponent: () => import('./shipping/shipping.page').then(m => m.ShippingPage)
+      },
+      {
+        path: 'payment',
+        loadComponent: () => import('./payment/payment.page').then(m => m.PaymentPage)
+      },
+      {
         path: 'cart-address-details',
         loadComponent: () => import('./cart-addresses/cart-address-details/cart-address-details.page').then(m => m.AddressDetailsPage)
       },

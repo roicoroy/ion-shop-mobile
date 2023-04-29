@@ -13,7 +13,6 @@
       <ion-title size="large">Order Review</ion-title>
     </ion-toolbar>
   </ion-header>
-
   <ion-grid *ngIf="viewState$ | async as vs">
     <ion-row>
       <ion-col size="12">
@@ -53,7 +52,6 @@
         </ion-card>
       </ion-col>
     </ion-row>
-
     <ion-row class="ion-text-center">
       <ion-col size="12">
         sub total: {{ vs.cart?.subtotal | currency:'GBP'}}
@@ -65,7 +63,6 @@
         cart total: {{ vs.cart?.total | currency:'GBP'}}
       </ion-col>
     </ion-row>
-
     <ion-row>
       <ion-col size="12">
         <ion-card>
@@ -90,7 +87,6 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>
 <ion-footer>
   <ion-toolbar>

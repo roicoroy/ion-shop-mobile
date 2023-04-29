@@ -93,7 +93,7 @@ export class AuthState implements OnDestroy {
     async loadApp(ctx: StateContext<IAuthStateModel>) {
         const state = ctx.getState();
         if (state.session && state.customer && state.user) {
-            console.log('load return ');
+            // console.log('load return ');
             return;
         }
         if (!state.session && !state.customer) {

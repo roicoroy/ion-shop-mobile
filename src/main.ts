@@ -121,7 +121,8 @@ bootstrapApplication(AppComponent, {
           'theme',
           'language',
           'customer',
-          "cart"
+          "cart",
+          'medusa'
         ]
       }),
     ),

@@ -39,12 +39,6 @@ export class CheckoutHomePage implements OnDestroy {
     //   console.log(vs);
     // });
   }
-  refresh(ev: any) {
-    this.facade.loadApp();
-    setTimeout(() => {
-      (ev as RefresherCustomEvent).detail.complete();
-    }, 3000);
-  }
   loginPages() {
     this.navigation.navControllerDefault('/auth/pages/auth-home');
   }
@@ -56,6 +50,12 @@ export class CheckoutHomePage implements OnDestroy {
   }
   orderReviewPage() {
     this.navigation.navControllerDefault('/checkout/pages/order-review');
+  }
+  shippingPage() {
+    this.navigation.navControllerDefault('/checkout/pages/shipping');
+  }
+  paymentPage() {
+    this.navigation.navControllerDefault('/checkout/pages/payment');
   }
   logout() {
   }

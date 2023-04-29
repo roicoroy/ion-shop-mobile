@@ -42,20 +42,17 @@ export class CartAddressesPage implements OnInit, OnDestroy {
     this.viewState$ = this.facade.viewState$;
     this.viewState$
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((vs) => {
-        
-        console.log(vs.cart?.billing_address?.id);
-        console.log(vs.cart?.shipping_address?.id);
-        
-        console.log(vs?.session);
-
-        // console.log(vs.customer.shipping_addresses);
-        vs.session?.shipping_addresses.forEach((address: any) => {
-          console.log(address?.id);
-        });
-        vs.customer?.shipping_addresses.forEach((address: any) => {
-          console.log(address?.id);
-        });
+      .subscribe((vs) => {        
+        // console.log(vs.cart?.billing_address?.id);
+        // console.log(vs.cart?.shipping_address?.id);
+        // console.log(vs?.session);
+        // // console.log(vs.customer.shipping_addresses);
+        // vs.session?.shipping_addresses.forEach((address: any) => {
+        //   console.log(address?.id);
+        // });
+        // vs.customer?.shipping_addresses.forEach((address: any) => {
+        //   console.log(address?.id);
+        // });
       });
   }
   addAddress() {

@@ -29,9 +29,11 @@ export class MedusaState {
     async secretKey(ctx: StateContext<MedusaStateModel>, { secretKey }: MedusaActions.SecretKey) {
         // console.log(secretKey);
         try {
-            ctx.patchState({
-                secretKey: secretKey,
-            });
+            if (secretKey) {
+                ctx.patchState({
+                    secretKey: secretKey,
+                });
+            }
         }
         catch (err: any) {
             if (err) {

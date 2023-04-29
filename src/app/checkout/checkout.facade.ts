@@ -3,7 +3,6 @@ import { Select, Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthState } from 'src/app/store/auth/auth.state';
-import { ProductState } from 'src/app/store/products/products.state';
 import { UtilityService } from '../shared/services/utility/utility.service';
 import { IUser } from '../shared/types/models/User';
 
@@ -11,8 +10,6 @@ export interface ICheckoutFacadeState {
     user: IUser,
     customer: any,
     isLoggedIn: boolean,
-    selectedVariant: any,
-    productList: any,
 }
 
 @Injectable({
@@ -26,12 +23,6 @@ export class CheckoutFacade {
 
     @Select(AuthState.isLoggedIn) isLoggedIn$: Observable<any>;
 
-    @Select(ProductState.getSelectedProduct) selectedProduct$: Observable<any>;
-
-    @Select(ProductState.getSelectedVariant) selectedVariant$: Observable<any>;
-
-    @Select(ProductState.getProductList) productList$: Observable<any>;
-
     private store = inject(Store);
 
     private utility = inject(UtilityService);
@@ -44,31 +35,19 @@ export class CheckoutFacade {
                 this.user$,
                 this.customer$,
                 this.isLoggedIn$,
-                this.selectedProduct$,
-                this.selectedVariant$,
-                this.productList$,
             ]
         ).pipe(
             map((
                 [
                     user,
                     customer,
-                    isLoggedIn,
-                    selectedProduct,
-                    selectedVariant,
-                    productList
+                    isLoggedIn
                 ]
             ) => ({
                 user,
                 customer,
-                isLoggedIn,
-                selectedProduct,
-                selectedVariant,
-                productList,
+                isLoggedIn
             }))
         );
-    }
-    loadApp() {
-        // this.store.dispatch(new AuthStateActions.LoadApp());
     }
 }
