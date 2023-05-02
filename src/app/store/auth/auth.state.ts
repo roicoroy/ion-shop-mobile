@@ -108,52 +108,40 @@ export class AuthState implements OnDestroy {
     @Action(AuthStateActions.SetAuthState)
     async setAuthState(ctx: StateContext<IAuthStateModel>, { user }: AuthStateActions.SetAuthState) {
         const state = ctx.getState();
-        try {
-            if (user.jwt && user.user) {
-                this.setTokenResponse(user);
-                const customer$ = from(this.medusaCustomerInit(user.user.email));
-                customer$
-                    .pipe(
-                        takeUntil(this.subscription),
-                        catchError(err => {
-                            console.log('Handling error locally and rethrowing it...', err);
-                            this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-                            return throwError(() => new Error(err));
-                        })
-                    )
-                    .subscribe(async (medusaCustomer) => {
-                        console.log(medusaCustomer);
-                        if (medusaCustomer) {
-                            this.authService.loadUser(user.user.id)
-                                .pipe(
-                                    take(1),
-                                    takeUntil(this.subscription),
-                                )
-                                .subscribe(async (user: IUser) => {
-                                    console.log(user);
-                                    ctx.patchState({
-                                        ...state,
-                                        isLoggedIn: true,
-                                        userEmail: user.email,
-                                        userId: user?.id,
-                                        user: user,
-                                        customer: medusaCustomer,
-                                        session: medusaCustomer,
-                                        hasSession: true,
-                                    });
+        if (user.jwt && user.user) {
+            this.setTokenResponse(user);
+            const customer$ = from(this.medusaCustomerInit(user.user.email));
+            customer$
+                .pipe(
+                    takeUntil(this.subscription),
+                    catchError(err => {
+                        const error = throwError(() => new Error(err.response.data));
+                        return this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(error));
+                    })
+                )
+                .subscribe(async (medusaCustomer) => {
+                    console.log(medusaCustomer);
+                    if (medusaCustomer) {
+                        this.authService.loadUser(user.user.id)
+                            .pipe(
+                                take(1),
+                                takeUntil(this.subscription),
+                            )
+                            .subscribe(async (user: IUser) => {
+                                console.log(user);
+                                ctx.patchState({
+                                    ...state,
+                                    isLoggedIn: true,
+                                    userEmail: user.email,
+                                    userId: user?.id,
+                                    user: user,
+                                    customer: medusaCustomer,
+                                    session: medusaCustomer,
+                                    hasSession: true,
                                 });
-                        }
-                    });
-            }
-        } catch (err: any) {
-            if (err) {
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-                const state = ctx.getState();
-                ctx.patchState({
-                    ...state,
-                    hasSession: false,
+                            });
+                    }
                 });
-            }
         }
     }
     @Action(AuthStateActions.getMedusaSession)
@@ -170,10 +158,9 @@ export class AuthState implements OnDestroy {
             this.authService.loadUser(userId)
                 .pipe(
                     catchError(err => {
-                        console.log('Handling error locally and rethrowing it...', err);
-                        this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
                         this.navigation.navControllerDefault('auth/pages/auth-home');
-                        return throwError(() => new Error(err));
+                        const error = throwError(() => new Error(err.response.data));
+                        return this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(error));
                     }),
                     take(1),
                     takeUntil(this.subscription),
@@ -267,7 +254,8 @@ export class AuthState implements OnDestroy {
             }
         } catch (err: any) {
             if (err) {
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
+                const error = throwError(() => new Error(err.response.data));
+                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(error));
             }
         }
     }
@@ -277,9 +265,8 @@ export class AuthState implements OnDestroy {
             .pipe(
                 takeUntil(this.subscription),
                 catchError(err => {
-                    console.log('Handling error locally and rethrowing it...', err);
-                    this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-                    return throwError(() => new Error(err))
+                    const error = throwError(() => new Error(err.response.data));
+                    return this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(error));
                 })
             );
     }
@@ -292,9 +279,8 @@ export class AuthState implements OnDestroy {
             .pipe(
                 takeUntil(this.subscription),
                 catchError(err => {
-                    console.log('Handling error locally and rethrowing it...', err);
-                    this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-                    return throwError((err: any) => { });
+                    const error = throwError(() => new Error(err.response.data));
+                    return this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(error));
                 })
             );
     }
@@ -331,34 +317,53 @@ export class AuthState implements OnDestroy {
             return { sessionRes, customerRes };
         } catch (err: any) {
             if (err) {
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
+                const error = throwError(() => new Error(err.response.data));
+                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(error));
             }
         }
     }
     async buildCustomerObj(email: string) {
-        try {
-            const medusaEmailExist = await this.medusa.auth.exists(email);
-            if (medusaEmailExist.exists) {
-                const loginReq: ICustomerLoginData = {
-                    email: email,
-                    password: email,
-                };
-                let loggedInCustomer = await this.medusa.auth?.authenticate(loginReq);
-                return loggedInCustomer.customer;
-            }
-            else {
-                const registerRequest: ICustomerRegisterData = {
-                    email: email,
-                    password: email,
-                };
-                let registeredCustomer = await this.medusa.customers?.create(registerRequest);
-                return registeredCustomer.customer;
-            }
-        } catch (err: any) {
-            if (err) {
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-            }
+
+        const medusaEmailExist = await this.medusa.auth.exists(email);
+        if (medusaEmailExist.exists) {
+            const loginReq: ICustomerLoginData = {
+                email: email,
+                password: email,
+            };
+            let loggedInCustomer = await this.medusa.auth?.authenticate(loginReq);
+            return loggedInCustomer.customer;
         }
+        else {
+            const registerRequest: ICustomerRegisterData = {
+                email: email,
+                password: email,
+            };
+            let registeredCustomer = await this.medusa.customers?.create(registerRequest);
+            return registeredCustomer.customer;
+        }
+        // try {
+        //     const medusaEmailExist = await this.medusa.auth.exists(email);
+        //     if (medusaEmailExist.exists) {
+        //         const loginReq: ICustomerLoginData = {
+        //             email: email,
+        //             password: email,
+        //         };
+        //         let loggedInCustomer = await this.medusa.auth?.authenticate(loginReq);
+        //         return loggedInCustomer.customer;
+        //     }
+        //     else {
+        //         const registerRequest: ICustomerRegisterData = {
+        //             email: email,
+        //             password: email,
+        //         };
+        //         let registeredCustomer = await this.medusa.customers?.create(registerRequest);
+        //         return registeredCustomer.customer;
+        //     }
+        // } catch (err: any) {
+        //     if (err) {
+        //         this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
+        //     }
+        // }
     }
     ngOnDestroy() {
         this.subscription.next(null);

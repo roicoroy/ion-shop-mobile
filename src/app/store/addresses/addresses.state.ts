@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import Medusa from "@medusajs/medusa-js";
 import { AddressesActions } from '../addresses/addresses.actions';
 import { environment } from 'src/environments/environment';
 import { ErrorLoggingActions } from '../error-logging/error-logging.actions';
+import { Subject, from, takeUntil, catchError, throwError } from 'rxjs';
 
 export interface AddressesStateModel {
     selectedAddress: any;
@@ -24,9 +25,9 @@ export const initAddressStateModel: AddressesStateModel = {
     defaults: initAddressStateModel,
 })
 @Injectable()
-export class AddressesState {
+export class AddressesState implements OnDestroy{
     medusaClient: any;
-
+    subscription = new Subject();
     constructor(
         private store: Store,
     ) {
@@ -48,30 +49,37 @@ export class AddressesState {
     }
     @Action(AddressesActions.GetRegionList)
     async getMedusaRegionList(ctx: StateContext<AddressesStateModel>) {
-        try {
-            let response = await this.medusaClient?.regions.list();
+        const regions$ = from(this.medusaClient.regions.list());
+        regions$.pipe(
+            takeUntil(this.subscription),
+            catchError(err => {
+                console.log('Handling error locally and rethrowing it...', err);
+                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
+                return throwError(() => new Error(err));
+            })
+        ).subscribe((response: any) => {
+            console.log(response);
             ctx.patchState({
                 regionList: response?.regions,
             });
-        } catch (err: any) {
-            if (err) {
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-            }
-        }
+        });
     }
     @Action(AddressesActions.GetCountries)
     async getCountries(ctx: StateContext<AddressesStateModel>, { regionId }: AddressesActions.GetCountries) {
-        try {
-            let region = await this.medusaClient?.regions?.retrieve(regionId);
-            ctx.patchState({
-                countriesList: region.region?.countries
-            });
-        }
-        catch (err: any) {
-            if (err) {
+        const region$ = from(this.medusaClient?.regions?.retrieve(regionId));
+        region$.pipe(
+            takeUntil(this.subscription),
+            catchError(err => {
+                console.log('Handling error locally and rethrowing it...', err);
                 this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-            }
-        }
+                return throwError(() => new Error(err));
+            })
+        ).subscribe((response: any) => {
+            console.log(response);
+            ctx.patchState({
+                countriesList: response.region?.countries
+            });
+        });
     }
     @Action(AddressesActions.AddAddressToState)
     addAddressToState(ctx: StateContext<AddressesStateModel>, { selectedAddress }: AddressesActions.AddAddressToState) {
@@ -93,5 +101,9 @@ export class AddressesState {
             regionList: null,
             countriesList: null,
         });
+    }
+    ngOnDestroy() {
+        this.subscription.next(null);
+        this.subscription.complete();
     }
 }

@@ -3,7 +3,7 @@ import { Select, Store } from '@ngxs/store';
 import { Observable, combineLatest, map } from 'rxjs';
 import { AuthState } from 'src/app/store/auth/auth.state';
 import { CartState } from 'src/app/store/cart/cart.state';
-import { MedusaState } from 'src/app/store/medusa/medusa.state';
+import { ShippingState } from 'src/app/store/shipping/shipping.state';
 
 export interface IPaymentFacadeState {
     secretKey: string,
@@ -16,7 +16,7 @@ export interface IPaymentFacadeState {
 })
 export class PaymentFacade {
 
-    @Select(MedusaState.getSecretKey) secretKey$: Observable<any>;
+    @Select(ShippingState.getSecretKey) secretKey$: Observable<any>;
 
     @Select(AuthState.isLoggedIn) isLoggedIn$: Observable<any>;
 

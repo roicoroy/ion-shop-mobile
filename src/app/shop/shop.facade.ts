@@ -74,22 +74,30 @@ export class ShopFacade {
     loadApp() {
         // this.store.dispatch(new AuthStateActions.LoadApp());
     }
-    addToMedusaCart(selectedVariantId: string, counterValue: number) {
-        const isLoggedIn = this.store.selectSnapshot<any>((state) => state.authState.isLoggedIn);
-        if (isLoggedIn) {
-            const cartId = this.store.selectSnapshot<any>((state) => state.cart?.cart?.id);
-            if (cartId != null && selectedVariantId != null) {
-                this.store.dispatch(new AuthStateActions.getMedusaSession());
-                this.store.dispatch(new CartActions.AddProductMedusaToCart(cartId, counterValue, selectedVariantId));
-            } else {
-                this.store.dispatch(new AuthStateActions.getMedusaSession());
-                this.store.dispatch(new CartActions.CreateMedusaCart())
-                    .subscribe((state) => {
-                        this.store.dispatch(new CartActions.AddProductMedusaToCart(state.cart.cart?.id, counterValue, selectedVariantId));
-                    });
-            }
-        } else {
-            this.utility.presentAlert('Need to login first, please...');
-        }
+    async addToMedusaCart(selectedVariantId: string, counterValue: number) {
+        
+        console.log(selectedVariantId, counterValue);
+
+        this.store.dispatch(new CartActions.AddToCart(selectedVariantId, counterValue))
+
+        // const isLoggedIn = this.store.selectSnapshot<any>((state) => state.authState.isLoggedIn);
+        // if (isLoggedIn) {
+        //     const cartId = this.store.selectSnapshot<any>((state) => state.cart?.cart?.id);
+        //     if (cartId != null && selectedVariantId != null) {
+        //         this.store.dispatch(new AuthStateActions.getMedusaSession());
+        //         this.store.dispatch(new CartActions.AddProductMedusaToCart(cartId, counterValue, selectedVariantId));
+        //     } else {
+        //         this.store.dispatch(new AuthStateActions.getMedusaSession());
+        //         this.store.dispatch(new CartActions.CreateMedusaCart())
+        //             .subscribe((state) => {
+        //                 console.log(state);
+        //                 // this.store.dispatch(new CartActions.AddProductMedusaToCart(state.cart.cart?.id, counterValue, selectedVariantId));
+        //             });
+        //         const cart = await this.store.selectSnapshot<any>((state) => state.cart?.cart);
+        //         console.log(cart);
+        //     }
+        // } else {
+        //     this.utility.presentAlert('Need to login first, please...');
+        // }
     }
 }

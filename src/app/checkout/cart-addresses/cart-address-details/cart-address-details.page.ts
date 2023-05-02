@@ -195,6 +195,9 @@ export class AddressDetailsPage implements OnInit, OnDestroy {
     const phoneNumberPlaceholder = `${string.code} ${string.sample_phone}`;
     return phoneNumberPlaceholder;
   }
+  addAddress() {
+    this.navigation.navControllerDefault('/checkout/pages/cart-addresses');
+  }
   ngOnDestroy(): void {
     this.ngUnsubscribe.next(null);
     this.ngUnsubscribe.complete();

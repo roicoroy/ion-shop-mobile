@@ -37,7 +37,7 @@ export class CartPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.viewState$ = this.facade.viewState$;
     // this.viewState$
-    //   .pipe(takeUntil(this.ngUnsubscribe))
+      // .pipe(takeUntil(this.ngUnsubscribe))
     //   .subscribe((vs) => {
     //     console.log(vs);
     //   });

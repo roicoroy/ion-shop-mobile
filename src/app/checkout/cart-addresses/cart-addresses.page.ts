@@ -39,6 +39,7 @@ export class CartAddressesPage implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
+    this.store.dispatch(new AddressesActions.GetRegionList());
     this.viewState$ = this.facade.viewState$;
     this.viewState$
       .pipe(takeUntil(this.ngUnsubscribe))

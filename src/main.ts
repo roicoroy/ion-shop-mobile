@@ -37,7 +37,6 @@ import { CartState } from './app/store/cart/cart.state';
 import { ShippingState } from './app/store/shipping/shipping.state';
 import { ProductState } from './app/store/products/products.state';
 import { LanguageState } from './app/store/language/language.state';
-import { MedusaState } from './app/store/medusa/medusa.state';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { ErrorCatchingInterceptor } from './app/shared/interceptor/error.interceptor';
 
@@ -106,7 +105,6 @@ bootstrapApplication(AppComponent, {
         ShippingState,
         ProductState,
         LanguageState,
-        MedusaState,
         CartState
       ]),
       NgxsResetPluginModule.forRoot(),
@@ -122,7 +120,7 @@ bootstrapApplication(AppComponent, {
           'language',
           'customer',
           "cart",
-          'medusa'
+          'shipping'
         ]
       }),
     ),

@@ -66,26 +66,26 @@ export class ProductDetailsPage implements OnInit, OnDestroy {
     public alertController: AlertController,
   ) {
     this.viewState$ = this.facade.viewState$;
-    this.viewState$
-    .pipe(
-      takeUntil(this.ngUnsubscribe),
-      take(1),
-    )
-    .subscribe((vs) => {
-      console.log(vs);
-    });
+    // this.viewState$
+    // .pipe(
+    //   takeUntil(this.ngUnsubscribe),
+    //   take(1),
+    // )
+    // .subscribe((vs) => {
+    //   console.log(vs);
+    // });
   }
   ngOnInit() {
-    this.route.queryParams
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        take(1),
-      )
-      .subscribe(
-        (product: any) => {
-          console.log(product.id);
-        },
-      )
+    // this.route.queryParams
+    //   .pipe(
+    //     takeUntil(this.ngUnsubscribe),
+    //     take(1),
+    //   )
+    //   .subscribe(
+    //     (product: any) => {
+    //       console.log(product.id);
+    //     },
+    //   )
   }
   onSelectChange(option: any) {
     this.selectedOptionId = option.id;

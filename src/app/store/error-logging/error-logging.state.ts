@@ -4,7 +4,7 @@ import { State, Store, Action, StateContext } from "@ngxs/store";
 import { ErrorLoggingActions } from "./error-logging.actions";
 
 export class ErrosStateModel {
-    errorEntry: Error[];
+    errorEntry: any[];
 }
 
 @State({

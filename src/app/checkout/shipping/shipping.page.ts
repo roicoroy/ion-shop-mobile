@@ -2,14 +2,15 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { NgxsFormPluginModule, UpdateFormValue } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, pipe, take } from 'rxjs';
 import { CustomComponentsModule } from 'src/app/components/components.module';
 import { IShippingFacadeState, ShippingFacade } from './shipping.facade';
 import { ShippingActions } from 'src/app/store/shipping/shipping.actions';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-shipping',
@@ -20,6 +21,8 @@ import { ShippingActions } from 'src/app/store/shipping/shipping.actions';
     IonicModule,
     CommonModule,
     TranslateModule,
+    FormsModule,
+    ReactiveFormsModule,
     NgxsModule,
     NgxsFormPluginModule,
     NgxsStoragePluginModule,
@@ -31,35 +34,37 @@ export class ShippingPage implements OnDestroy {
   private navigation = inject(NavigationService);
   private facade = inject(ShippingFacade);
   private store = inject(Store);
+  private formBuilder = inject(FormBuilder);
   private readonly ngUnsubscribe = new Subject();
+
+  shippingForm: FormGroup;
 
   viewState$: Observable<IShippingFacadeState>;
 
   constructor() {
+    this.store.dispatch(new ShippingActions.GetShippingOptions());
     this.viewState$ = this.facade.viewState$;
-    this.viewState$.subscribe((vs) => {
-      console.log('shipping page vs:', vs);
+    // this.viewState$
+    //   .subscribe((vs) => {
+    //     console.log(vs);
+    //   })
+    this.shippingForm = this.formBuilder.group({
+      shipping_method: new FormControl(''),
+      provider_id: new FormControl(''),
     });
   }
-  ionViewWillEnter() {
-    this.store.dispatch(new ShippingActions.GetShippingOptions());
-  }
-  onAddShippingMethod(shippingMethod: any) {
-    console.log(shippingMethod.detail.value);
-    if (shippingMethod.detail.value != null) {
-      this.store.dispatch(new ShippingActions.AddShippingMethod(shippingMethod.detail.value));
-      // this.initPaymentSession();
+  onAddShippingMethod(event$: any) {
+    const shipping_option = event$.detail.value;
+    if (shipping_option != null) {  
+      this.store.dispatch(new ShippingActions.AddShippingMethod(shipping_option));
     }
   }
-  initPaymentSession() {
-    this.store.dispatch(new ShippingActions.CreatePaymentSessions());
-  }
   onAddPymentSession($event: any) {
-    console.log($event);
-    this.store.dispatch(new ShippingActions.SetPaymentSession($event.detail.value));
+    const provider: string = $event.provider_id;
+    this.store.dispatch(new ShippingActions.SetPaymentSession(provider));
   }
   next() {
-    this.navigation.navControllerDefault('checkout/pages/checkout-home');
+    this.navigation.navControllerDefault('/checkout/pages/payment');
   }
   back() {
     this.navigation.navControllerDefault('checkout/pages/checkout-home');

@@ -1,7 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="warning">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/checkout/pages/cart-addresses"></ion-back-button>
+      <ion-buttons slot="start">
+        <ion-button (click)="addAddress()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-buttons>
     <ion-title> Address Details </ion-title>
     <ion-buttons slot="end">

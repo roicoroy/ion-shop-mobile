@@ -1,20 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, ViewChild, inject } from '@angular/core';
-import { IonicModule, RefresherCustomEvent } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import { NavigationService } from '../../shared/services/navigation/navigation.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { CustomComponentsModule } from 'src/app/components/components.module';
 import { IPaymentFacadeState, PaymentFacade } from './payment.facade';
 import { NgxStripeModule, StripePaymentElementComponent, StripeService } from 'ngx-stripe';
-import { StripeElementsOptions } from '@stripe/stripe-js';
+import { ConfirmPaymentData, StripeElementsOptions } from '@stripe/stripe-js';
 import { UtilityService } from 'src/app/shared/services/utility/utility.service';
-import { AddressesActions } from 'src/app/store/addresses/addresses.actions';
 import { CartActions } from 'src/app/store/cart/cart.actions';
-import { MedusaActions } from 'src/app/store/medusa/medusa.actions';
 
 @Component({
   selector: 'app-payment',
@@ -34,21 +32,19 @@ import { MedusaActions } from 'src/app/store/medusa/medusa.actions';
 })
 export class PaymentPage implements OnDestroy {
 
-  @ViewChild(StripePaymentElementComponent)
+  @ViewChild(StripePaymentElementComponent) paymentElement: StripePaymentElementComponent;
 
   private navigation = inject(NavigationService);
 
   private facade = inject(PaymentFacade);
-  
+
   private store = inject(Store);
-  
+
   private utility = inject(UtilityService);
-  
+
   private stripeService = inject(StripeService);
 
   private readonly ngUnsubscribe = new Subject();
-
-  paymentElement: StripePaymentElementComponent;
 
   elementsOptions: StripeElementsOptions;
 
@@ -56,9 +52,13 @@ export class PaymentPage implements OnDestroy {
 
   constructor() {
     this.viewState$ = this.facade.viewState$;
-    this.viewState$.subscribe((vs) => {
-      console.log(vs);
-    });
+    this.viewState$
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+      )
+      .subscribe((vs) => {
+        console.log(vs);
+      });
   }
   loginPages() {
     this.navigation.navControllerDefault('/auth/pages/auth-home');
@@ -78,32 +78,47 @@ export class PaymentPage implements OnDestroy {
   logout() {
   }
   async confirm() {
+
+    const cartId = await this.store.selectSnapshot<any>((state: any) => state.cart.cart?.id);
+
+    const confirmPaymentData: ConfirmPaymentData = {
+      return_url: 'http://localhost:8100/checkout/pages/order-review',
+    }
+
     this.utility.presentLoading('...');
     return this.stripeService.confirmPayment({
-      elements: this.paymentElement.elements,
+      elements: this.paymentElement?.elements,
+      // confirmParams: confirmPaymentData,
       redirect: 'if_required'
-    }).subscribe(async (result: any) => {
-      if (result.error) {
-        this.utility.dismissLoading();
-        this.utility.showToast(result.error?.message, 'middle', 1500);
-      }
-      if (!result.error) {
-        const cartId = await this.store.selectSnapshot<any>((state: any) => state.cart.cart?.id);
+    })
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(async (result: any) => {
 
-        this.store.dispatch(new CartActions.CompleteCart(cartId));
-        this.store.dispatch(new MedusaActions.LogOut());
-        this.store.dispatch(new CartActions.LogOut());
-        this.store.dispatch(new AddressesActions.LogOut());
-        this.store.dispatch(new MedusaActions.UnSetSecretKey());
-        this.store.dispatch(new CartActions.ClearIsGuest());
+        console.log(result);
 
-        this.utility.dismissLoading().then(() => this.navigateToReview());
+        if (result.error) {
+          this.utility.dismissLoading();
+          this.utility.showToast(result.error?.message, 'middle', 1500);
+        }
+        if (!result.error) {
 
-      }
-    });
+          this.store.dispatch(new CartActions.CompleteCart(cartId))
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(async (cartState: any) => {
+              console.log(cartState);
+            });
+          // this.store.dispatch(new MedusaActions.LogOut());
+          // this.store.dispatch(new CartActions.LogOut());
+          // this.store.dispatch(new AddressesActions.LogOut());
+          // this.store.dispatch(new MedusaActions.UnSetSecretKey());
+          // this.store.dispatch(new CartActions.ClearIsGuest());
+          this.utility.dismissLoading()
+          // .then(() => this.navigateToReview());
+        }
+      });
   }
   navigateToReview() {
-    this.navigation.navigateFlip('/checkout/flow/order-review');
+    this.navigation.navigateFlip('/checkout/pages/order-review');
   }
   back() {
     this.navigation.navigateFlip('checkout/flow/shipping');

@@ -1,16 +1,13 @@
 import { IRegisterAddress } from "src/app/shared/types/types.interfaces";
 
 export namespace CartActions {
+    export class AddToCart {
+        static readonly type = '[CartActions] AddToCart';
+        constructor(public selectedVariantId: string, public counterValue: number) { }
+    }
     export class GetMedusaCart {
         static readonly type = '[CartActions] Get Medsa Cart With ID';
         constructor(public cartId: string) { }
-    }
-    export class CreateMedusaCart {
-        static readonly type = '[CartActions] Create Medusa Cart';
-    }
-    export class CreateMedusaCartWithItems {
-        static readonly type = '[CartActions] Create Medusa Cart With Items';
-        constructor(public selectedVariant: any) { }
     }
     export class UpdateCartBillingAddress {
         static readonly type = '[CartActions] Update Billing Address Cart';

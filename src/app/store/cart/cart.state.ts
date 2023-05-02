@@ -7,6 +7,7 @@ import { CartActions } from "./cart.actions";
 import { ICustomerLoginData, ICustomerRegisterData, IRegisterAddress } from "src/app/shared/types/types.interfaces";
 import { ErrorLoggingActions } from "../error-logging/error-logging.actions";
 import { AuthStateActions } from "../auth/auth.actions";
+import { Observable, from, takeUntil, catchError } from "rxjs";
 
 export interface CartStateModel {
     recentCompletedOrder: any;
@@ -60,94 +61,33 @@ export class CartState {
             }
         }
     }
-    @Action(CartActions.CreateMedusaCart)
-    async createMedusaCart(ctx: StateContext<CartStateModel>) {
-        try {
-            const savedCart = await this.store.selectSnapshot<any>((state: any) => state.cart?.cart);
-            if (savedCart != null) { return }
-            const savedEmail = await this.store.selectSnapshot<any>((state: any) => state.authState?.userEmail);
-            if (savedEmail) {
-                const customerId = await this.medusaUserInit(savedEmail);
-                if (customerId) {
-                    const cart = await this.medusa.carts.create();
-                    ctx.patchState({
-                        cart: cart?.cart,
-                    });
-                }
-            }
-        }
-        catch (err: any) {
-            if (err) {
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-                console.log(err);
-            }
-        }
-    }
-    /**
-     * Creates a Cart within the given region and with the initial items. 
-     * If no region_id is provided the cart will be associated with the first Region available. 
-     * If no items are provided the cart will be empty after creation. 
-     * If a user is logged in the cart's customer id and email will be set.
-     */
-    // async medusaCartInit(email: string): Promise<string> {
-    //     const customerId = await this.medusaUserInit(email);
-    //     let cartId = this.medusa.cart;
-    //     console.log(customerId);
-    //     if (customerId) {
-    //         cartId = await this.medusa.cart;
-    //         console.log(cartId);
-    //         return cartId;
-    //     }
-    //     return cartId;
-
-    // }
-    async medusaUserInit(email: string) {
-        if (email === null) { return; }
-        try {
-            const medusaEmailExist = await this.medusa.auth.exists(email);
-            if (medusaEmailExist.exists && email !== null) {
-                const loginReq: ICustomerLoginData = {
-                    email: email,
-                    password: email,
-                };
-                let loggedInCustomer = await this.medusa.auth?.authenticate(loginReq);
-                
-                console.log(loggedInCustomer);
-
-                return loggedInCustomer.customer.id;
-            }
-            else if (!medusaEmailExist.exists && email) {
-                const registerRequest: ICustomerRegisterData = {
-                    email: email,
-                    password: email,
-                };
-                let registeredCustomer = await this.medusa.customers?.create(registerRequest);
-                return registeredCustomer.customer.id;
-            }
-        } catch (err: any) {
-            if (err) {
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-            }
-        }
-    }
-    @Action(CartActions.CreateMedusaCartWithItems)
-    async createMedusaCartWithItems(ctx: StateContext<CartStateModel>, { selectedVariant }: CartActions.CreateMedusaCartWithItems) {
-        try {
-            let cart = await this.medusa.carts.create();
-            let cartWithItems = await this.medusa.carts.lineItems.create(cart.id, {
-                variant_id: selectedVariant?.id,
-                quantity: selectedVariant?.quantity,
+    @Action(CartActions.AddToCart)
+    async addToCart(ctx: StateContext<CartStateModel>, { selectedVariantId, counterValue }: CartActions.AddToCart) {
+        const state = ctx.getState();
+        if (!state?.cart && selectedVariantId && counterValue) {
+            const cart = await this.medusa.carts.create();
+            const cartWithItems = await this.medusa.carts.lineItems.create(cart.cart?.id, {
+                variant_id: selectedVariantId,
+                quantity: counterValue,
             });
-            ctx.patchState({
+            return ctx.patchState({
                 cart: cartWithItems?.cart,
             });
         }
-        catch (err: any) {
-            if (err) {
-                this.store.dispatch(new ErrorLoggingActions.LogErrorEntry(err));
-            }
+        if (state?.cart && selectedVariantId && counterValue) {
+            const cartWithItems = await this.medusa.carts.lineItems.create(state?.cart?.id, {
+                variant_id: selectedVariantId,
+                quantity: counterValue,
+            });
+            return ctx.patchState({
+                cart: cartWithItems?.cart,
+            });
+        } else {
+            const cart = await this.medusa.carts.create();
+            return ctx.patchState({
+                cart: cart?.cart,
+            });
         }
-
     }
     @Action(CartActions.UpdateCartBillingAddress)
     async updateCartBillingAddress(ctx: StateContext<CartStateModel>, { cartId, address }: CartActions.UpdateCartBillingAddress) {
